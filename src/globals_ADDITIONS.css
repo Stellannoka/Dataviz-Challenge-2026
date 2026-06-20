@@ -1,0 +1,24 @@
+/* app/globals.css
+ *
+ * IMPORTANT — DO NOT replace your whole globals.css with this file.
+ * Your project already has a globals.css with Tailwind + shadcn setup.
+ * You only need to ADD the @theme block below.
+ *
+ * Find the line near the top that says:   @import "tailwindcss";
+ * Just AFTER it, paste the @theme block.
+ *
+ * This registers the two font variables (set in layout.tsx) so that
+ * Tailwind's `font-sans` and `font-serif` utilities use them.
+ */
+
+@theme inline {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), ui-serif, Georgia, serif;
+}
+
+/* Optional: smoother headings */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
