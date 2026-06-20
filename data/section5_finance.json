@@ -1,0 +1,45 @@
+{
+  "region": {
+    "annualNeedUsdBn": 3.3,
+    "commitmentUsdBn": 1.1,
+    "disbursementUsdBn": 0.9,
+    "commitmentCoveragePct": 33,
+    "disbursementCoveragePct": 26,
+    "needYear": "2024 prices",
+    "flowYears": "2021-2023 average"
+  },
+  "countriesDisbursementCoverage": [
+    { "country": "Tuvalu", "iso": "TUV", "coveragePct": 148 },
+    { "country": "Nauru", "iso": "NRU", "coveragePct": 43 },
+    { "country": "Tonga", "iso": "TON", "coveragePct": 39 },
+    { "country": "Papua New Guinea", "iso": "PNG", "coveragePct": 38 },
+    { "country": "Palau", "iso": "PLW", "coveragePct": 38 },
+    { "country": "Vanuatu", "iso": "VUT", "coveragePct": 36 },
+    { "country": "Kiribati", "iso": "KIR", "coveragePct": 34 },
+    { "country": "Samoa", "iso": "WSM", "coveragePct": 25 },
+    { "country": "Micronesia (Fed. States)", "iso": "FSM", "coveragePct": 24 },
+    { "country": "Solomon Islands", "iso": "SLB", "coveragePct": 19 },
+    { "country": "Marshall Islands", "iso": "MHL", "coveragePct": 13 },
+    { "country": "Fiji", "iso": "FJI", "coveragePct": 11 }
+  ],
+  "needsByCountryPctGdp": [
+    { "country": "Marshall Islands", "iso": "MHL", "needPctGdp": 35.7, "atoll": true },
+    { "country": "Kiribati", "iso": "KIR", "needPctGdp": 34.3, "atoll": true },
+    { "country": "Tuvalu", "iso": "TUV", "needPctGdp": 32.7, "atoll": true },
+    { "country": "Micronesia (Fed. States)", "iso": "FSM", "needPctGdp": 30.1, "atoll": false },
+    { "country": "Nauru", "iso": "NRU", "needPctGdp": 28.3, "atoll": false },
+    { "country": "Solomon Islands", "iso": "SLB", "needPctGdp": 27.9, "atoll": false },
+    { "country": "Tonga", "iso": "TON", "needPctGdp": 23.6, "atoll": false },
+    { "country": "Vanuatu", "iso": "VUT", "needPctGdp": 23.0, "atoll": false },
+    { "country": "Samoa", "iso": "WSM", "needPctGdp": 21.3, "atoll": false },
+    { "country": "Fiji", "iso": "FJI", "needPctGdp": 17.1, "atoll": false },
+    { "country": "Palau", "iso": "PLW", "needPctGdp": 14.7, "atoll": false },
+    { "country": "Papua New Guinea", "iso": "PNG", "needPctGdp": 11.5, "atoll": false }
+  ],
+  "regionNeedPctGdp": 22.5,
+  "disbursementRatioNote": "About four-fifths of commitments are eventually disbursed; bilateral 89%, multilateral 65%, climate funds 66%.",
+  "source": {
+    "name": "IMF Working Paper WP/26/83, Gonguet et al. (2026)",
+    "url": "https://www.imf.org/en/publications/wp/issues/2026/04/23/climate-finance-and-adaptation-needs-in-pacific-island-countries-575342"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "worstByCountry": [
+    {
+      "country": "Vanuatu",
+      "year": 2016,
+      "lossUsdM": 81.7,
+      "lossPctGdp": 10.16,
+      "note": "Cyclone Pam aftermath / 2016 \u2014 highest single-event % in dataset"
+    },
+    {
+      "country": "Fiji",
+      "year": 2016,
+      "lossUsdM": 374.11,
+      "lossPctGdp": 7.59,
+      "note": "Cyclone Winston, 2016"
+    },
+    {
+      "country": "Micronesia of",
+      "year": 2016,
+      "lossUsdM": 20.31,
+      "lossPctGdp": 6.25,
+      "note": "2016 event"
+    },
+    {
+      "country": "Tonga",
+      "year": 2014,
+      "lossUsdM": 18.56,
+      "lossPctGdp": 4.21,
+      "note": "2014 (Cyclone Ian)"
+    },
+    {
+      "country": "Marshall Islands",
+      "year": 2007,
+      "lossUsdM": 4.9,
+      "lossPctGdp": 3.26,
+      "note": "2007 event"
+    },
+    {
+      "country": "Palau",
+      "year": 2012,
+      "lossUsdM": 6.19,
+      "lossPctGdp": 2.87,
+      "note": "2012 (Typhoon Bopha)"
+    },
+    {
+      "country": "Samoa",
+      "year": 2016,
+      "lossUsdM": 22.05,
+      "lossPctGdp": 2.61,
+      "note": "2016"
+    },
+    {
+      "country": "Solomon Islands",
+      "year": 2013,
+      "lossUsdM": 12.63,
+      "lossPctGdp": 0.98,
+      "note": "2013 (flash floods)"
+    },
+    {
+      "country": "Kiribati",
+      "year": 2014,
+      "lossUsdM": 0.27,
+      "lossPctGdp": 0.13,
+      "note": "2014"
+    },
+    {
+      "country": "Papua New Guinea",
+      "year": 2016,
+      "lossUsdM": 9.57,
+      "lossPctGdp": 0.05,
+      "note": "Largest economy \u2014 economic loss tiny vs GDP despite highest death toll"
+    }
+  ]
+}
