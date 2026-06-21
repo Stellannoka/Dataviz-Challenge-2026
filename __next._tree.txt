@@ -1,2 +1,2 @@
-:HL["/Dataviz-Challenge-2026/_next/static/chunks/12i.df7bdvtg-.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"ON4XHbSQIhqbwgw9e5WkN"}
+:HL["/Dataviz-Challenge-2026/_next/static/chunks/0o600ncbttkz6.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"YbHgXVSGoUrXxIu3IcUtD"}
