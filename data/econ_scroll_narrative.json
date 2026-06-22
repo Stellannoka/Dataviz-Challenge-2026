@@ -1,0 +1,33 @@
+{
+  "transition": {
+    "title": "The same map, a different measure",
+    "body": "You've seen how many people each disaster reached. Now watch what it cost. The same nations, re-scaled \u2014 this time by the share of their economy lost in a single event."
+  },
+  "economicSteps": [
+    {
+      "highlight": [
+        "VUT"
+      ],
+      "title": "Vanuatu \u2014 the heaviest blow",
+      "body": "A single cyclone erased just over 10 percent of Vanuatu's entire economy in one year \u2014 the steepest economic loss any Pacific nation recorded in the period. For an economy this size, a year of growth can vanish in an afternoon."
+    },
+    {
+      "highlight": [
+        "FJI"
+      ],
+      "title": "Fiji \u2014 Winston's bill",
+      "body": "Cyclone Winston cost Fiji more than 7 percent of GDP \u2014 over 370 million dollars in a single event. The same storm that reached two-thirds of Fiji's people also took a sum its economy would spend years recovering."
+    },
+    {
+      "highlight": [
+        "PNG"
+      ],
+      "title": "Size is its own protection",
+      "body": "The pattern inverts for the largest economy. Papua New Guinea's worst disaster cost a twentieth of one percent of its GDP \u2014 not because it was spared, but because a large economy absorbs what a small one cannot. The smallest nations carry the heaviest economic blows for the same reason they carry the heaviest human ones: there is less to absorb the shock."
+    }
+  ],
+  "outro": {
+    "title": "Two measures, one pattern",
+    "body": "Whether counted in people or in dollars, the same kind of nation absorbs the most \u2014 and absorbs it relative to how little it has to begin with. The losses are not random. They trace a fault line that runs deeper than any single storm: not in what disasters do, but in what each nation is able to withstand."
+  }
+}
