@@ -1,62 +1,17 @@
 {
   "year": 2020,
-  "regionTotal": 399469,
   "reportingCountries": 9,
-  "notReporting": [
-    "Micronesia (Fed. States)",
-    "Palau",
-    "Tonga"
-  ],
+  "notReporting": ["Tonga", "Palau", "Micronesia (Fed. States)"],
+  "totals": { "affected": 548686, "livelihoods": 399469 },
   "data": [
-    {
-      "country": "Fiji",
-      "iso": "FJI",
-      "value": 182892
-    },
-    {
-      "country": "Vanuatu",
-      "iso": "VUT",
-      "value": 160000
-    },
-    {
-      "country": "Marshall Islands",
-      "iso": "MHL",
-      "value": 53158
-    },
-    {
-      "country": "Solomon Islands",
-      "iso": "SLB",
-      "value": 1760
-    },
-    {
-      "country": "Nauru",
-      "iso": "NRU",
-      "value": 1100
-    },
-    {
-      "country": "Papua New Guinea",
-      "iso": "PNG",
-      "value": 250
-    },
-    {
-      "country": "Tuvalu",
-      "iso": "TUV",
-      "value": 246
-    },
-    {
-      "country": "Samoa",
-      "iso": "WSM",
-      "value": 60
-    },
-    {
-      "country": "Kiribati",
-      "iso": "KIR",
-      "value": 3
-    }
-  ],
-  "source": {
-    "indicator": "SDG 11.5.1 / 1.5.1 \u2014 VC_DSR_PDLN",
-    "name": "Pacific Community (SPC), Pacific Data Hub",
-    "note": "Number of people whose livelihoods were disrupted or destroyed, attributed to disasters."
-  }
+    { "country": "Vanuatu", "iso": "VUT", "affected": 246802, "livelihoods": 160000, "livelihoodShare": 0.648 },
+    { "country": "Fiji", "iso": "FJI", "affected": 235921, "livelihoods": 182892, "livelihoodShare": 0.775 },
+    { "country": "Marshall Islands", "iso": "MHL", "affected": 56718, "livelihoods": 53158, "livelihoodShare": 0.937 },
+    { "country": "Papua New Guinea", "iso": "PNG", "affected": 3297, "livelihoods": 250, "livelihoodShare": 0.076 },
+    { "country": "Solomon Islands", "iso": "SLB", "affected": 2339, "livelihoods": 1760, "livelihoodShare": 0.752 },
+    { "country": "Tuvalu", "iso": "TUV", "affected": 2266, "livelihoods": 246, "livelihoodShare": 0.109 },
+    { "country": "Nauru", "iso": "NRU", "affected": 1133, "livelihoods": 1100, "livelihoodShare": 0.971 },
+    { "country": "Samoa", "iso": "WSM", "affected": 195, "livelihoods": 60, "livelihoodShare": 0.308 },
+    { "country": "Kiribati", "iso": "KIR", "affected": 15, "livelihoods": 3, "livelihoodShare": 0.2 }
+  ]
 }
