@@ -1,0 +1,136 @@
+{
+  "year": 2020,
+  "anchorEvent": "Cyclone Harold (April 2020) was the dominant event, severely affecting Vanuatu and striking Fiji, Solomon Islands and Tonga.",
+  "rawCounts": {
+    "source": "Pacific Data Hub (PDH.stat), SPC dataset DF_SDG_11, indicator VC_DSR_AFFCT \u2014 Number of directly affected persons attributed to disasters. Source data: UN Office for Disaster Risk Reduction.",
+    "unit": "people",
+    "data": [
+      {
+        "iso": "VUT",
+        "country": "Vanuatu",
+        "affected": 246802
+      },
+      {
+        "iso": "FJI",
+        "country": "Fiji",
+        "affected": 235921
+      },
+      {
+        "iso": "MHL",
+        "country": "Marshall Islands",
+        "affected": 56718
+      },
+      {
+        "iso": "PNG",
+        "country": "Papua New Guinea",
+        "affected": 3297
+      },
+      {
+        "iso": "SLB",
+        "country": "Solomon Islands",
+        "affected": 2339
+      },
+      {
+        "iso": "TUV",
+        "country": "Tuvalu",
+        "affected": 2266
+      },
+      {
+        "iso": "NRU",
+        "country": "Nauru",
+        "affected": 1133
+      },
+      {
+        "iso": "WSM",
+        "country": "Samoa",
+        "affected": 195
+      },
+      {
+        "iso": "TON",
+        "country": "Tonga",
+        "affected": 68
+      },
+      {
+        "iso": "KIR",
+        "country": "Kiribati",
+        "affected": 15
+      },
+      {
+        "iso": "FSM",
+        "country": "Micronesia (Fed. States)",
+        "affected": 0
+      },
+      {
+        "iso": "PLW",
+        "country": "Palau",
+        "affected": 0
+      }
+    ]
+  },
+  "per100k": {
+    "source": "United Nations Statistics Division, SDG indicator 11.5.1 (series VC_DSR_DAFF) \u2014 directly affected persons per 100,000 population.",
+    "unit": "per 100,000 population",
+    "data": [
+      {
+        "iso": "MHL",
+        "country": "Marshall Islands",
+        "per100k": 132810
+      },
+      {
+        "iso": "VUT",
+        "country": "Vanuatu",
+        "per100k": 82581
+      },
+      {
+        "iso": "FJI",
+        "country": "Fiji",
+        "per100k": 25784
+      },
+      {
+        "iso": "TUV",
+        "country": "Tuvalu",
+        "per100k": 21795
+      },
+      {
+        "iso": "NRU",
+        "country": "Nauru",
+        "per100k": 9731
+      },
+      {
+        "iso": "SLB",
+        "country": "Solomon Islands",
+        "per100k": 314
+      },
+      {
+        "iso": "WSM",
+        "country": "Samoa",
+        "per100k": 92
+      },
+      {
+        "iso": "PNG",
+        "country": "Papua New Guinea",
+        "per100k": 33
+      },
+      {
+        "iso": "KIR",
+        "country": "Kiribati",
+        "per100k": 12
+      },
+      {
+        "iso": "TON",
+        "country": "Tonga",
+        "per100k": 0
+      },
+      {
+        "iso": "FSM",
+        "country": "Micronesia (Fed. States)",
+        "per100k": 0
+      },
+      {
+        "iso": "PLW",
+        "country": "Palau",
+        "per100k": 0
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Source+Serif+4:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Source+Serif+4:wght@300;350;400;600;700&display=swap');
 @import "tailwindcss";
 
 @theme inline {
@@ -7,12 +7,15 @@
 }
 
 :root {
-  --caption: #808080;
+  --caption: #707070;
   --primary: #5a8fb0;        /* light blue — project primary */
   --primary-light: #9cc0d8;  /* lighter tint */
   --primary-dark: #3f6e8c;   /* darker shade */
-  --accent: #e0916a;         /* warm accent for contrast/danger */
+  --secondary: #dc2626;      /* red for shortfall */
+  --secondary-tint: #fee2e2; /* light red tint */
   --neutral: #94a3b8;        /* slate grey for "other" */
+  --text-color: rgb(33, 37, 41);
+  --text-secondary: #707070;
 }
 
 html {
@@ -21,9 +24,208 @@ html {
 
 body {
   background-color: #ffffff;
-  color: #1e293b;
+  color: var(--text-color);
+  font-family: var(--font-serif);
 }
 
 h1, h2, h3 {
   text-wrap: balance;
+  font-family: var(--font-serif);
+}
+
+/* ============================================================
+   TYPOGRAPHY — Section titles & subtitles
+   ============================================================ */
+
+/* Section title: 1.4rem, weight 600, margin-bottom 0.4rem, width 640px */
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  max-width: 640px;
+  font-family: var(--font-serif);
+  color: var(--text-color);
+}
+
+/* Section subtitle: reduced from 1rem to 0.88rem */
+.section-subtitle {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-bottom: 0;
+  line-height: 1.3rem;
+  font-family: var(--font-serif);
+}
+
+/* ============================================================
+   TYPOGRAPHY — Narrative text
+   ============================================================ */
+
+/* Section narrative paragraphs */
+.section-narrative p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  unicode-bidi: isolate;
+  font-size: 1rem;
+  font-weight: 350;
+  text-align: left;
+  line-height: 1.5rem;
+  padding-bottom: 1.8rem;
+  opacity: 1;
+  color: var(--text-color);
+  font-family: var(--font-serif);
+}
+
+/* Hero narrative paragraphs (same as section narrative) */
+.hero-narrative p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  unicode-bidi: isolate;
+  font-size: 1rem;
+  font-weight: 350;
+  text-align: left;
+  line-height: 1.5rem;
+  padding-bottom: 1.8rem;
+  opacity: 1;
+  color: var(--text-color);
+  font-family: var(--font-serif);
+}
+
+/* Last paragraph in narrative should not have bottom padding */
+.section-narrative p:last-child,
+.hero-narrative p:last-child {
+  padding-bottom: 0;
+}
+
+/* ============================================================
+   TYPOGRAPHY — Chart captions
+   ============================================================ */
+
+.chart-caption {
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  padding-bottom: 2.4rem;
+  line-height: 1.1rem;
+  font-family: var(--font-serif);
+}
+
+/* ============================================================
+   TYPOGRAPHY — Hero
+   ============================================================ */
+
+/* Hero title */
+.hero-title {
+  font-size: 2.8rem;
+  line-height: 1.1;
+  font-weight: 700;
+  font-family: var(--font-serif);
+  color: var(--text-color);
+  text-align: center;
+}
+
+/* Hero subtitle: reduced from 0.86rem to 0.78rem */
+.hero-subtitle {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.15rem;
+  font-family: var(--font-serif);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+/* Hero byline */
+.hero-byline {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  font-family: var(--font-serif);
+  text-align: center;
+}
+
+.hero-byline a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.hero-byline a:hover {
+  color: var(--primary);
+}
+
+.hero-date {
+  color: var(--text-secondary);
+  opacity: 0.6;
+  font-family: var(--font-serif);
+}
+
+/* ============================================================
+   TYPOGRAPHY — Container width
+   ============================================================ */
+
+.text-container {
+  max-width: 640px;
+}
+
+/* ============================================================
+   RESPONSIVE — Mobile adjustments
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.2rem;
+  }
+  
+  /* Mobile section subtitle: reduced from 0.9rem to 0.8rem */
+  .section-subtitle {
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+  }
+  
+  .section-narrative p,
+  .hero-narrative p {
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+    padding-bottom: 1.4rem;
+  }
+  
+  .hero-title {
+    font-size: 1.6rem;
+  }
+  
+  /* Mobile hero subtitle: reduced from 0.78rem to 0.7rem */
+  .hero-subtitle {
+    font-size: 0.7rem;
+    line-height: 1rem;
+  }
+  
+  .chart-caption {
+    font-size: 0.65rem;
+    padding-bottom: 1.8rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .section-title {
+    font-size: 1.3rem;
+  }
+  
+  /* Tablet section subtitle: reduced from 0.95rem to 0.85rem */
+  .section-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  
+  /* Tablet hero subtitle: reduced from 0.82rem to 0.74rem */
+  .hero-subtitle {
+    font-size: 0.74rem;
+  }
 }

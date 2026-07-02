@@ -1,120 +1,158 @@
+import ClimateGapOpener from "@/components/ClimateGapOpener";
 import Hero from "@/components/Hero";
 import Section from "@/components/Section";
 import { Prose } from "@/components/Prose";
-import ChartPlaceholder from "@/components/ChartPlaceholder";
-import DisasterMapScrolly from "@/components/charts/DisasterMapScrolly";
-import EconomicLoss from "@/components/charts/EconomicLoss";
+import { ChartBand } from "@/components/Container";
 import VulnerabilityScatter from "@/components/charts/VulnerabilityScatter";
+import DisasterMapScrolly from "@/components/charts/DisasterMapScrolly";
+import LivelihoodsChart from "@/components/charts/LivelihoodsChart";
 import FinanceGap from "@/components/charts/FinanceGap";
 
+const narrative = "section-narrative";
 
 export default function Home() {
-  // Shared styling for narrative blocks
-  const narrativeClass =
-    "mt-8 space-y-5 text-slate-700 text-[clamp(0.9rem,0.85rem+0.35vw,1rem)] leading-[1.65]";
-
   return (
     <main className="min-h-screen bg-white text-slate-900">
+      <ClimateGapOpener />   {/* or <BracketOpener /> */}
       <Hero />
 
-      {/* SECTION 1 */}
-      <Section heading="The Costs Are Measured in Lives and Livelihoods" id="section-map">
-  {/* Movement A: the scrollytelling map (full width, manages its own scroll) */}
-  <DisasterMapScrolly />
-
-  {/* Transition into the economic movement */}
-  <Prose>
-    <div className={narrativeClass}>
-      <p>
-        The lives upended are only half the story. The same storms strike
-        economies far too small to absorb them — and the bill lands in a single
-        year.
-      </p>
-    </div>
-  </Prose>
-
-  {/* Movement B: economic loss as % of GDP (continuation) */}
-  <EconomicLoss />
-
-  {/* Closing narrative for the section */}
-  <Prose>
-    <div className={narrativeClass}>
-      <p>
-        The two tolls fall on different nations. Papua New Guinea saw the most
-        people affected, yet its economy — the region&rsquo;s largest — barely
-        registered the loss. For Vanuatu and Fiji, a single cyclone erased a
-        tenth of everything the country produced in a year. In the Pacific, the
-        human cost and the economic cost are not the same story, and they are
-        rarely borne by the same place.
-      </p>
-    </div>
-  </Prose>
-</Section>
-
-
- {/* SECTION 2 */}
-      <Section heading="A Persistent Gap Between Risk and Readiness" id="section-gap">
-        <VulnerabilityScatter />
+      {/* SECTION 1 — the gap */}
+      <Section
+        heading="Most at Risk, Least Prepared"
+      >
         <Prose>
-          <div className={narrativeClass}>
-            <p>
-              Vulnerability measures how severely climate change is likely to affect a country's essential systems, including food, water, health, habitat and infrastructure. It reflects not only exposure to climate risks, but also how sensitive those systems are and how well they can adapt. Readiness captures something different: a country's ability to attract investment and translate it into effective adaptation through strong institutions, governance and economic capacity. High vulnerability means greater climate risk. Low readiness means fewer tools to respond.
-            </p>
-            <p>
-             Papua New Guinea sits furthest into the high-vulnerability, low-readiness quadrant, making it one of the countries most exposed to climate impacts while having the least capacity to translate resources into adaptation. The Federated States of Micronesia and Vanuatu occupy a similar position, combining elevated climate risks with relatively weak adaptive capacity. More broadly, most Pacific nations lie above the global median for vulnerability and below it for readiness, leaving them more exposed to climate-related harm than the typical country and less equipped to respond.
-            </p>
-            <p>
-            Two decades of data show little change in that overall pattern. Readiness has improved, but largely in line with global progress. Vulnerability, meanwhile, has remained persistently high. Despite incremental gains, the region remains disproportionately exposed to climate impacts and comparatively constrained in its ability to adapt.
-           </p>
-          </div>
+          <p className="section-subtitle">
+           Over the years, many Pacific Island Countries have ranked among the world's most climate-vulnerable and least ready to adapt.
+          </p>
         </Prose>
-      </Section>
-
-     
-
-      {/* SECTION 3 — The Money to Prepare Is Promised, Not Delivered */}
-      <Section heading="The Money to Prepare Is Promised, Not Delivered" id="section-finance">
-        <FinanceGap />
+        
+        <ChartBand>
+          <VulnerabilityScatter />
+        </ChartBand>
+        
         <Prose>
-          <div className={narrativeClass}>
+          <div className={narrative}>
             <p>
-              Readiness is, in the end, about turning resources into protection — and for that, the resources have to arrive. They largely do not. The Pacific needs about $3.3 billion a year to adapt to a climate it did little to change. Donors have pledged roughly a third of that. But a pledge is not a payment; when the money is tracked from promise to delivery, only about a quarter of the need is actually disbursed — leaving a shortfall of nearly $2.4 billion every year.
+            Measured against every country in the world, Pacific Island Countries are consistently among the most climate-vulnerable. Although readiness differs between countries, improvements have not kept pace with the level of risk they face.
             </p>
-           
             <p>
-              This is a failure of plumbing, not just pledges. Multilateral
-              funds—the primary channel for the most vulnerable nations—disburse
-              more slowly than bilateral aid, stalled by complex approval
-              processes and the limited administrative capacity of small island
-              states. The resilience gap is, at its core, a financing gap: the
-              means to close it exist on paper, but rarely in the places they are
-              needed.
+             Move through the years and the pattern changes remarkably little. Despite shifts elsewhere, many Pacific Island Countries remain concentrated where vulnerability is high and readiness comparatively low. The consequences of that persistent gap are visible in the people affected and the livelihoods disrupted each time climate-related hazards strike.
             </p>
           </div>
         </Prose>
       </Section>
 
-    {/* Conclusion */}
-<Prose 
-className="my-16 pb-8"> {/* Reduced pb from default */}
-  {/* The faint divider line */}
-  <div className="mb-12 border-t border-slate-200" />
-  
-  <div className={narrativeClass}>
-    <p>
-      The data point to a persistent gap between climate risk and adaptive capacity
-      across the Pacific. Vulnerability remains high, readiness has improved only
-      gradually, and adaptation finance has yet to close the distance between them.
-    </p>
+      {/* SECTION 2 — the map - WIDE */}
+      <Section
+        heading=""
+        id="section-map"
+        wide={true}
+      >
+        <DisasterMapScrolly />
+        
+        {/* Add space between the map's caption and the next narrative */}
+        <div style={{ marginTop: "3rem" }}>
+          <Prose>
+            <div className={narrative}>
+            </div>
+          </Prose>
+        </div>
+        
+        <LivelihoodsChart />
+        
+        <Prose>
+          <div className={narrative}>
+            <p>
+             For several Pacific Island Countries, the number of livelihoods disrupted was nearly as high as the number of people affected by disasters. 
+            </p>
+            <p>
+              Behind those figures are households whose farms, fisheries, businesses and other sources of income were disrupted, leaving recovery to depend not only on repairing damaged infrastructure, but also on restoring the means to earn a living.
+            </p>
+          </div>
+        </Prose>
+      </Section>
 
-    <p>
-      As climate impacts intensify, the region&rsquo;s ability to adapt will depend
-      increasingly on whether investment can be translated into protection.
-      Closing the adaptation gap is no longer a matter of identifying the need.
-      It is a matter of matching that need with sustained and effective financing.
-    </p>
-  </div>
-</Prose>
- </main>
+      {/* BRIDGE */}
+      <Section
+        heading="Hazards can't be prevented. Their impact can."
+      >
+        <Prose>
+          <div className={narrative}>
+            <p>
+            Climate hazards cannot always be prevented, but their impacts can be reduced. Pacific Island Countries cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu lift its islands above rising seas.
+            </p>
+            <p>
+             What can change is their readiness. Investments in stronger infrastructure, early warning systems and resilient institutions can reduce the human and economic costs of climate-related disasters.
+            </p>
+            <p>
+             Yet many Pacific Island Countries cannot finance these investments alone. Closing the gap between climate risk and readiness therefore depends heavily on international climate finance.
+            </p>
+          </div>
+        </Prose>
+      </Section>
+
+      {/* SECTION 3 — the finance gap */}
+      <Section
+        heading="Readiness Remains Underfunded"
+      >
+        <Prose>
+          <p className="section-subtitle">
+            Only about one quarter of estimated annual climate finance needs is currently met
+          </p>
+        </Prose>
+        
+        <ChartBand>
+          <FinanceGap />
+        </ChartBand>
+        
+        <Prose>
+          <div className={narrative}>
+            <p>
+              Readiness cannot improve without investment. Yet the finance reaching Pacific Island Countries falls far short of what is needed to strengthen resilience, reduce disaster risks and prepare for a changing climate.
+            </p>
+            <p>
+              This shortfall helps explain why the gap between vulnerability and readiness has proved so persistent. As climate risks continue to grow faster than investment, many Pacific Island Countries remain trapped in the same position: among the world's most vulnerable, yet still insufficiently prepared.
+            </p>
+          </div>
+        </Prose>
+      </Section>
+
+      {/* CONCLUSION */}
+      <div className="max-w-[640px] mx-auto px-4">
+        <div className="border-t border-slate-200 mb-8" />
+      </div>
+      <Section heading="Conclusion">
+        <Prose>
+          <div className={narrative}>
+            <p>
+              The Pacific Island Countries are already living with the consequences of the gap between climate vulnerability and readiness. Those consequences are measured in the people affected, the livelihoods disrupted and the limited capacity to prepare for the next disaste
+            </p>
+            <p>
+             Climate hazards cannot be prevented. But the scale of their impact is not inevitable. Whether that gap narrows will depend on whether the investment needed to build resilience arrives before the next disaster strikes.
+            </p>
+          </div>
+        </Prose>
+      </Section>
+
+      {/* METHODOLOGY */}
+      <div className="max-w-[640px] mx-auto px-4">
+        <div className="border-t border-slate-200 mb-8" />
+      </div>
+      <Section heading="Methodology">
+        <Prose>
+          <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
+            <p style={{ marginBottom: "0.75rem" }}>
+              This project was built with React, D3.js, and Tailwind CSS as an interactive scrollytelling experience.
+            </p>
+            <p style={{ marginBottom: "0.75rem" }}>
+              It brings together multiple datasets to examine disaster impacts and resilience across Pacific Island countries. Where appropriate, indicators are presented both as absolute values and population-adjusted measures to support meaningful comparisons between countries of different sizes.
+            </p>
+            <p style={{ marginBottom: 0 }}>
+              The datasets used throughout the project are cited and linked in the caption of each visualisation.
+            </p>
+          </div>
+        </Prose>
+      </Section>
+    </main>
   );
 }

@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const repo = "pacific-dataviz-competition-2026";
+const repo = "Dataviz-Challenge-2026";
 
 const nextConfig: NextConfig = {
   output: "export",

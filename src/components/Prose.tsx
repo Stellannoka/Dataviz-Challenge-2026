@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
+import { Container } from "./Container";
 
+// All narrative text uses the single Container with updated typography
 export function Prose({
   children,
   className = "",
@@ -7,7 +9,5 @@ export function Prose({
   children: ReactNode;
   className?: string;
 }) {
-  return (
-    <div className={`mx-auto max-w-[720px] ${className}`}>{children}</div>
-  );
+  return <Container className={className}>{children}</Container>;
 }

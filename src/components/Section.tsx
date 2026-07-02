@@ -1,10 +1,12 @@
 import { ReactNode } from "react";
+import { Container } from "./Container";
 
 interface SectionProps {
   heading: string;
   standfirst?: string;
   children: ReactNode;
   id?: string;
+  wide?: boolean;
 }
 
 export default function Section({
@@ -12,24 +14,53 @@ export default function Section({
   standfirst,
   children,
   id,
+  wide = false,
 }: SectionProps) {
+  const hasHeading = heading.trim().length > 0;
+
   return (
-    <section id={id} className="mx-auto max-w-[1080px] px-6 py-10 md:py-12">
-      {/* Heading + standfirst stay in the 720 text column */}
-      <div className="mx-auto max-w-[720px]">
-        <h2 className="font-serif font-bold text-slate-900 text-[clamp(1rem,0.95rem+0.5vw,1.3rem)] leading-[1.2]">
-          {heading}
-        </h2>
-
-        {standfirst && (
-          <p className="mt-3 text-slate-600 text-[clamp(1rem,0.95rem+0.4vw,1.2rem)] leading-[1.5]">
-            {standfirst}
-          </p>
-        )}
+    <section id={id} className="py-6 md:py-10">
+      {(hasHeading || standfirst) && (
+        <Container>
+          {hasHeading && (
+            <h2
+              className="font-serif text-slate-900"
+              style={{
+                fontSize: "1.2rem",
+                fontWeight: 600,
+                marginBottom: "0.4rem",
+                width: "100%",
+                maxWidth: "640px",
+                textAlign: "left",
+              }}
+            >
+              {heading}
+            </h2>
+          )}
+          {standfirst && (
+            <p
+              className="font-serif"
+              style={{
+                fontSize: "0.86rem",
+                fontWeight: 300,
+                color: "#707070",
+                marginBottom: 0,
+                lineHeight: "1.2rem",
+                maxWidth: "640px",
+                textAlign: "left",
+              }}
+            >
+              {standfirst}
+            </p>
+          )}
+        </Container>
+      )}
+      <div
+        className={hasHeading || standfirst ? "mt-4" : ""}
+        style={wide ? { maxWidth: "100%", padding: "0" } : {}}
+      >
+        {children}
       </div>
-
-      {/* Children manage their own width: charts fill 1080, narrative wraps in Prose */}
-      <div className="mt-8">{children}</div>
     </section>
   );
 }
