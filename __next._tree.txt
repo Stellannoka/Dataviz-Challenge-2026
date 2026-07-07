@@ -1,2 +1,2 @@
 :HL["/Dataviz-Challenge-2026/_next/static/chunks/03a_gkjc9u2xs.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"DcQ47wq44gDUrVhbRMqwe"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"nBRU9pb0O2ZIimIn0JdUi"}
