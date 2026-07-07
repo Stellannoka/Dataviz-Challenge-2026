@@ -24,9 +24,16 @@ const C = {
   muted: "var(--text-secondary, #475569)",
   faint: "var(--faint, #94a3b8)",
   line: "var(--border, #cbd5e1)",
-  coral: "var(--danger, #e07a7a)",
   surface: "var(--surface, #ffffff)",
 } as const;
+
+/* Quadrant colors matching the vulnerability scatter plot exactly */
+const QUADRANT_COLORS = {
+  UL: "#e07a7a", // High vulnerability, Low readiness - Red/coral
+  UR: "#7a9fd4", // High vulnerability, High readiness - Blue
+  LL: "#d4c5b3", // Low vulnerability, Low readiness - Beige/tan
+  LR: "#7bbf9e", // Low vulnerability, High readiness - Green
+};
 
 /* Same framing as the Section 1 scatter, so the told version and the
    interactive version below are spatially consistent. */
@@ -34,8 +41,8 @@ const X_DOMAIN: [number, number] = [0.1, 0.82];
 const Y_DOMAIN: [number, number] = [0.25, 0.7];
 
 /* ------------------------------------------------------------------ story
-   Five beats. Each owns one screen of scroll. The chart animates between
-   them; the message crossfades. The final beat hands off to the title. */
+   Six beats. Each owns one screen of scroll. The chart animates between them;
+   the message crossfades. The final beat recedes and hands off to the title. */
 interface Beat {
   kicker?: string;
   message: string;
@@ -48,27 +55,37 @@ const BEATS: Beat[] = [
   },
   {
     kicker: "The Pacific Islands",
-    message: "A small cluster, set apart from the rest of the world.",
+    message: "A small group, and among the most vulnerable to a changing climate.",
   },
   {
-    kicker: "Among the most vulnerable",
-    message:
-      "High on the scale of climate risk — and far from the most ready to adapt.",
+    kicker: "Yet not the most ready",
+    message: "Several sit far from the readiness needed to meet that risk.",
   },
   {
     kicker: "Two decades pass",
-    message: "The world moves around them. Their position barely does.",
+    message: "The world shifts, but the Pacific Islands' position changes remarkably little.",
   },
   {
-    kicker: "A gap that has held for twenty years",
+    kicker: "The gap holds",
     message: "And a gap this persistent carries a cost.",
   },
 ];
-const TIME_BEAT = 3; // 0-indexed: the "two decades" beat scrubs the years
+const LINE_BEAT = 1; // "more exposed" reference line appears (beat 1: Pacific highlighted)
+const READY_BEAT = 2; // readiness line appears (beat 2: "not the most ready")
+const TIME_BEAT = 3; // the years scrub across this beat (beat 3: "two decades pass")
 
 function smooth(t: number): number {
   const c = Math.min(1, Math.max(0, t));
   return c * c * (3 - 2 * c);
+}
+
+function getQuadrant(vulnerability: number, readiness: number, vulnSplit: number, readySplit: number): string {
+  const highVuln = vulnerability >= vulnSplit;
+  const highReady = readiness >= readySplit;
+  if (highVuln && !highReady) return "UL";
+  if (highVuln && highReady) return "UR";
+  if (!highVuln && !highReady) return "LL";
+  return "LR";
 }
 
 interface ScatterColdOpenProps {
@@ -109,7 +126,7 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
   const isSmall = w > 0 && w < 480;
   const total = BEATS.length;
 
-  /* ---- scroll → segment + progress (mirrors PacificScrollyMap) */
+  /* ---- scroll → segment + progress. 100vh per beat - each scroll reveals a new phase */
   const onScroll = useCallback(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -158,19 +175,30 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
     return order.map((iso) => ({ iso, ...byIso.get(iso)! }));
   }, [ts]);
 
+  // Updated: Use year-specific split values for 2023, matching the VulnerabilityScatter
   const vulnRef = useMemo(() => {
-    if (!ts) return 0.429;
+    if (!ts) return 0.422;
+    const yearData = ts.medianSplits?.["2023"];
+    if (yearData) return yearData.vulnerability;
     const vs = Object.values(ts.medianSplits).map((m) => m.vulnerability);
+    return vs.reduce((s, n) => s + n, 0) / vs.length;
+  }, [ts]);
+
+  const readyRef = useMemo(() => {
+    if (!ts) return 0.407;
+    const yearData = ts.medianSplits?.["2023"];
+    if (yearData) return yearData.readiness;
+    const vs = Object.values(ts.medianSplits).map((m) => m.readiness);
     return vs.reduce((s, n) => s + n, 0) / vs.length;
   }, [ts]);
 
   /* ---- scales */
   const margin = useMemo(
     () => ({
-      top: isSmall ? 60 : 90,
-      right: isSmall ? 26 : 70,
+      top: isSmall ? 56 : 90,
+      right: isSmall ? 22 : 70,
       bottom: isSmall ? 60 : 90,
-      left: isSmall ? 26 : 70,
+      left: isSmall ? 22 : 70,
     }),
     [isSmall]
   );
@@ -185,18 +213,16 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
     [innerH]
   );
 
-  /* ---- animation drivers derived from (seg, prog) ------------------------
-     appear   – dots fade in during beat 0
-     pacific  – coral ignites from beat 1 on
-     lineOn   – reference line from beat 2 on
-     yearT    – 0 for setup beats, scrubs 0→1 during the time beat, 1 after
-     recede   – chart pulls back on the final beat to reveal the title      */
+  /* ---- animation drivers derived from (seg, prog) */
   const appear = seg > 0 ? 1 : smooth(prog);
   const pacific = seg >= 1 ? 1 : 0;
-  const lineOn = seg >= 2 ? 1 : 0;
+  const lineOn = seg >= LINE_BEAT ? 1 : 0;
+  const readyOn = seg >= READY_BEAT ? 1 : 0;
   const yearT =
     seg < TIME_BEAT ? 0 : seg === TIME_BEAT ? smooth(prog) : 1;
-  const recede = seg >= total - 1 ? smooth(prog) : 0;
+  
+  // Gradual fade: starts gently in beat 4, completes as section scrolls away
+  const fadeOut = seg >= total - 1 ? smooth(prog) : 0;
 
   /* ---- interpolate positions at yearT */
   const N = ts?.years.length ?? 0;
@@ -205,6 +231,21 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
   const i1 = Math.min(i0 + 1, Math.max(N - 1, 0));
   const frac = idxF - i0;
   const currentYear = ts ? ts.years[Math.round(idxF)] : null;
+
+  // Get country names for Pacific Islands
+  const countryNames = useMemo(() => {
+    if (!ts) return new Map();
+    const names = new Map();
+    const years = ts.years.map(String);
+    years.forEach((y) => {
+      (ts.byYear[y] ?? []).forEach((c) => {
+        if (c.pic) {
+          names.set(c.iso, c.country);
+        }
+      });
+    });
+    return names;
+  }, [ts]);
 
   const positioned = useMemo(() => {
     if (!ts || innerW === 0 || innerH === 0) return [];
@@ -220,17 +261,19 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
           pic: t.pic,
           cx: margin.left + x(r),
           cy: margin.top + y(v),
+          vulnerability: v,
+          readiness: r,
         };
       })
       .filter(
-        (d): d is { iso: string; pic: boolean; cx: number; cy: number } =>
+        (d): d is { iso: string; pic: boolean; cx: number; cy: number; vulnerability: number; readiness: number } =>
           d !== null
       );
   }, [ts, trajectories, i0, i1, frac, x, y, margin, innerW, innerH]);
 
   const refY = margin.top + y(vulnRef);
+  const readyX = margin.left + x(readyRef);
   const worldDim = pacific ? 0.34 : 0.5;
-  const chartOpacity = 1 - 0.7 * recede;
 
   const ready = ts && w > 0 && h > 0;
 
@@ -239,11 +282,67 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
     else window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
   };
 
+  // Kicker color: beats 0 and 1 use the same muted color, beat 2+ use UL red
+  const kickerColor = C.muted;
+
+  /* ---- render the beat 1 message with highlighted "vulnerable" ---- */
+  const renderMessage = (beatIdx: number, message: string) => {
+    if (beatIdx === 1) {
+      const parts = message.split("vulnerable");
+      return (
+        <>
+          {parts[0]}
+          <span
+            style={{
+              backgroundColor: QUADRANT_COLORS.UL,
+              color: "#ffffff",
+              padding: "1px 5px",
+              borderRadius: "3px",
+            }}
+          >
+            vulnerable
+          </span>
+          {parts[1]}
+        </>
+      );
+    }
+    if (beatIdx === 2) {
+      const parts = message.split("Several");
+      return (
+        <>
+          {parts[0]}
+          <span
+            style={{
+              backgroundColor: QUADRANT_COLORS.UL,
+              color: "#ffffff",
+              padding: "1px 5px",
+              borderRadius: "3px",
+            }}
+          >
+            Several
+          </span>
+          {parts[1]}
+        </>
+      );
+    }
+    return message;
+  };
+
   return (
-    <div ref={wrapRef} style={{ height: `${total * 100}vh` }}>
+    <div 
+      ref={wrapRef} 
+      style={{ 
+        height: `${total * 100}vh`,
+      }}
+    >
       <div
         className="sticky top-0 overflow-hidden"
-        style={{ height: "100vh", background: C.surface }}
+        style={{ 
+          height: "100vh", 
+          background: C.surface,
+          opacity: 1 - fadeOut,
+          transition: "opacity 0.4s ease",
+        }}
         aria-label="Opening story: where the Pacific Islands sit on climate vulnerability and readiness, and how little it changes over two decades"
       >
         <div ref={stageRef} style={{ position: "absolute", inset: 0 }}>
@@ -257,11 +356,9 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
               style={{
                 position: "absolute",
                 inset: 0,
-                opacity: chartOpacity,
-                transition: "opacity 0.3s linear",
               }}
             >
-              {/* reference line */}
+              {/* horizontal "more vulnerable" reference line */}
               <g style={{ opacity: lineOn, transition: "opacity 0.6s ease" }}>
                 <line
                   x1={margin.left}
@@ -280,11 +377,38 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
                   fill={C.muted}
                   opacity={0.75}
                   style={{
-                    fontFamily: "var(--font-mono, monospace)",
+                    fontFamily: "var(--font-sans)",
                     letterSpacing: "0.02em",
                   }}
                 >
                   more vulnerable than most of the world ↑
+                </text>
+              </g>
+
+              {/* vertical readiness line - appears at beat 2 */}
+              <g style={{ opacity: readyOn, transition: "opacity 0.6s ease" }}>
+                <line
+                  x1={readyX}
+                  x2={readyX}
+                  y1={margin.top}
+                  y2={margin.top + innerH}
+                  stroke={C.muted}
+                  strokeWidth={1}
+                  strokeDasharray="3 5"
+                  opacity={0.4}
+                />
+                <text
+                  x={readyX + 6}
+                  y={margin.top + (isSmall ? 10 : 12)}
+                  fontSize={isSmall ? 9.5 : 11}
+                  fill={C.muted}
+                  opacity={0.75}
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  more ready to adapt →
                 </text>
               </g>
 
@@ -297,30 +421,72 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
                     cy={d.cy}
                     r={isSmall ? 2.4 : 3.2}
                     fill={C.faint}
-                    opacity={d.pic ? worldDim : worldDim}
+                    opacity={worldDim}
                     style={{ transition: "opacity 0.5s ease" }}
                   />
                 ))}
               </g>
 
-              {/* Pacific coral overlay — fades in on beat 1 */}
+              {/* Pacific — beat 1: all red/coral; beat 2+: quadrant colors */}
               <g style={{ opacity: pacific, transition: "opacity 0.7s ease" }}>
                 {positioned
                   .filter((d) => d.pic)
-                  .map((d) => (
-                    <g key={`p-${d.iso}`}>
-                      <circle cx={d.cx} cy={d.cy} r={isSmall ? 11 : 15} fill={C.coral} opacity={0.12} />
-                      <circle
-                        cx={d.cx}
-                        cy={d.cy}
-                        r={isSmall ? 4.6 : 6.2}
-                        fill={C.coral}
-                        stroke={C.surface}
-                        strokeWidth={1.5}
-                        opacity={0.95}
-                      />
-                    </g>
-                  ))}
+                  .map((d) => {
+                    const quadrant = getQuadrant(d.vulnerability, d.readiness, vulnRef, readyRef);
+                    // Beat 1: all PICs use the same red/coral color
+                    // Beat 2+: differentiate by quadrant
+                    const color = seg >= 2
+                      ? QUADRANT_COLORS[quadrant as keyof typeof QUADRANT_COLORS]
+                      : QUADRANT_COLORS.UL;
+                    const countryName = countryNames.get(d.iso) || d.iso;
+                    const isNearRight = d.cx > w * 0.7;
+                    const isNearTop = d.cy < h * 0.3;
+                    const labelX = isNearRight ? d.cx - 8 : d.cx + 8;
+                    const labelY = isNearTop ? d.cy + 18 : d.cy - 12;
+                    const textAnchor = isNearRight ? "end" : "start";
+                    
+                    return (
+                      <g key={`p-${d.iso}`}>
+                        <circle
+                          cx={d.cx}
+                          cy={d.cy}
+                          r={isSmall ? 5 : 7}
+                          fill={color}
+                          fillOpacity={0.2}
+                          stroke="none"
+                          style={{ transition: "fill 0.6s ease" }}
+                        />
+                        <circle
+                          cx={d.cx}
+                          cy={d.cy}
+                          r={isSmall ? 3.6 : 4.8}
+                          fill={color}
+                          stroke={C.surface}
+                          strokeWidth={0.9}
+                          opacity={0.95}
+                          style={{ transition: "fill 0.6s ease" }}
+                        />
+                        {/* Country name label */}
+                        <text
+                          x={labelX}
+                          y={labelY}
+                          textAnchor={textAnchor}
+                          dominantBaseline="middle"
+                          fontSize={isSmall ? 7 : 9}
+                          fill={C.ink}
+                          fontWeight={600}
+                          opacity={0.85}
+                          style={{
+                            fontFamily: "var(--font-sans)",
+                            letterSpacing: "0.02em",
+                            pointerEvents: "none",
+                          }}
+                        >
+                          {countryName}
+                        </text>
+                      </g>
+                    );
+                  })}
               </g>
             </svg>
           )}
@@ -331,14 +497,15 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
               aria-hidden="true"
               style={{
                 position: "absolute",
-                top: isSmall ? 18 : 30,
-                right: isSmall ? 20 : 40,
-                fontFamily: "var(--font-mono, monospace)",
-                fontSize: isSmall ? "1.5rem" : "2.2rem",
+                top: isSmall ? 12 : 30,
+                right: isSmall ? 12 : 40,
+                fontFamily: "var(--font-sans)",
+                fontSize: isSmall ? "1.05rem" : "2.2rem",
                 fontWeight: 700,
                 color: C.faint,
                 letterSpacing: "0.04em",
-                opacity: (seg >= TIME_BEAT ? 0.55 : 0) * (1 - recede),
+                lineHeight: 1,
+                opacity: seg >= TIME_BEAT ? 0.55 : 0,
                 transition: "opacity 0.5s ease",
               }}
             >
@@ -367,46 +534,45 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
                   maxWidth: 560,
                   textAlign: "center",
                   animation: "coldopen-fade 0.6s ease both",
+                  pointerEvents: "auto",
+                  userSelect: "text",
+                  WebkitUserSelect: "text",
                 }}
               >
                 {BEATS[seg].kicker && (
                   <p
                     style={{
-                      fontFamily: "var(--font-mono, monospace)",
+                      fontFamily: "var(--font-sans)",
                       fontSize: isSmall ? "0.62rem" : "0.72rem",
                       letterSpacing: "0.2em",
                       textTransform: "uppercase",
-                      color: C.coral,
+                      color: kickerColor,
                       margin: 0,
                       marginBottom: 10,
-                      opacity: 1 - recede,
                     }}
                   >
                     {BEATS[seg].kicker}
                   </p>
                 )}
                 <p
-                  className="font-serif"
                   style={{
+                    fontFamily: "var(--font-sans)",
                     color: C.ink,
                     fontSize: isSmall ? "1.15rem" : "1.55rem",
                     lineHeight: 1.3,
-                    fontWeight: 500,
+                    fontWeight: 400,
                     margin: 0,
-                    opacity: 1 - recede,
                   }}
                 >
-                  {BEATS[seg].message}
+                  {renderMessage(seg, BEATS[seg].message)}
                 </p>
               </div>
             </div>
           )}
 
-          {/* scroll cue — only on the very first frame */}
-          {ready && (
-            <button
-              onClick={handleContinue}
-              aria-label="Scroll to begin"
+          {/* scroll indicator — subtle visual cue, not clickable */}
+          {ready && seg === 0 && prog < 0.4 && (
+            <div
               style={{
                 position: "absolute",
                 bottom: isSmall ? 28 : 40,
@@ -416,17 +582,13 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: 2,
-                background: "none",
-                border: "none",
-                cursor: "pointer",
                 color: C.muted,
-                fontFamily: "var(--font-mono, monospace)",
+                fontFamily: "var(--font-sans)",
                 fontSize: isSmall ? "0.6rem" : "0.68rem",
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                opacity: seg === 0 && prog < 0.4 ? 0.9 : 0,
-                transition: "opacity 0.5s ease",
-                pointerEvents: seg === 0 ? "auto" : "none",
+                opacity: 0.7,
+                pointerEvents: "none",
               }}
             >
               Scroll
@@ -447,7 +609,7 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
                   />
                 </path>
               </svg>
-            </button>
+            </div>
           )}
         </div>
       </div>

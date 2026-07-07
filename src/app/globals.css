@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Source+Serif+4:wght@300;350;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@200..900&family=Inter:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Source Serif 4', ui-serif, Georgia, serif;
+  --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Libre Baskerville', ui-serif, Georgia, serif;
 }
 
 :root {
@@ -25,7 +25,7 @@ html {
 body {
   background-color: #ffffff;
   color: var(--text-color);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 h1, h2, h3 {
@@ -37,31 +37,28 @@ h1, h2, h3 {
    TYPOGRAPHY — Section titles & subtitles
    ============================================================ */
 
-/* Section title: 1.4rem, weight 600, margin-bottom 0.4rem, width 640px */
 .section-title {
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 0.4rem;
   max-width: 640px;
   font-family: var(--font-serif);
   color: var(--text-color);
 }
 
-/* Section subtitle: reduced from 1rem to 0.88rem */
 .section-subtitle {
   font-size: 0.88rem;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text-secondary);
   margin-bottom: 0;
   line-height: 1.3rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 /* ============================================================
    TYPOGRAPHY — Narrative text
    ============================================================ */
 
-/* Section narrative paragraphs */
 .section-narrative p {
   display: block;
   margin-block-start: 1em;
@@ -70,16 +67,15 @@ h1, h2, h3 {
   margin-inline-end: 0px;
   unicode-bidi: isolate;
   font-size: 1rem;
-  font-weight: 350;
+  font-weight: 400;
   text-align: left;
   line-height: 1.5rem;
   padding-bottom: 1.8rem;
   opacity: 1;
   color: var(--text-color);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
-/* Hero narrative paragraphs (same as section narrative) */
 .hero-narrative p {
   display: block;
   margin-block-start: 1em;
@@ -88,16 +84,15 @@ h1, h2, h3 {
   margin-inline-end: 0px;
   unicode-bidi: isolate;
   font-size: 1rem;
-  font-weight: 350;
+  font-weight: 400;
   text-align: left;
   line-height: 1.5rem;
   padding-bottom: 1.8rem;
   opacity: 1;
   color: var(--text-color);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
-/* Last paragraph in narrative should not have bottom padding */
 .section-narrative p:last-child,
 .hero-narrative p:last-child {
   padding-bottom: 0;
@@ -109,18 +104,17 @@ h1, h2, h3 {
 
 .chart-caption {
   font-size: 0.72rem;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text-secondary);
   padding-bottom: 2.4rem;
   line-height: 1.1rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 /* ============================================================
    TYPOGRAPHY — Hero
    ============================================================ */
 
-/* Hero title */
 .hero-title {
   font-size: 2.8rem;
   line-height: 1.1;
@@ -130,22 +124,20 @@ h1, h2, h3 {
   text-align: center;
 }
 
-/* Hero subtitle: reduced from 0.86rem to 0.78rem */
 .hero-subtitle {
   font-size: 0.88rem;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text-secondary);
   line-height: 1.15rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   text-align: center;
   margin-top: 0.75rem;
 }
 
-/* Hero byline */
 .hero-byline {
   font-size: 0.86rem;
   color: var(--text-secondary);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   text-align: center;
 }
 
@@ -161,7 +153,7 @@ h1, h2, h3 {
 .hero-date {
   color: var(--text-secondary);
   opacity: 0.6;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 /* ============================================================
@@ -181,7 +173,6 @@ h1, h2, h3 {
     font-size: 1.2rem;
   }
   
-  /* Mobile section subtitle: reduced from 0.9rem to 0.8rem */
   .section-subtitle {
     font-size: 0.8rem;
     line-height: 1.2rem;
@@ -198,7 +189,6 @@ h1, h2, h3 {
     font-size: 1.6rem;
   }
   
-  /* Mobile hero subtitle: reduced from 0.78rem to 0.7rem */
   .hero-subtitle {
     font-size: 0.7rem;
     line-height: 1rem;
@@ -215,7 +205,6 @@ h1, h2, h3 {
     font-size: 1.3rem;
   }
   
-  /* Tablet section subtitle: reduced from 0.95rem to 0.85rem */
   .section-subtitle {
     font-size: 0.85rem;
   }
@@ -224,7 +213,6 @@ h1, h2, h3 {
     font-size: 1.8rem;
   }
   
-  /* Tablet hero subtitle: reduced from 0.82rem to 0.74rem */
   .hero-subtitle {
     font-size: 0.74rem;
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { scaleLinear } from "d3-scale";
+import { scaleLog } from "d3-scale";
 import { useChartWidth } from "@/hooks/useChartWidth";
 import { asset } from "@/lib/basePath";
 
@@ -21,9 +21,8 @@ interface LivelihoodsData {
   data: Row[];
 }
 
-function fmtShort(n: number): string {
-  if (n >= 1000) return `${Math.round(n / 1000)}k`;
-  return `${n}`;
+function fmtInt(n: number): string {
+  return Math.round(n).toLocaleString();
 }
 
 export default function LivelihoodsChart() {
@@ -39,103 +38,79 @@ export default function LivelihoodsChart() {
 
   const isSmall = width > 0 && width < 480;
   const isMedium = width >= 480 && width < 768;
-  const isTiny = width > 0 && width < 360;
 
   const chartMaxWidth = 640;
   const chartWidth = Math.min(width || chartMaxWidth, chartMaxWidth);
 
   const rows = useMemo(
-    () => (data ? [...data.data].sort((a, b) => b.livelihoods - a.livelihoods) : []),
+    () =>
+      data
+        ? [...data.data]
+            .filter((r) => r.livelihoods > 0)
+            .sort((a, b) => b.livelihoods - a.livelihoods)
+        : [],
     [data]
   );
 
-  const stackShortLabels = isTiny;
-
-  /* Reduced country label font size to help "Marshall Islands" fit */
-  const labelFont = isTiny ? 11 : isSmall ? 12 : isMedium ? 13 : 13.5;
-  const valueFont = isTiny ? 12 : isSmall ? 14 : isMedium ? 16 : 17;
-  const axisFont = isSmall ? 11 : isMedium ? 12 : 13;
+  /* type scale */
+  const nameFont = isSmall ? 13.5 : isMedium ? 15 : 16;
+  const valueFont = isSmall ? 11 : isMedium ? 12 : 13;
   const captionColor = "#707070";
-  const gridColor = "#f1f1f9";
+  const gridColor = "#e9e9f1";
 
-  /* REDUCED bar height */
-  const barH = isTiny ? 22 : isSmall ? 28 : 34;
-  const stackedExtra = stackShortLabels ? labelFont + 4 : 0;
-  const barGap = isSmall ? 8 : 10;
-  const topPad = isSmall ? 12 : 16;
-  const axisH = 30;
-  const plotLeft = 16;
+  /* layout — dot plot on a log axis */
+  const stacked = isSmall;
+  const rowH = stacked ? 52 : 44;
+  const topPad = 14;
+  const axisH = 48;
   const rightPad = 16;
 
-  const valueW = isTiny ? 46 : isSmall ? 58 : 72;
-  const innerW = Math.max(chartWidth - plotLeft - valueW - rightPad, 40);
+  const gutterW = stacked ? 8 : isMedium ? 138 : 152;
+  const plotLeft = gutterW + (stacked ? 0 : 12);
+  const innerW = Math.max(chartWidth - plotLeft - rightPad, 60);
 
   const niceMax = 200000;
-  const x = scaleLinear().domain([0, niceMax]).range([0, innerW]);
-  const minBarPx = 2.5;
-  const barLen = (v: number) => Math.max(x(v), minBarPx);
-  const ticks = isTiny
-    ? [0, 100000, 200000]
-    : [0, 50000, 100000, 150000, 200000];
+  const x = scaleLog().domain([1, niceMax]).range([0, innerW]).clamp(true);
+  const ticks = [1, 10, 100, 1000, 10000, 100000];
+  const tickLabel = (t: number) =>
+    t >= 1000 ? `${t / 1000}k` : `${t}`;
 
-  /* Adjust label width calculation with the new smaller font */
-  const approxLabelW = (name: string) => {
-    // Use a smaller multiplier for long country names
-    const baseW = name.length * labelFont * 0.55;
-    // For very long names (like "Marshall Islands"), reduce further
-    if (name.length > 12) {
-      return name.length * labelFont * 0.48;
-    }
-    return baseW;
-  };
+  const dotR = isSmall ? 5 : 5.5;
 
-  const layout = useMemo(() => {
-    let y = topPad;
-    const out = rows.map((r) => {
-      const len = barLen(r.livelihoods);
-      // Use a smaller padding to help longer names fit
-      const fitsInside = len >= approxLabelW(r.country) + 16;
-      const isShort = !fitsInside;
-      const stacked = isShort && stackShortLabels;
-      const thisRowH = barH + (stacked ? stackedExtra : 0) + barGap;
-      const rec = { r, len, fitsInside, isShort, stacked, y, barH };
-      y += thisRowH;
-      return rec;
-    });
-    return { rows: out, totalH: y };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rows, innerW, barH, stackShortLabels, labelFont, stackedExtra, topPad, barGap]);
-
-  const chartBottom = layout.totalH;
-  const height = chartBottom + axisH;
+  const chartBottom = topPad + rows.length * rowH;
+  const extraBottomPadding = 24;
+  const height = chartBottom + axisH + extraBottomPadding;
 
   return (
     <figure
       className="w-full"
       style={{ maxWidth: "640px", marginLeft: "auto", marginRight: "auto" }}
     >
+      {/* Title */}
       <p
-        className="mb-1 font-medium leading-snug"
+        className="font-medium leading-snug"
         style={{
           fontSize: isSmall ? "0.95rem" : "1.05rem",
           color: "var(--text-color)",
           fontFamily: "var(--font-serif)",
           paddingLeft: "16px",
           paddingRight: "16px",
+          marginBottom: "12px",
         }}
       >
-       Beyond those directly affected, climate-related disasters also disrupted livelihoods across the Pacific Islands in 2020.
+        Beyond those directly affected, climate-related disasters also disrupted
+        livelihoods across the Pacific Islands in 2020.
       </p>
-      
-      {/* Subtitle now uses the section-subtitle CSS class */}
+
+      {/* Subtitle */}
       <p
-        className="section-subtitle mb-3"
+        className="section-subtitle mb-4"
         style={{
           paddingLeft: "16px",
           paddingRight: "16px",
         }}
       >
-        Number of people, by country
+        People whose livelihoods were disrupted or destroyed, by country
       </p>
 
       <div
@@ -149,150 +124,143 @@ export default function LivelihoodsChart() {
             height={height}
             viewBox={`0 0 ${chartWidth} ${height}`}
             role="img"
-            aria-label={`Bar chart of people whose livelihoods were disrupted or destroyed by disasters in ${
+            aria-label={`Dot plot on a logarithmic scale of people whose livelihoods were disrupted or destroyed by disasters in ${
               data?.year ?? 2020
-            }, by Pacific country.`}
-            style={{ display: "block", fontFamily: "var(--font-serif)" }}
+            }, by Pacific Island Country. Ranges from Kiribati (3) to Fiji (about 183,000).`}
+            style={{ display: "block", fontFamily: "var(--font-sans)" }}
           >
+            {/* vertical gridlines at each power of ten */}
             {ticks.map((t) => {
               const tx = plotLeft + x(t);
               return (
-                <g key={t}>
-                  <line
-                    x1={tx}
-                    y1={topPad}
-                    x2={tx}
-                    y2={chartBottom}
-                    stroke={gridColor}
-                    strokeWidth={0.5}
-                    opacity={0.5}
-                  />
-                  <text
-                    x={tx}
-                    y={chartBottom + 18}
-                    textAnchor="middle"
-                    fontSize={axisFont}
-                    fill={captionColor}
-                    fontWeight={400}
-                  >
-                    {t === 0 ? "0" : `${t / 1000}k`}
-                  </text>
-                </g>
+                <line
+                  key={`grid-${t}`}
+                  x1={tx}
+                  y1={topPad}
+                  x2={tx}
+                  y2={chartBottom}
+                  stroke={gridColor}
+                  strokeWidth={1}
+                  strokeOpacity={0.25}
+                />
               );
             })}
 
-            {layout.rows.map(({ r, len, fitsInside, stacked, y, barH: bH }) => {
-              // Further reduce font for very long country names
-              let displayFontSize = labelFont;
-              if (r.country.length > 12 && !fitsInside) {
-                displayFontSize = isTiny ? 10 : isSmall ? 11 : 12;
-              }
-              
+            {/* rows */}
+            {rows.map((r, i) => {
+              const rowY = topPad + i * rowH;
+              const dotX = plotLeft + x(r.livelihoods);
+              const dotCY = stacked ? rowY + rowH - 14 : rowY + rowH / 2;
+
               return (
                 <g key={r.iso}>
-                  {/* bar */}
-                  <rect
-                    x={plotLeft}
-                    y={y}
-                    width={len}
-                    height={bH}
-                    rx={0}
+                  {/* leader line from baseline to the dot (the lollipop stem) */}
+                  <line
+                    x1={plotLeft}
+                    y1={dotCY}
+                    x2={dotX}
+                    y2={dotCY}
+                    stroke="var(--primary)"
+                    strokeOpacity={0.75}
+                    strokeWidth={1.5}
+                  />
+
+                  {/* country name */}
+                  {stacked ? (
+                    <text
+                      x={plotLeft}
+                      y={rowY + 13}
+                      textAnchor="start"
+                      fontSize={nameFont}
+                      fontWeight={600}
+                      fill="var(--text-secondary, #9096a1)"
+                    >
+                      {r.country}
+                    </text>
+                  ) : (
+                    <text
+                      x={gutterW}
+                      y={dotCY}
+                      textAnchor="end"
+                      dominantBaseline="central"
+                      fontSize={nameFont}
+                      fontWeight={500}
+                      fill="var(--text-secondary, #9096a1)"
+                    >
+                      {r.country}
+                    </text>
+                  )}
+
+                  {/* the dot */}
+                  <circle
+                    cx={dotX}
+                    cy={dotCY}
+                    r={dotR}
                     fill="var(--primary)"
                   />
 
-                  {fitsInside ? (
-                    <>
-                      {/* label inside (white) */}
+                  {/* value label — above the stem */}
+                  {(() => {
+                    const nearRight = dotX + 30 > plotLeft + innerW;
+                    return (
                       <text
-                        x={plotLeft + 12}
-                        y={y + bH / 2}
-                        textAnchor="start"
-                        dominantBaseline="central"
-                        fontSize={displayFontSize}
-                        fill="#ffffff"
-                        fontWeight={500}
-                      >
-                        {r.country}
-                      </text>
-                      {/* value at end of bar */}
-                      <text
-                        x={plotLeft + len + 10}
-                        y={y + bH / 2}
-                        textAnchor="start"
-                        dominantBaseline="central"
+                        x={dotX}
+                        y={dotCY - dotR - 4}
+                        textAnchor={nearRight ? "end" : "middle"}
                         fontSize={valueFont}
                         fontWeight={600}
                         fill={captionColor}
-                        fillOpacity={0.9}
                       >
-                        {fmtShort(r.livelihoods)}
+                        {fmtInt(r.livelihoods)}
                       </text>
-                    </>
-                  ) : stacked ? (
-                    <>
-                      {/* tiny screen: value right of the short bar, label BELOW */}
-                      <text
-                        x={plotLeft + len + 8}
-                        y={y + bH / 2}
-                        textAnchor="start"
-                        dominantBaseline="central"
-                        fontSize={valueFont}
-                        fontWeight={600}
-                        fill={captionColor}
-                        fillOpacity={0.9}
-                      >
-                        {fmtShort(r.livelihoods)}
-                      </text>
-                      <text
-                        x={plotLeft}
-                        y={y + bH + labelFont - 1}
-                        textAnchor="start"
-                        fontSize={displayFontSize}
-                        fill={captionColor}
-                        fillOpacity={0.9}
-                        fontWeight={500}
-                      >
-                        {r.country}
-                      </text>
-                    </>
-                  ) : (
-                    <>
-                      {/* wider screens: short bar → label then value, both to the right */}
-                      <text
-                        x={plotLeft + len + 10}
-                        y={y + bH / 2}
-                        textAnchor="start"
-                        dominantBaseline="central"
-                        fontSize={displayFontSize}
-                        fill={captionColor}
-                        fillOpacity={0.9}
-                        fontWeight={500}
-                      >
-                        {r.country}
-                      </text>
-                      <text
-                        x={plotLeft + len + 10 + approxLabelW(r.country) + 10}
-                        y={y + bH / 2}
-                        textAnchor="start"
-                        dominantBaseline="central"
-                        fontSize={valueFont}
-                        fontWeight={600}
-                        fill={captionColor}
-                        fillOpacity={0.9}
-                      >
-                        {fmtShort(r.livelihoods)}
-                      </text>
-                    </>
-                  )}
+                    );
+                  })()}
                 </g>
               );
             })}
+
+            {/* axis line */}
+            <line
+              x1={plotLeft}
+              y1={chartBottom}
+              x2={plotLeft + innerW}
+              y2={chartBottom}
+              stroke={gridColor}
+              strokeWidth={1}
+              strokeOpacity={0.4}
+            />
+            {/* tick labels */}
+            {ticks.map((t) => {
+              const tx = plotLeft + x(t);
+              return (
+                <text
+                  key={`tick-${t}`}
+                  x={tx}
+                  y={chartBottom + 18}
+                  textAnchor="middle"
+                  fontSize="0.88rem"
+                  fill="#9096a1"
+                >
+                  {tickLabel(t)}
+                </text>
+              );
+            })}
+            {/* axis title — with added space below ticks */}
+            <text
+              x={plotLeft + innerW / 2}
+              y={chartBottom + 42}
+              textAnchor="middle"
+              className="chart-caption"
+              fill={captionColor}
+            >
+              Number of livelihood affected (log scale)
+            </text>
           </svg>
         )}
       </div>
 
       <figcaption
-        className="mt-2 leading-snug chart-caption text-left"
+        className="mt-4 leading-snug chart-caption text-left"
         style={{
           maxWidth: "640px",
           marginLeft: "auto",
@@ -301,9 +269,14 @@ export default function LivelihoodsChart() {
           paddingRight: "16px",
         }}
       >
-         <span className="font-medium">Note: </span> This covers the {data?.reportingCountries ?? 9} Pacific Island
-        Countries that reported this measure for {data?.year ?? 2020}
-        {data?.notReporting?.length ? `; ${data.notReporting.join(", ")} did not` : ""}. Source: {" "}
+        <span className="font-medium">Note: </span> A logarithmic scale is used
+        so that countries with very different totals remain readable; exact
+        figures are labelled. Covers the {data?.reportingCountries ?? 9} Pacific
+        Island Countries that reported this measure for {data?.year ?? 2020}
+        {data?.notReporting?.length
+          ? `; ${data.notReporting.join(", ")} did not`
+          : ""}
+        . Source:{" "}
         <a
           href="https://unstats.un.org/sdgs/dataportal"
           target="_blank"

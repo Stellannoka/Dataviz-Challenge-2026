@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { geoEquirectangular, geoPath } from "d3-geo";
+import { geoEquirectangular } from "d3-geo";
 import { scaleSqrt } from "d3-scale";
 import { asset } from "@/lib/basePath";
 
@@ -46,6 +46,8 @@ const PALETTE = {
   line: "var(--line, #cbd5e1)",
   lineSoft: "var(--line-soft, #e2e8f0)",
   surface: "var(--surface, #ffffff)",
+  land: "#f5f5f5",
+  landStroke: "var(--land-stroke, #d9d2c7)",
 } as const;
 
 /* ----------------------------------------------- explicit bubble anchors */
@@ -84,21 +86,21 @@ const STEPS: Step[] = [
     kind: "intro",
     focus: [],
     title: "Intro",
-    body: "Climate-related disasters directly affected more than half a million people across the Pacific Island Countries in 2020. More countries experienced disaster impacts that year than at any other time over the past two decades. But those impacts were far from evenly distributed.",
+    body: "Climate-related disasters directly affected more than half a million people across the Pacific Island Countries in 2020. The data show disaster impacts in more Pacific Island Countries that year than in any other over the past two decades. But those impacts were far from evenly distributed.",
   },
   {
     phase: "raw",
     kind: "highlight",
     focus: ["VUT"],
     title: "Vanuatu",
-    body: "Vanuatu recorded the largest number of people directly affected. Nearly 247,000 people—more than the population of many Pacific Island nations were affected by climate-related disasters.",
+    body: "Vanuatu recorded the largest number of people directly affected. Nearly 247,000 people\u2014more than the population of many Pacific Island nations were affected by climate-related disasters.",
   },
   {
     phase: "raw",
     kind: "highlight",
     focus: ["FJI"],
     title: "Fiji",
-    body: "Fiji followed closely behind. Together, Fiji and Vanuatu accounted for nearly 84% of everyone directly affected across the Pacific that year, showing how a small number of disasters can dominate regional totals.",
+    body: "Fiji followed closely behind. Together, Fiji and Vanuatu accounted for nearly 88% of everyone directly affected across the Pacific Island Countries that year.",
   },
   {
     phase: "raw",
@@ -112,7 +114,7 @@ const STEPS: Step[] = [
     kind: "setup",
     focus: ["VUT", "FJI"],
     title: "",
-    body: "But totals can be misleading. Larger countries naturally have more people who can be affected. To understand where disasters reached the greatest share of a population, the numbers need another perspective..",
+    body: "But absolute numbers reveal where the greatest numbers of people were affected. They do not, however, show how widespread those impacts were within each country. Viewing people affected relative to population offers another perspective.",
   },
 
   /* ---------------- PHASE 2 — PER 100,000 (2020) ---------------- */
@@ -157,6 +159,34 @@ function fmtInt(n: number): string {
   return n.toLocaleString();
 }
 
+/* Build an SVG path by projecting each vertex directly and connecting them —
+   deliberately BYPASSING d3-geo's spherical antimeridian clipping. */
+type LonLat = [number, number];
+type Projector = (p: LonLat) => [number, number] | null;
+function planarLandPath(
+  geometry: { type: string; coordinates: unknown },
+  project: Projector
+): string {
+  const polys =
+    geometry.type === "Polygon"
+      ? [geometry.coordinates as LonLat[][]]
+      : (geometry.coordinates as LonLat[][][]);
+  let d = "";
+  for (const poly of polys) {
+    for (const ring of poly) {
+      let started = false;
+      for (const pt of ring) {
+        const p = project(pt);
+        if (!p || Number.isNaN(p[0]) || Number.isNaN(p[1])) continue;
+        d += (started ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1);
+        started = true;
+      }
+      if (started) d += "Z";
+    }
+  }
+  return d;
+}
+
 /* ================================================================ component */
 interface PacificScrollyMapProps {
   title?: string;
@@ -165,7 +195,7 @@ interface PacificScrollyMapProps {
 
 export default function PacificScrollyMap({
   title = "The Cost of Disasters",
-  subtitle = "Climate-related events directly affected hundreds of thousands of people across the Pacific Islands in 2020",
+  subtitle = "Hundreds of thousands of people across the Pacific Islands were directly affected by climate-related disasters in 2020",
 }: PacificScrollyMapProps = {}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -275,7 +305,7 @@ export default function PacificScrollyMap({
     [perByIso, rawByIso]
   );
 
-  /* ---- projection: ORIGINAL — fits all nations into the full stage */
+  /* ---- projection */
   const projection = useMemo(() => {
     if (width === 0 || height === 0) return null;
     const shiftLon = (lon: number) => (lon < 0 ? lon + 360 : lon);
@@ -297,12 +327,7 @@ export default function PacificScrollyMap({
     return proj;
   }, [width, height, isSmall, isMedium]);
 
-  const pathGen = useMemo(
-    () => (projection ? geoPath(projection) : null),
-    [projection]
-  );
-
-  /* ---- radius scales (original sizes) */
+  /* ---- radius scales */
   const rScaleRaw = useMemo(() => {
     if (!yearData) return null;
     const mx = Math.max(...yearData.rawCounts.data.map((c) => c.affected ?? 0));
@@ -318,7 +343,7 @@ export default function PacificScrollyMap({
   }, [yearData, isSmall, isMedium]);
 
   const haveData =
-    width > 0 && height > 0 && geo && yearData && projection && pathGen;
+    width > 0 && height > 0 && geo && yearData && projection;
 
   /* ---- bubble positions on the map */
   const positioned = useMemo(() => {
@@ -336,35 +361,54 @@ export default function PacificScrollyMap({
 
   const ringR = isSmall ? 16 : isMedium ? 22 : 26;
 
-  /* ---- alphabetical grid positions (full stage width) */
+  /* ---- Dorling-style layout */
   const gridPositioned = useMemo(() => {
-    if (!width || !height) return [];
-    const sorted = [...isoList].sort((a, b) =>
-      nameFor(a).localeCompare(nameFor(b))
-    );
+    if (!width || !height || positioned.length === 0) return [];
+    const fs = isSmall ? 8.5 : 11;
+    const charW = fs * 0.62;
+    const labelPadX = 6;
+    const GAP = 5;
+    const topPad = isSmall ? 10 : 16;
 
-    const cols = isSmall ? 2 : isMedium ? 3 : 4;
-    const rowH = isSmall ? 92 : isMedium ? 106 : 118;
-    const MAX_CONTENT = isSmall ? width : 980;
-    const contentW = Math.min(width, MAX_CONTENT);
-    const contentLeft = (width - contentW) / 2;
-    const cellW = contentW / cols;
-
-    const rows = Math.ceil(sorted.length / cols);
-    const blockH = (rows - 1) * rowH;
-    const minTop = ringR + (isSmall ? 30 : 38);
-    const firstRowY = Math.max(minTop, height / 2 - blockH / 2);
-
-    return sorted.map((iso, i) => {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      return {
-        iso,
-        x: contentLeft + cellW * (col + 0.5),
-        y: firstRowY + row * rowH,
-      };
+    const nodes = positioned.map((p) => {
+      const name = nameFor(p.iso);
+      const hx = Math.max(ringR + 6, (name.length * charW) / 2 + labelPadX) + GAP;
+      const hy = ringR + (isSmall ? 22 : 26) + GAP;
+      return { iso: p.iso, x: p.x, y: p.y, tx: p.x, ty: p.y, hx, hy };
     });
-  }, [width, height, isoList, isSmall, isMedium, nameFor, ringR]);
+
+    for (let iter = 0; iter < 240; iter++) {
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const ox = a.hx + b.hx - Math.abs(dx);
+          const oy = a.hy + b.hy - Math.abs(dy);
+          if (ox > 0 && oy > 0) {
+            if (ox < oy) {
+              const push = (ox / 2) * (dx < 0 ? -1 : 1);
+              a.x -= push;
+              b.x += push;
+            } else {
+              const push = (oy / 2) * (dy < 0 ? -1 : 1);
+              a.y -= push;
+              b.y += push;
+            }
+          }
+        }
+      }
+      for (const n of nodes) {
+        n.x += (n.tx - n.x) * 0.04;
+        n.y += (n.ty - n.y) * 0.04;
+        n.x = Math.max(n.hx, Math.min(width - n.hx, n.x));
+        n.y = Math.max(n.hy + topPad, Math.min(height - n.hy, n.y));
+      }
+    }
+
+    return nodes.map((n) => ({ iso: n.iso, x: n.x, y: n.y }));
+  }, [width, height, positioned, ringR, nameFor, isSmall]);
 
   const geoByIso = useMemo(() => {
     const m = new Map<string, { x: number; y: number }>();
@@ -417,12 +461,7 @@ export default function PacificScrollyMap({
     [inPer, perByIso, rawByIso]
   );
 
-  /* ---- FLY-TO ZOOM ------------------------------------------------------
-     Only when a single country is highlighted in the raw phase. This is a
-     CAMERA move, not a marker resize: the LAND is scaled by k about (0,0) and
-     translated so the focused country lands at the stage centre; the BUBBLES
-     keep their original size and are positioned by the SAME affine, so they
-     stay glued to the land but never inflate. */
+  /* ---- FLY-TO ZOOM */
   const zoomActive =
     !inPer && gridT === 0 && stepKind === "highlight" && focusISOs.length === 1;
 
@@ -436,8 +475,6 @@ export default function PacificScrollyMap({
     return { k, tx: cx - k * g.x, ty: cy - k * g.y };
   }, [zoomActive, width, height, geoByIso, focusISOs, isSmall]);
 
-  /* bubble render positions: same affine as the land, so they follow the zoom
-     while keeping their own (unscaled) radius */
   const camPositioned = useMemo(() => {
     if (!zoomActive) return blendedPositioned;
     return blendedPositioned.map((d) => ({
@@ -470,16 +507,11 @@ export default function PacificScrollyMap({
     return null;
   }, [step, inPer, perByIso, rawByIso]);
 
-  /* The box lives in the stage, whose top sits (viewportH - stageHeight) below
-     the top of the SCREEN — that gap is the pinned title. So to carry the box
-     fully off the top of the screen (passing OVER the title), the travel has to
-     clear the title height PLUS the box's own height. It enters from the lower
-     part of the stage and exits above the viewport. */
   const travelTop = useMemo(() => {
     if (!height) return 0;
     const vh = viewportH || height;
-    const titleH = Math.max(vh - height, 0); // pinned title height above the stage
-    const BOX_CLEAR = isSmall ? 220 : 260; // carry the box fully past the top
+    const titleH = Math.max(vh - height, 0);
+    const BOX_CLEAR = isSmall ? 220 : 260;
     const startY = height * (isSmall ? 0.74 : 0.8);
     const endY = -(titleH + BOX_CLEAR);
     return startY + (endY - startY) * segProgress;
@@ -499,21 +531,6 @@ export default function PacificScrollyMap({
     if (!datum) return null;
     return { country: datum.country, affected: datum.affected ?? 0 };
   };
-
-  /* screen-space callout for the zoomed country (crisp, original text size) */
-  const zoomCallout = useMemo(() => {
-    if (!zoomActive || !width || !height) return null;
-    const iso = focusISOs[0];
-    const datum = rawByIso.get(iso);
-    if (!datum) return null;
-    const r = radiusFor(iso); // original (unscaled) bubble radius
-    return {
-      cx: width / 2,
-      topY: height / 2 - r - (isSmall ? 14 : 20),
-      country: datum.country,
-      label: `${fmtInt(datum.affected ?? 0)} affected`,
-    };
-  }, [zoomActive, width, height, focusISOs, rawByIso, radiusFor, isSmall]);
 
   const flyTransition = "transform 0.9s cubic-bezier(0.4,0,0.2,1)";
 
@@ -542,8 +559,7 @@ export default function PacificScrollyMap({
             <p className="section-subtitle">{subtitle}</p>
           </div>
 
-          {/* Map stage — the white container. No border; it exists only to
-              bound the map and clip the zoom so it never spills onto the page. */}
+          {/* Map stage */}
           <div
             ref={stageRef}
             className="relative w-full flex-1"
@@ -559,18 +575,24 @@ export default function PacificScrollyMap({
                 preserveAspectRatio="xMidYMid meet"
               >
                 <defs>
-                  {/* clip the map to the stage so a zoom can't overflow the
-                      container. Switched off once the grid takes over so the
-                      grid can use the full width. */}
                   <clipPath id="stageClip">
                     <rect x={0} y={0} width={width} height={height} />
                   </clipPath>
+                  <filter id="landShadow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feDropShadow
+                      dx="0"
+                      dy="1.5"
+                      stdDeviation="2.5"
+                      floodColor="#9a8f80"
+                      floodOpacity="0.28"
+                    />
+                  </filter>
                 </defs>
 
                 <g clipPath={gridT > 0 ? undefined : "url(#stageClip)"}>
-                  {/* Land — the only thing that scales with the camera. Stroke
-                      stays constant via non-scaling-stroke. */}
+                  {/* Land */}
                   <g
+                    filter="url(#landShadow)"
                     style={{
                       transform: `translate(${fly.tx}px, ${fly.ty}px) scale(${fly.k})`,
                       transformOrigin: "0px 0px",
@@ -581,28 +603,30 @@ export default function PacificScrollyMap({
                     }}
                   >
                     {geo!.features.map((f) => {
-                      const d = pathGen!(f as unknown as GeoJSON.Feature);
+                      const d = planarLandPath(
+                        f.geometry as { type: string; coordinates: unknown },
+                        projection! as Projector
+                      );
                       if (!d) return null;
                       return (
                         <path
                           key={f.properties.iso}
                           d={d}
-                          fill="none"
-                          stroke={PALETTE.line}
-                          strokeWidth={isSmall ? 2.5 : 2}
+                          fill={PALETTE.land}
+                          stroke={PALETTE.landStroke}
+                          strokeWidth={isSmall ? 1.5 : 1.25}
+                          strokeLinejoin="round"
                           vectorEffect="non-scaling-stroke"
                         />
                       );
                     })}
                   </g>
 
-                  {/* Bubbles — ORIGINAL size. Positioned by the same affine as
-                      the land (camPositioned) so they follow the zoom without
-                      inflating. */}
+                  {/* Bubbles */}
                   {camPositioned.map(({ iso, x, y }) => {
                     const r = radiusFor(iso);
                     const isFoc = focusISOs.includes(iso);
-                    const baseR = isSmall ? 4.5 : 6;
+                    const baseR = isSmall ? 3.5 : 5;
                     const value = inPer
                       ? perByIso.get(iso)?.per100k ?? 0
                       : rawByIso.get(iso)?.affected ?? 0;
@@ -634,109 +658,71 @@ export default function PacificScrollyMap({
                         {/* ================= MAP-STYLE LAYER ================= */}
                         {(!inPer || gridT < 1) && (
                           <g style={{ opacity: mapOpacity }}>
-                            {!hasValue && (
-                              <circle
-                                r={baseR}
-                                fill={PALETTE.lineSoft}
-                                fillOpacity={0.7}
-                                stroke={PALETTE.line}
-                                strokeDasharray="2 2"
-                              />
-                            )}
+                            <circle
+                              r={displayR}
+                              fill={bubbleFill}
+                              fillOpacity={isFoc ? 0.62 : anyFocus ? 0.22 : 0.32}
+                              stroke={isFoc ? accent : "none"}
+                              strokeWidth={2}
+                              style={{
+                                transition:
+                                  "r 0.6s cubic-bezier(0.34,1.56,0.64,1), fill-opacity 0.4s ease",
+                              }}
+                            />
 
-                            {hasValue && (
-                              <circle
-                                r={displayR}
-                                fill={bubbleFill}
-                                fillOpacity={isFoc ? 0.6 : anyFocus ? 0.22 : 0.3}
-                                stroke={isFoc ? accent : "none"}
-                                strokeWidth={2}
-                                style={{
-                                  transition:
-                                    "r 0.6s cubic-bezier(0.34,1.56,0.64,1), fill-opacity 0.4s ease",
-                                }}
-                              />
-                            )}
-
-                            {/* labels — raw phase, only when nothing is focused
-                                (a highlight step zooms + uses the screen-space
-                                callout instead of on-map labels) */}
-                            {isSmall && !inPer && !anyFocus && (
-                              <text
-                                y={displayR + 12}
-                                textAnchor="middle"
-                                fontSize={10}
-                                fontWeight={700}
-                                fill={PALETTE.muted}
-                                fillOpacity={0.9}
-                                style={{ fontFamily: "var(--font-mono, monospace)" }}
-                              >
-                                {hasValue ? `${iso} ${fmtInt(value)}` : iso}
-                              </text>
-                            )}
-
-                            {!isSmall && !inPer && !anyFocus && (() => {
-                              const { value: v, label } = valueFor(iso);
-                              if (v <= 0) return null;
+                            {/* Country labels — ALWAYS visible in raw phase */}
+                            {!inPer && (() => {
+                              const { label } = valueFor(iso);
                               const datum = rawByIso.get(iso);
+                              const countryName = datum?.country ?? iso;
+                              const labelDimmed = anyFocus && !isFoc;
+                              const nameColor = labelDimmed ? PALETTE.faint : isFoc ? PALETTE.ink : PALETTE.mutedSoft;
+                              const valueColor = labelDimmed ? PALETTE.faint : isFoc ? accent : PALETTE.faint;
+                              const nameOpacity = labelDimmed ? 0.55 : isFoc ? 1 : 0.9;
+                              const valueOpacity = labelDimmed ? 0.45 : 1;
+                              const nameFW = isFoc ? 700 : 600;
+
+                              if (isSmall) {
+                                return (
+                                  <g style={{ transition: "opacity 0.4s ease" }}>
+                                    <text
+                                      y={displayR + 12}
+                                      textAnchor="middle"
+                                      fontSize={10}
+                                      fontWeight={nameFW}
+                                      fill={nameColor}
+                                      fillOpacity={nameOpacity}
+                                      style={{ fontFamily: "var(--font-sans)" }}
+                                    >
+                                      {`${iso} ${fmtInt(value)}`}
+                                    </text>
+                                  </g>
+                                );
+                              }
+
                               return (
-                                <g transform={`translate(0, ${displayR + 13})`}>
+                                <g transform={`translate(0, ${displayR + 13})`} style={{ transition: "opacity 0.4s ease" }}>
                                   <text
                                     textAnchor="middle"
                                     fontSize={11}
-                                    fontWeight={600}
-                                    fill={PALETTE.mutedSoft}
-                                    style={{ fontFamily: "var(--font-mono, monospace)" }}
+                                    fontWeight={nameFW}
+                                    fill={nameColor}
+                                    fillOpacity={nameOpacity}
+                                    style={{ fontFamily: "var(--font-sans)" }}
                                   >
-                                    {datum?.country ?? iso}
+                                    {countryName}
                                   </text>
                                   <text
                                     y={13}
                                     textAnchor="middle"
                                     fontSize={9.5}
-                                    fontWeight={500}
-                                    fill={PALETTE.faint}
-                                    style={{ fontFamily: "var(--font-mono, monospace)" }}
+                                    fontWeight={isFoc ? 600 : 500}
+                                    fill={valueColor}
+                                    fillOpacity={valueOpacity}
+                                    style={{ fontFamily: "var(--font-sans)" }}
                                   >
                                     {label}
                                   </text>
-                                </g>
-                              );
-                            })()}
-
-                            {/* in-group callout for the SETUP step (multi-focus,
-                                no zoom). Highlight steps zoom + use the
-                                screen-space callout below. */}
-                            {!inPer && isFoc && hasValue && stepKind === "setup" && (() => {
-                              const { value: v, label } = valueFor(iso);
-                              const datum = rawByIso.get(iso);
-                              const below = y - displayR - 40 < 0;
-                              const offset = below
-                                ? displayR + (isSmall ? 16 : 20)
-                                : -(displayR + (isSmall ? 12 : 16));
-                              return (
-                                <g transform={`translate(0, ${offset})`}>
-                                  <text
-                                    textAnchor="middle"
-                                    fontSize={isSmall ? 11 : 14}
-                                    fontWeight={700}
-                                    fill={PALETTE.ink}
-                                    style={{ fontFamily: "var(--font-mono, monospace)" }}
-                                  >
-                                    {datum?.country ?? iso}
-                                  </text>
-                                  {v > 0 && (
-                                    <text
-                                      y={isSmall ? 13 : 16}
-                                      textAnchor="middle"
-                                      fontSize={isSmall ? 10 : 12}
-                                      fontWeight={600}
-                                      fill={accent}
-                                      style={{ fontFamily: "var(--font-mono, monospace)" }}
-                                    >
-                                      {label}
-                                    </text>
-                                  )}
                                 </g>
                               );
                             })()}
@@ -753,7 +739,7 @@ export default function PacificScrollyMap({
                               fontWeight={700}
                               fill={isFoc ? PALETTE.ink : PALETTE.mutedSoft}
                               fillOpacity={isFoc ? 1 : 0.55}
-                              style={{ fontFamily: "var(--font-mono, monospace)" }}
+                              style={{ fontFamily: "var(--font-sans)" }}
                             >
                               {gridName}
                             </text>
@@ -786,7 +772,7 @@ export default function PacificScrollyMap({
                                 fontSize={ringR * 0.7}
                                 fontWeight={700}
                                 fill={PALETTE.faint}
-                                style={{ fontFamily: "var(--font-mono, monospace)" }}
+                                style={{ fontFamily: "var(--font-sans)" }}
                               >
                                 ?
                               </text>
@@ -804,7 +790,7 @@ export default function PacificScrollyMap({
                                   ? accent
                                   : PALETTE.mutedSoft
                               }
-                              style={{ fontFamily: "var(--font-mono, monospace)" }}
+                              style={{ fontFamily: "var(--font-sans)" }}
                             >
                               {gridNoData
                                 ? "no data"
@@ -816,34 +802,6 @@ export default function PacificScrollyMap({
                     );
                   })}
                 </g>
-
-                {/* screen-space callout for the zoomed country (unscaled) */}
-                {zoomCallout && (
-                  <g style={{ pointerEvents: "none" }}>
-                    <text
-                      x={zoomCallout.cx}
-                      y={zoomCallout.topY}
-                      textAnchor="middle"
-                      fontSize={isSmall ? 13 : 15}
-                      fontWeight={700}
-                      fill={PALETTE.ink}
-                      style={{ fontFamily: "var(--font-mono, monospace)" }}
-                    >
-                      {zoomCallout.country}
-                    </text>
-                    <text
-                      x={zoomCallout.cx}
-                      y={zoomCallout.topY + (isSmall ? 15 : 18)}
-                      textAnchor="middle"
-                      fontSize={isSmall ? 11 : 12}
-                      fontWeight={600}
-                      fill={accent}
-                      style={{ fontFamily: "var(--font-mono, monospace)" }}
-                    >
-                      {zoomCallout.label}
-                    </text>
-                  </g>
-                )}
               </svg>
             )}
 
@@ -892,6 +850,9 @@ export default function PacificScrollyMap({
                     opacity: boxOpacity,
                     backdropFilter: "blur(6px)",
                     WebkitBackdropFilter: "blur(6px)",
+                    pointerEvents: "auto",
+                    userSelect: "text",
+                    WebkitUserSelect: "text",
                   }}
                 >
                   {stepKicker && (
@@ -899,7 +860,7 @@ export default function PacificScrollyMap({
                       className="mb-1 font-bold uppercase tracking-widest"
                       style={{
                         color: accent,
-                        fontFamily: "var(--font-mono, monospace)",
+                        fontFamily: "var(--font-sans)",
                         fontSize: isSmall ? "0.6rem" : "0.72rem",
                       }}
                     >
