@@ -86,7 +86,7 @@ export default function Hero() {
             Climate change is making <GlossaryTerm term="hazards">hazards</GlossaryTerm> such as floods, droughts, tropical cyclones and sea-level rise more frequent, and in many cases more intense. Yet the damage they cause depends not only on the hazards themselves, but also on how prepared countries are to withstand and recover from them.
           </p>
           <p>
-            For many Pacific Island Countries, that preparedness has not kept pace. For more than two decades, many have ranked among the world's most climate-<GlossaryTerm term="vulnerability">vulnerable</GlossaryTerm> while remaining among the least <GlossaryTerm term="readiness">ready</GlossaryTerm> to adapt and that gap between risk and readiness has barely shifted.
+            For many Pacific Islands, that preparedness has not kept pace. For more than two decades, every one of the twelve  countries in the data has sat in the world's high-vulnerability half, most ranking among the most climate-vulnerable nations anywhere. <GlossaryTerm term="readiness">Readiness</GlossaryTerm> is more uneven. Several remain among the least ready to adapt, while others have improved over time. Yet none has escaped the region's consistently high <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm>. That imbalance between vulnerability and readiness has changed remarkably little over the past years.
           </p>
         </div>
       </Container>

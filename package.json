@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@fontsource-variable/source-sans-3": "^5.2.9",
+    "@fontsource/libre-baskerville": "^5.2.10",
     "@react-spring/web": "^10.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

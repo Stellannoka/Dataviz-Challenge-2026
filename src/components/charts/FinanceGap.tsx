@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChartWidth } from "@/hooks/useChartWidth";
 import { asset } from "@/lib/basePath";
 
@@ -17,7 +17,9 @@ interface FinanceData {
 
 export default function FinanceGap() {
   const { ref, width } = useChartWidth();
+  const figureRef = useRef<HTMLElement>(null);
   const [data, setData] = useState<FinanceData | null>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     fetch(asset("/data/section5_finance.json"))
@@ -25,6 +27,30 @@ export default function FinanceGap() {
       .then((d: FinanceData) => setData(d))
       .catch((err) => console.error("Failed to load finance data:", err));
   }, []);
+
+  /* One-time rise animation when the chart scrolls into view.
+     Respects prefers-reduced-motion by showing the final state directly. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (reduce || !("IntersectionObserver" in window)) {
+      setVisible(true);
+      return;
+    }
+    const el = figureRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [data]);
 
   const isSmall = width > 0 && width < 480;
   const isMedium = width >= 480 && width < 768;
@@ -49,7 +75,7 @@ export default function FinanceGap() {
   const PRIMARY_COLOR = "var(--primary, #5a8fb0)";
   const PRIMARY_DARK = "var(--primary-dark, #3f6e8c)";
 
-  // ---- shared geometry (viewBox space) ----
+  // ---- shared geometry (viewBox space), matching the Option A prototype ----
   const VB_W = 620;
   const VB_H = 380;
   const BASE_Y = 300;
@@ -73,12 +99,25 @@ export default function FinanceGap() {
     fill: INK,
   };
 
+  /* Fade-in for the disbursed value and bracket, after the bar has risen */
+  const revealStyle: React.CSSProperties = {
+    opacity: visible ? 1 : 0,
+    transition: "opacity 0.5s ease 0.55s",
+  };
+
   return (
-    <figure className="w-full">
+    <figure ref={figureRef} className="w-full">
       <div
         className="mx-auto w-full"
-        style={{ maxWidth: "640px", paddingLeft: "16px", paddingRight: "16px", marginTop: isSmall ? "1.5rem" : "2.5rem" }}
+        style={{ maxWidth: "640px", paddingLeft: "16px", paddingRight: "16px", marginTop: isSmall ? "1.25rem" : "1.75rem" }}
       >
+        {/* Measure line: the section heading and subtitle above carry the
+            editorial claim, so the chart states only what is plotted. */}
+        <p className="section-subtitle" style={{ marginBottom: "18px" }}>
+          Projected annual adaptation financing need and recent annual
+          adaptation finance disbursed, Pacific Island Countries, US$ billion.
+        </p>
+
         <div ref={ref} className="w-full">
           <svg
             viewBox={`0 0 ${VB_W} ${VB_H}`}
@@ -110,82 +149,72 @@ export default function FinanceGap() {
             <rect x={needX} y={needTopY} width={barW} height={FULL_H} fill={NEED_FILL} />
             <rect x={needX} y={needTopY} width={barW} height={FULL_H} fill="url(#fg-need-hatch)" />
             <rect x={needX} y={needTopY} width={barW} height={FULL_H} fill="none" stroke={NEED_STROKE} strokeWidth={1.25} />
-            
+
             <text x={needCx} y={needTopY - 16} textAnchor="middle" fontSize={24} fontWeight={700} fill={INK}>
               US${need.toFixed(1)}bn
             </text>
-            
+
             <text x={needCx} y={BASE_Y + 22} textAnchor="middle" fontSize={13.5} fontWeight={700} fill={INK}>
               Projected annual need
             </text>
-            
-            <text 
-              x={needCx} 
-              y={BASE_Y + 42} 
-              textAnchor="middle" 
-              style={subtitleStyle}
-            >
-              PROJECTED ANNUAL
-            </text>
-            <text 
-              x={needCx} 
-              y={BASE_Y + 55} 
-              textAnchor="middle" 
-              style={subtitleStyle}
-            >
-              ADAPTATION FINANCING NEED
+
+            <text x={needCx} y={BASE_Y + 42} textAnchor="middle" style={subtitleStyle}>
+              IMF ESTIMATE, 2024 PRICES
             </text>
 
-            {/* RECEIVED bar */}
-            <rect x={recvX} y={recvY} width={barW} height={recvH} fill={PRIMARY_COLOR} rx={0} />
-            
-            <text x={recvCx} y={recvY - 14} textAnchor="middle" fontSize={24} fontWeight={700} fill={PRIMARY_DARK}>
+            {/* RECEIVED bar — rises once when scrolled into view */}
+            <rect
+              x={recvX}
+              y={visible ? recvY : BASE_Y}
+              width={barW}
+              height={visible ? recvH : 0}
+              fill={PRIMARY_COLOR}
+              style={{ transition: "y 0.7s ease-out, height 0.7s ease-out" }}
+            />
+
+            <text
+              x={recvCx}
+              y={recvY - 16}
+              textAnchor="middle"
+              fontSize={24}
+              fontWeight={700}
+              fill={PRIMARY_DARK}
+              style={revealStyle}
+            >
               US${disbursed.toFixed(1)}bn
             </text>
-            
+
             <text x={recvCx} y={BASE_Y + 22} textAnchor="middle" fontSize={13.5} fontWeight={700} fill={INK}>
               Recent annual finance
             </text>
-            
-            <text 
-              x={recvCx} 
-              y={BASE_Y + 42} 
-              textAnchor="middle" 
-              style={subtitleStyle}
-            >
-              EST. ADAPTATION FINANCE
-            </text>
-            <text 
-              x={recvCx} 
-              y={BASE_Y + 55} 
-              textAnchor="middle" 
-              style={subtitleStyle}
-            >
-              DISBURSED, 2021&ndash;2023 AVG
+
+            <text x={recvCx} y={BASE_Y + 42} textAnchor="middle" style={subtitleStyle}>
+              DISBURSED, 2021&ndash;2023 AVERAGE
             </text>
 
-            {/* MEASUREMENT BRACKET */}
+            {/* MEASUREMENT BRACKET — matches the Option A prototype */}
             {(() => {
-              const gap = 25;
-              const bx = recvX + barW + gap;
-              const capLength = 10;
+              const bx = recvX + barW + 22;
               const armTop = needTopY;
               const armBot = recvTopY;
               const mid = (armTop + armBot) / 2;
               return (
-                <g>
-                  <line x1={bx} y1={armTop} x2={bx} y2={armBot} stroke={INK} strokeWidth={1.35} opacity={0.75} />
-                  <line x1={bx - capLength/2} y1={armTop} x2={bx + capLength/2} y2={armTop} stroke={INK} strokeWidth={1.35} opacity={0.75} />
-                  <line x1={bx - capLength/2} y1={armBot} x2={bx + capLength/2} y2={armBot} stroke={INK} strokeWidth={1.35} opacity={0.75} />
-
-                  <text x={bx + 18} y={mid - 12} textAnchor="start" fontSize={22} fontWeight={700} fill={INK}>
-                    {unfundedPct}%
+                <g style={revealStyle}>
+                  <path
+                    d={`M ${bx} ${armTop} h 10 V ${armBot} h -10`}
+                    fill="none"
+                    stroke={INK}
+                    strokeWidth={1.5}
+                  />
+                  <line x1={bx + 10} y1={mid} x2={bx + 24} y2={mid} stroke={INK} strokeWidth={1.5} />
+                  <text x={bx + 32} y={mid - 12} textAnchor="start" fontSize={14} fontWeight={700} fill={INK}>
+                    {unfundedPct}% of projected need
                   </text>
-                  <text x={bx + 18} y={mid + 8} textAnchor="start" fontSize={11} fill={INK}>
+                  <text x={bx + 32} y={mid + 6} textAnchor="start" fontSize={14} fontWeight={700} fill={INK}>
                     remains unmet
                   </text>
-                  <text x={bx + 18} y={mid + 24} textAnchor="start" fontSize={11} fill={INK}>
-                    of projected annual need
+                  <text x={bx + 32} y={mid + 26} textAnchor="start" fontSize={11.5} fill="#707070">
+                    at recent funding levels
                   </text>
                 </g>
               );
@@ -201,7 +230,9 @@ export default function FinanceGap() {
             lineHeight: 1.6,
           }}
         >
-          Projected annual adaptation finance needs (IMF estimate, 2024 prices) compared with average annual adaptation finance disbursed to Pacific Island Countries (2021–2023). The comparison is a coverage ratio; at recent funding levels about {fundedPct}% of projected need would be met — not a same-year subtraction. Source:{" "}
+          <span className="font-medium">Note: </span>The comparison is a
+          coverage ratio rather than a same-year subtraction; at recent funding
+          levels about {fundedPct}% of projected need would be met. Source:{" "}
           <a
             href="https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026083-source-pdf.pdf"
             target="_blank"

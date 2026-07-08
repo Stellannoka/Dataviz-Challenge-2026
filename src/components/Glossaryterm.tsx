@@ -92,6 +92,28 @@ export default function GlossaryTerm({ term, children }: GlossaryTermProps) {
       : { top: '100%', marginTop: '8px' }),
   };
 
+  const arrowStyle: React.CSSProperties = {
+    position: 'absolute',
+    width: '10px',
+    height: '10px',
+    background: '#ffffff',
+    transform: 'rotate(45deg)',
+    /* The box is shifted by `nudge`; shifting the caret back by the same
+       amount keeps it anchored over the term. Clamped clear of the corners. */
+    left: `clamp(10px, calc(50% - ${nudge}px - 5px), calc(100% - 20px))`,
+    ...(position === 'above'
+      ? {
+          bottom: '-5.5px',
+          borderRight: '1px solid #e2e8f0',
+          borderBottom: '1px solid #e2e8f0',
+        }
+      : {
+          top: '-5.5px',
+          borderLeft: '1px solid #e2e8f0',
+          borderTop: '1px solid #e2e8f0',
+        }),
+  };
+
   return (
     <span
       ref={wrapperRef}
@@ -106,14 +128,24 @@ export default function GlossaryTerm({ term, children }: GlossaryTermProps) {
       <span
         onClick={handleToggle}
         style={{
-          borderBottom: '1.5px dashed currentColor',
+          /* text-decoration hugs the baseline, unlike border-bottom which
+             sits below the full line box (descender space included) */
+          textDecorationLine: 'underline',
+          textDecorationStyle: 'dashed',
+          textDecorationColor: 'currentColor',
+          textDecorationThickness: '1px',
+          textUnderlineOffset: '2px',
           cursor: 'help',
-          paddingBottom: '1px',
         }}
       >
         {children}
       </span>
-      {open && <span ref={tooltipRef} style={tooltipStyle}>{definitions[term]}</span>}
+      {open && (
+        <span ref={tooltipRef} style={tooltipStyle}>
+          <span aria-hidden="true" style={arrowStyle} />
+          {definitions[term]}
+        </span>
+      )}
     </span>
   );
 }

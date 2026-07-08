@@ -35,6 +35,10 @@ const QUADRANT_COLORS = {
   LR: "#7bbf9e", // Low vulnerability, High readiness - Green
 };
 
+/* Neutral highlight for beat 1: identifies the Pacific group without
+   pre-assigning any quadrant before the splits are introduced. */
+const PACIFIC_HIGHLIGHT = "#e07a7a"; // Changed to match the red used for "Several"
+
 /* Same framing as the Section 1 scatter, so the told version and the
    interactive version below are spatially consistent. */
 const X_DOMAIN: [number, number] = [0.1, 0.82];
@@ -88,11 +92,7 @@ function getQuadrant(vulnerability: number, readiness: number, vulnSplit: number
   return "LR";
 }
 
-interface ScatterColdOpenProps {
-  onContinue?: () => void;
-}
-
-export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {}) {
+export default function ClimateGapOpener() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [w, setW] = useState(0);
@@ -127,19 +127,25 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
   const total = BEATS.length;
 
   /* ---- scroll → segment + progress. 100vh per beat - each scroll reveals a new phase */
+  const tickingRef = useRef(false);
   const onScroll = useCallback(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const span = el.offsetHeight - vh;
-    const scrolled = Math.min(Math.max(-rect.top, 0), span);
-    const p = span > 0 ? scrolled / span : 0;
-    const scaled = p * total;
-    let idx = Math.floor(scaled);
-    if (idx >= total) idx = total - 1;
-    setSeg(idx);
-    setProg(scaled - idx);
+    if (tickingRef.current) return;
+    tickingRef.current = true;
+    requestAnimationFrame(() => {
+      tickingRef.current = false;
+      const el = wrapRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const span = el.offsetHeight - vh;
+      const scrolled = Math.min(Math.max(-rect.top, 0), span);
+      const p = span > 0 ? scrolled / span : 0;
+      const scaled = p * total;
+      let idx = Math.floor(scaled);
+      if (idx >= total) idx = total - 1;
+      setSeg(idx);
+      setProg(scaled - idx);
+    });
   }, [total]);
 
   useEffect(() => {
@@ -277,12 +283,6 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
 
   const ready = ts && w > 0 && h > 0;
 
-  const handleContinue = () => {
-    if (onContinue) onContinue();
-    else window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
-  };
-
-  // Kicker color: beats 0 and 1 use the same muted color, beat 2+ use UL red
   const kickerColor = C.muted;
 
   /* ---- render the beat 1 message with highlighted "vulnerable" ---- */
@@ -294,10 +294,11 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
           {parts[0]}
           <span
             style={{
-              backgroundColor: QUADRANT_COLORS.UL,
+              backgroundColor: QUADRANT_COLORS.UL, // Using #e07a7a red
               color: "#ffffff",
-              padding: "1px 5px",
-              borderRadius: "3px",
+              padding: "2px 8px",
+              borderRadius: "4px",
+              fontWeight: 600,
             }}
           >
             vulnerable
@@ -313,10 +314,11 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
           {parts[0]}
           <span
             style={{
-              backgroundColor: QUADRANT_COLORS.UL,
+              backgroundColor: QUADRANT_COLORS.UL, // Using #e07a7a red
               color: "#ffffff",
-              padding: "1px 5px",
-              borderRadius: "3px",
+              padding: "2px 8px",
+              borderRadius: "4px",
+              fontWeight: 600,
             }}
           >
             Several
@@ -433,11 +435,11 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
                   .filter((d) => d.pic)
                   .map((d) => {
                     const quadrant = getQuadrant(d.vulnerability, d.readiness, vulnRef, readyRef);
-                    // Beat 1: all PICs use the same red/coral color
-                    // Beat 2+: differentiate by quadrant
+                    // Beat 1: neutral highlight identifies the Pacific group
+                    // Beat 2+: differentiate by quadrant once the splits exist
                     const color = seg >= 2
                       ? QUADRANT_COLORS[quadrant as keyof typeof QUADRANT_COLORS]
-                      : QUADRANT_COLORS.UL;
+                      : QUADRANT_COLORS.UL; // Now using #e07a7a red for beat 1
                     const countryName = countryNames.get(d.iso) || d.iso;
                     const isNearRight = d.cx > w * 0.7;
                     const isNearTop = d.cy < h * 0.3;
@@ -617,9 +619,10 @@ export default function ScatterColdOpen({ onContinue }: ScatterColdOpenProps = {
       {/* accessible summary */}
       <p className="sr-only">
         An opening sequence: every country in the world plotted by climate
-        vulnerability and readiness. The Pacific Island Countries sit among the
-        most vulnerable and least ready. Across 2004 to 2023 the world shifts
-        around them while their position barely changes.
+        vulnerability and readiness. The Pacific Island Countries all sit in
+        the high-vulnerability half, and several remain among the least ready
+        to adapt. Across 2004 to 2023 the world shifts around them while their
+        position barely changes.
       </p>
 
       <style>{`

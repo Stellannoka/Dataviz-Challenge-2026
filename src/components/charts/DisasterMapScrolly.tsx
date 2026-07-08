@@ -46,8 +46,8 @@ const PALETTE = {
   line: "var(--line, #cbd5e1)",
   lineSoft: "var(--line-soft, #e2e8f0)",
   surface: "var(--surface, #ffffff)",
-  land: "#f5f5f5",
-  landStroke: "var(--land-stroke, #d9d2c7)",
+  land: "var(--land, #f5f5f5)",
+  landStroke: "var(--land-stroke, #cfcfcf)",
 } as const;
 
 /* ----------------------------------------------- explicit bubble anchors */
@@ -93,7 +93,7 @@ const STEPS: Step[] = [
     kind: "highlight",
     focus: ["VUT"],
     title: "Vanuatu",
-    body: "Vanuatu recorded the largest number of people directly affected. Nearly 247,000 people\u2014more than the population of many Pacific Island nations were affected by climate-related disasters.",
+    body: "Vanuatu recorded the largest number of people directly affected. Nearly 247,000 people were affected by climate-related disasters, more than the entire population of many Pacific Island nations.",
   },
   {
     phase: "raw",
@@ -242,23 +242,29 @@ export default function PacificScrollyMap({
   /* ---- segment model */
   const totalSegments = STEPS.length;
 
+  const tickingRef = useRef(false);
   const onScroll = useCallback(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const vh = window.innerHeight;
-    setViewportH(vh);
-    const total = el.offsetHeight - vh;
-    const scrolled = Math.min(Math.max(-rect.top, 0), total);
-    const p = total > 0 ? scrolled / total : 0;
+    if (tickingRef.current) return;
+    tickingRef.current = true;
+    requestAnimationFrame(() => {
+      tickingRef.current = false;
+      const el = wrapRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      setViewportH(vh);
+      const total = el.offsetHeight - vh;
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      const p = total > 0 ? scrolled / total : 0;
 
-    const scaled = p * totalSegments;
-    let idx = Math.floor(scaled);
-    if (idx >= totalSegments) idx = totalSegments - 1;
-    const prog = scaled - idx;
+      const scaled = p * totalSegments;
+      let idx = Math.floor(scaled);
+      if (idx >= totalSegments) idx = totalSegments - 1;
+      const prog = scaled - idx;
 
-    setSegIndex(idx);
-    setSegProgress(prog);
+      setSegIndex(idx);
+      setSegProgress(prog);
+    });
   }, [totalSegments]);
 
   useEffect(() => {
@@ -313,7 +319,7 @@ export default function PacificScrollyMap({
       type: "MultiPoint" as const,
       coordinates: Object.values(COORDS).map((c) => [shiftLon(c.lon), c.lat]),
     };
-    const padFrac = isSmall ? 0.16 : isMedium ? 0.13 : 0.1;
+    const padFrac = isSmall ? 0.1 : isMedium ? 0.08 : 0.06;
     const pad = Math.min(width, height) * padFrac;
 
     const proj = geoEquirectangular().rotate([-172, 0]);
@@ -536,7 +542,7 @@ export default function PacificScrollyMap({
 
   return (
     <figure className="w-full" aria-label="Pacific disaster scrollytelling map">
-      <div ref={wrapRef} style={{ height: `${totalSegments * 135}vh` }}>
+      <div ref={wrapRef} style={{ height: `${totalSegments * 115}vh` }}>
         <div
           className="sticky top-0 flex w-full flex-col overflow-hidden"
           style={{ height: "100vh", background: PALETTE.surface }}
@@ -583,7 +589,7 @@ export default function PacificScrollyMap({
                       dx="0"
                       dy="1.5"
                       stdDeviation="2.5"
-                      floodColor="#9a8f80"
+                      floodColor="#8f9aa8"
                       floodOpacity="0.28"
                     />
                   </filter>
@@ -660,10 +666,15 @@ export default function PacificScrollyMap({
                           <g style={{ opacity: mapOpacity }}>
                             <circle
                               r={displayR}
-                              fill={bubbleFill}
-                              fillOpacity={isFoc ? 0.62 : anyFocus ? 0.22 : 0.32}
-                              stroke={isFoc ? accent : "none"}
-                              strokeWidth={2}
+                              fill={hasValue ? bubbleFill : "none"}
+                              fillOpacity={
+                                hasValue ? (isFoc ? 0.62 : anyFocus ? 0.22 : 0.32) : 0
+                              }
+                              stroke={
+                                isFoc ? accent : hasValue ? "none" : PALETTE.line
+                              }
+                              strokeWidth={hasValue ? 2 : 1.2}
+                              strokeDasharray={hasValue ? undefined : "2 3"}
                               style={{
                                 transition:
                                   "r 0.6s cubic-bezier(0.34,1.56,0.64,1), fill-opacity 0.4s ease",
@@ -897,7 +908,7 @@ export default function PacificScrollyMap({
         }}
       >
         <p className="chart-caption text-left" style={{ paddingBottom: 0 }}>
-          <span className="font-medium">Note: </span> 2020 is shown because it recorded disaster impacts in more Pacific Island Countries than any other year in the dataset. Number of directly affected persons attributed to disasters and people directly affected per 100,000 population are sourced from{" "}
+          <span className="font-medium">Note: </span> 2020 is shown because it recorded disaster impacts in more Pacific Island Countries than any other year in the dataset. Rates can exceed 100,000 per 100,000 population where people were affected by more than one disaster in the same year. Number of directly affected persons attributed to disasters and people directly affected per 100,000 population are sourced from{" "}
           <a
             href="https://stats.pacificdata.org/vis?lc=en&df[ds]=ds%3ASPC2&df[id]=DF_SDG_11&df[ag]=SPC&df[vs]=3.0&dq=A.VC_DSR_AFFCT.........&pd=,&to[TIME_PERIOD]=false&lb=bt"
             target="_blank"
@@ -925,7 +936,7 @@ export default function PacificScrollyMap({
           <table>
             <caption>
               People directly affected by climate-related disasters in the
-              Pacific Island Countries, 2020 — total counts.
+              Pacific Island Countries, 2020: total counts.
             </caption>
             <thead>
               <tr>
@@ -944,7 +955,7 @@ export default function PacificScrollyMap({
           </table>
           <table>
             <caption>
-              People directly affected per 100,000 population, 2020 — adjusted
+              People directly affected per 100,000 population, 2020, adjusted
               for population size.
             </caption>
             <thead>

@@ -19,11 +19,11 @@ export default function Home() {
 
       {/* SECTION 1 — the gap */}
       <Section
-        heading="Most at Risk, Least Prepared"
+        heading="High Vulnerability, Uneven Readiness"
       >
         <Prose>
           <p className="section-subtitle">
-           Over the years, many Pacific Island Countries have ranked among the world's most climate-vulnerable and least ready to adapt.
+          For two decades, every Pacific Island Country has remained in the world's high-vulnerability half but readiness has varied far more.
           </p>
         </Prose>
         
@@ -34,7 +34,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-          Compared with countries around the world, many Pacific Island Countries occupy a distinctive position: among the most climate-vulnerable, yet comparatively less ready to adapt. Although individual countries shift over time, this broader pattern changes remarkably little.
+          Compared with countries around the world, several Pacific Island Countries sit in the quadrant combining high vulnerability with both limited readiness and a high urgency to adapt. Others score comparatively high on readiness. In the ND-GAIN framework, this means they are better positioned to translate investment into adaptation, not that their climate risks or adaptation needs are low. Although individual countries shift over time, this broader pattern changes remarkably little.
             </p>
             <p>
            What that pattern means becomes clear when climate-related <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike. The impacts are first seen in the people affected, and in the livelihoods they depend on.
@@ -51,14 +51,8 @@ export default function Home() {
       >
         <DisasterMapScrolly />
         
-        {/* Add space between the map's caption and the next narrative */}
-        <div style={{ marginTop: "3rem" }}>
-          <Prose>
-            <div className={narrative}>
-            </div>
-          </Prose>
-        </div>
-        
+        <div style={{ marginTop: "3rem" }} />
+
         <LivelihoodsChart />
         
         <Prose>
@@ -75,7 +69,7 @@ export default function Home() {
 
       {/* BRIDGE */}
       <Section
-        heading="Hazards can't be prevented. Their impacts can be reduced."
+        heading="Hazards cannot be chosen. Their impacts can be reduced."
       >
         <Prose>
           <div className={narrative}>
@@ -86,7 +80,7 @@ export default function Home() {
               Strengthening infrastructure, expanding early warning systems and building resilient institutions can reduce the human and economic costs of climate-related disasters. But building that readiness requires sustained investment.
             </p>
             <p>
-              For many Pacific Island Countries, the scale of that investment is beyond what domestic resources alone can support. Estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average about one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year across the region, and approach one-third for some atoll nations. Closing the gap between climate risk and readiness therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
+              For many Pacific Island Countries, the scale of that investment is beyond what domestic resources alone can support. Estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average just over one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year across the region, and exceed one-third for some atoll nations. Closing the gap between climate risk and readiness therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
             </p>
           </div>
         </Prose>
@@ -130,7 +124,7 @@ export default function Home() {
             </p>
              
             <p>
-             Climate hazards cannot always be prevented. What can change is a country's readiness—its capacity to translate investment into effective adaptation. The evidence throughout this story points in one direction: readiness must be built, and the investment needed to build it still falls far short of what is required.
+             Climate hazards cannot always be prevented. What can change is a country's readiness: its capacity to translate investment into effective adaptation. The evidence throughout this story points in one direction: readiness must be built, and the investment needed to build it still falls far short of what is required.
             </p>
             <p>
       
