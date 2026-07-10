@@ -16,7 +16,7 @@ const definitions: Record<string, string> = {
   gdp:
     "Gross Domestic Product is the total value of goods and services produced by a country in a given year, used as a measure of economic size.",
   'climate finance':
-    "Climate finance refers to international funding directed toward helping countries reduce emissions and adapt to climate impacts.",
+    "Climate finance refers to international funding directed toward helping countries reduce emissions and adapt to climate impacts. Under the Paris Agreement, developed countries committed to provide such finance to developing countries.",
 };
 
 interface GlossaryTermProps {

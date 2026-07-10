@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { scaleLog } from "d3-scale";
 import { useChartWidth } from "@/hooks/useChartWidth";
+import { useFollow } from "@/lib/follow";
 import { asset } from "@/lib/basePath";
 
 /* ------------------------------------------------------------------ types */
@@ -34,6 +35,7 @@ const LIVELIHOODS_TEXT = "var(--primary-dark, #3f6e8c)";
 
 export default function LivelihoodsChart() {
   const { ref, width } = useChartWidth();
+  const { followedIso, followedName } = useFollow();
   const [data, setData] = useState<LivelihoodsData | null>(null);
 
   useEffect(() => {
@@ -199,7 +201,7 @@ export default function LivelihoodsChart() {
               const nearRightLive = liveX + 34 > plotLeft + innerW;
 
               return (
-                <g key={r.iso}>
+                <g key={r.iso} opacity={followedIso && r.iso !== followedIso ? 0.28 : 1} style={{ transition: "opacity 0.3s" }}>
                   {/* country name */}
                   {stacked ? (
                     <text
@@ -207,7 +209,7 @@ export default function LivelihoodsChart() {
                       y={rowY + 13}
                       textAnchor="start"
                       fontSize={nameFont}
-                      fontWeight={600}
+                      fontWeight={r.iso === followedIso ? 700 : 600}
                       fill="var(--text-secondary, #9096a1)"
                     >
                       {r.country}
@@ -219,7 +221,7 @@ export default function LivelihoodsChart() {
                       textAnchor="end"
                       dominantBaseline="central"
                       fontSize={nameFont}
-                      fontWeight={500}
+                      fontWeight={r.iso === followedIso ? 700 : 500}
                       fill="var(--text-secondary, #9096a1)"
                     >
                       {r.country}
@@ -308,6 +310,15 @@ export default function LivelihoodsChart() {
           </svg>
         )}
       </div>
+
+      {followedIso && !rows.some((r) => r.iso === followedIso) && (
+        <p
+          className="chart-caption"
+          style={{ maxWidth: "640px", margin: "10px auto 0", paddingLeft: "16px", paddingRight: "16px", fontStyle: "italic" }}
+        >
+          {followedName ?? "This country"} did not report livelihoods data for 2020.
+        </p>
+      )}
 
       <figcaption
         className="mt-4 leading-snug chart-caption text-left"

@@ -218,3 +218,18 @@ h1, h2, h3 {
     font-size: 0.74rem;
   }
 }
+/* Reduced motion: users whose OS accessibility settings request less motion
+   get final states directly instead of transitions. Scroll-scrubbed positions
+   (which only move as fast as the reader scrolls) are unaffected; this collapses
+   autonomous transitions such as the map flight, bubble morphs and fades. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}

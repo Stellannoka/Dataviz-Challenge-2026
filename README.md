@@ -24,6 +24,24 @@ For more than two decades, every Pacific Island Country in this story has sat in
 
 Cleaned inputs live in `public/data/`. Each visualisation cites and links its sources in its caption.
 
+## Methodology
+
+### Data challenges
+
+**Direct disaster economic loss (SDG 11.5.2) was examined and excluded.** The Pacific Data Hub series covers only three of the twelve Pacific Island Countries for 2020 (Fiji, Papua New Guinea, Kiribati), mixes plain USD and USD-millions units within the same series, and carries no figure for Vanuatu, where Cyclone Harold caused the year's largest impacts. A regional total built from that coverage would understate losses to the point of misleading, so the piece quantifies the cost of disasters in people and livelihoods rather than dollars.
+
+**Affected-per-100,000 rates can exceed 100,000.** The Marshall Islands recorded 132,810 people affected per 100,000 population in 2020, because people affected by more than one disaster in the same year are counted for each event. The map caption states this rather than smoothing it away.
+
+**Livelihoods data has partial coverage and no rate variant.** The UNSD series (VC_DSR_PDLN) exists only as absolute counts, with nine of twelve countries reporting for 2020. The chart therefore uses a log scale with every exact figure labelled, and the caption names the non-reporting countries.
+
+**The finance comparison is a coverage ratio.** Projected annual need (IMF estimate, 2024 prices) and recent annual disbursements (2021 to 2023 average) come from different reference periods, so the chart presents coverage of need rather than a same-year subtraction, and its caption says so.
+
+**The finance figures carry the source's own caveats.** The IMF working paper synthesizes needs estimates from studies that differ in sectoral coverage, methodology and time horizons, and notes that disbursement data is limited, so the disbursed amounts are estimates. Its needs estimates also exclude long-term challenges such as potential large-scale relocation, which means the coverage ratio shown in Section 3 is, if anything, conservative. The piece uses the disbursement-basis ratio, measuring finance delivered rather than finance pledged; the paper also reports a higher commitment-basis ratio.
+
+### Analytical choices
+
+Quadrant boundaries in the vulnerability scatter are the global medians of each year's scores, recomputed per year, so a country's quadrant reflects its position relative to the world at that time. Editorial claims are bounded by what the charted data shows: associations are described as associations, and the conclusion is a verdict on the evidence rather than a call to action.
+
 ## Stack
 
 Next.js 16 (static export), React 19, TypeScript, Tailwind CSS v4, and D3 (scales and geo only; all rendering is hand-written SVG in React). Deployed to GitHub Pages with a base path applied via `src/lib/basePath.ts`.

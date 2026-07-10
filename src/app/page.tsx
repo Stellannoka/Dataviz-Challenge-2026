@@ -80,7 +80,7 @@ export default function Home() {
               Strengthening infrastructure, expanding early warning systems and building resilient institutions can reduce the human and economic costs of climate-related disasters. But building that readiness requires sustained investment.
             </p>
             <p>
-              For many Pacific Island Countries, the scale of that investment is beyond what domestic resources alone can support. Estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average just over one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year across the region, and exceed one-third for some atoll nations. Closing the gap between climate risk and readiness therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
+              For many Pacific Island Countries, the scale of that investment is beyond what domestic resources alone can support. Estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average just over one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year across the region, and exceed one-third for some atoll nations. Meeting adaptation needs on that scale therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
             </p>
           </div>
         </Prose>
@@ -103,10 +103,10 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-          Much of the investment needed to strengthen resilience is expected to come through international climate finance. Yet adaptation finance reaching Pacific Island Countries still falls well short of what is needed. At recent funding levels, it would meet only about one-quarter (26%) of projected annual adaptation finance needs.
+          Under the Paris Agreement, developed countries committed to provide climate finance for adaptation in developing countries. For Pacific Island Countries, that commitment is the main route to investment on the scale their needs require. Yet the adaptation finance reaching them falls well short: at recent funding levels, it would meet only about one-quarter (26%) of projected annual adaptation finance needs.
             </p>
             <p>
-              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. Closing the gap between vulnerability and readiness therefore depends on narrowing the shortfall between the finance needed and the finance delivered.
+              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. And readiness, however high, can only convert the finance that arrives. What stands between adaptation needs and adaptation itself is the shortfall between the finance needed and the finance delivered.
             </p>
           </div>
         </Prose>
@@ -119,16 +119,8 @@ export default function Home() {
       <Section heading="Conclusion">
         <Prose>
           <div className={narrative}>
-            <p>
-              For two decades, the gap between climate vulnerability and readiness has remained remarkably persistent across the Pacific Island Countries. Behind that gap are people whose homes, livelihoods and communities continue to bear the consequences of climate-related disasters.
-            </p>
-             
-            <p>
-             Climate hazards cannot always be prevented. What can change is a country's readiness: its capacity to translate investment into effective adaptation. The evidence throughout this story points in one direction: readiness must be built, and the investment needed to build it still falls far short of what is required.
-            </p>
-            <p>
-      
-Until that changes, the gap will persist. And its cost will continue to be measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
+            <p className={narrative} style={{ marginBottom: 0 }}>
+             Climate hazards cannot always be prevented. But the readiness to withstand them can be built, and the investment needed to build it is still falling far short. That is the gap, and its cost is measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
             </p>
           </div>
         </Prose>
@@ -174,8 +166,20 @@ Until that changes, the gap will persist. And its cost will continue to be measu
       <p style={{ marginBottom: "0.75rem" }}>
         It brings together multiple datasets to examine climate vulnerability, disaster impacts and resilience across Pacific Island Countries. Where appropriate, indicators are presented both as absolute values and population-adjusted measures to support meaningful comparisons between countries of different sizes.
       </p>
-      <p style={{ marginBottom: 0 }}>
+      <p style={{ marginBottom: "0.75rem" }}>
         The datasets used throughout the project are cited and linked in the caption of each visualisation.
+      </p>
+      <p style={{ marginBottom: 0 }}>
+        Written and built by Stellamaris Nnoka. Source code, data files and full methodology notes are available on{" "}
+        <a
+          href="https://github.com/stellannoka/Dataviz-Challenge-2026"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 hover:text-sky-700"
+        >
+          GitHub
+        </a>
+        .
       </p>
     </div>
   </Prose>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useFollow } from "@/lib/follow";
 import { useChartWidth } from "@/hooks/useChartWidth";
 import { asset } from "@/lib/basePath";
 
@@ -11,14 +12,22 @@ interface RegionData {
   commitmentCoveragePct: number;
   disbursementCoveragePct: number;
 }
+interface CountryNeed {
+  country: string;
+  iso: string;
+  needPctGdp: number;
+  atoll: boolean;
+}
 interface FinanceData {
   region: RegionData;
+  needsByCountryPctGdp: CountryNeed[];
 }
 
 export default function FinanceGap() {
   const { ref, width } = useChartWidth();
   const figureRef = useRef<HTMLElement>(null);
   const [data, setData] = useState<FinanceData | null>(null);
+  const { followedIso } = useFollow();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -128,7 +137,7 @@ export default function FinanceGap() {
               1
             )} billion with the estimated adaptation finance actually disbursed, about US$${disbursed.toFixed(
               1
-            )} billion a year (2021-2023 average). Disbursed finance stands at roughly one quarter the height of the need, covering about ${fundedPct} percent of it and leaving about ${unfundedPct} percent unmet.`}
+            )} billion a year (2021-2023 average). Estimated disbursed finance stands at roughly one quarter the height of the need, covering about ${fundedPct} percent of it and leaving about ${unfundedPct} percent unmet.`}
             style={{ display: "block", fontFamily: "var(--font-sans)" }}
           >
             <defs>
@@ -189,7 +198,7 @@ export default function FinanceGap() {
             </text>
 
             <text x={recvCx} y={BASE_Y + 42} textAnchor="middle" style={subtitleStyle}>
-              DISBURSED, 2021&ndash;2023 AVERAGE
+              EST. DISBURSEMENTS, 2021&ndash;2023 AVERAGE
             </text>
 
             {/* MEASUREMENT BRACKET — matches the Option A prototype */}
@@ -231,8 +240,9 @@ export default function FinanceGap() {
           }}
         >
           <span className="font-medium">Note: </span>The comparison is a
-          coverage ratio rather than a same-year subtraction; at recent funding
-          levels about {fundedPct}% of projected need would be met. Source:{" "}
+          coverage ratio rather than a same-year subtraction, and disbursed
+          amounts are estimates; at recent funding levels about {fundedPct}% of
+          projected need would be met. Source:{" "}
           <a
             href="https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026083-source-pdf.pdf"
             target="_blank"
@@ -243,6 +253,31 @@ export default function FinanceGap() {
           </a>
           .
         </figcaption>
+
+        {followedIso &&
+          (() => {
+            const c = data?.needsByCountryPctGdp?.find(
+              (d) => d.iso === followedIso
+            );
+            if (!c) return null;
+            return (
+              <p
+                style={{
+                  maxWidth: "640px",
+                  margin: "14px auto 0",
+                  padding: "10px 12px",
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "0.95rem",
+                  lineHeight: 1.6,
+                  background: "#fdf6e9",
+                  borderLeft: "3px solid #b45309",
+                }}
+              >
+                For <strong>{c.country}</strong>, projected adaptation needs
+                equal <strong>{c.needPctGdp}%</strong> of GDP each year.
+              </p>
+            );
+          })()}
       </div>
     </figure>
   );

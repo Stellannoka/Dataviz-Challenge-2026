@@ -557,7 +557,7 @@ export default function PacificScrollyMap({
               marginRight: "auto",
               paddingLeft: 16,
               paddingRight: 16,
-              paddingTop: isSmall ? 16 : 28,
+              paddingTop: `calc(env(safe-area-inset-top, 0px) + ${isSmall ? 36 : 28}px)`,
               paddingBottom: isSmall ? 8 : 14,
             }}
           >
