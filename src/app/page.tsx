@@ -88,14 +88,8 @@ export default function Home() {
 
       {/* SECTION 3 — the finance gap */}
       <Section
-        heading="Readiness Remains Underfunded"
+        heading="Adaptation Remains Underfunded"
       >
-        <Prose>
-          <p className="section-subtitle">
-         The finance needed to close the gap is not arriving at the scale required.
-          </p>
-        </Prose>
-        
         <ChartBand>
           <FinanceGap />
         </ChartBand>
@@ -142,7 +136,7 @@ export default function Home() {
           href="https://pacificdatavizchallenge.org/#official-datasets--theme"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:text-sky-700"
+          className="font-semibold underline underline-offset-2 hover:text-sky-700"
         >
           Pacific DataViz Challenge 2026
         </a>
@@ -151,7 +145,7 @@ export default function Home() {
           href="https://react.dev/"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:text-sky-700"
+          className="font-semibold underline underline-offset-2 hover:text-sky-700"
         >
           React
         </a>
@@ -160,7 +154,7 @@ export default function Home() {
           href="https://d3js.org/"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:text-sky-700"
+          className="font-semibold underline underline-offset-2 hover:text-sky-700"
         >
           D3.js
         </a>
@@ -178,7 +172,7 @@ export default function Home() {
           href="https://github.com/stellannoka/Dataviz-Challenge-2026"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:text-sky-700"
+          className="font-semibold underline underline-offset-2 hover:text-sky-700"
         >
           GitHub
         </a>

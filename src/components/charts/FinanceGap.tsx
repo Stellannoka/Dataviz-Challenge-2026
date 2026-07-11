@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useChartWidth } from "@/hooks/useChartWidth";
+import { CONTAINER_WIDTH } from "@/components/Container";
 import { asset } from "@/lib/basePath";
 
 interface RegionData {
@@ -241,10 +242,10 @@ export default function FinanceGap() {
         )}
       <div
         className="mx-auto w-full"
-        style={{ maxWidth: "640px", paddingLeft: "16px", paddingRight: "16px", marginTop: isSmall ? "1.25rem" : "1.75rem" }}
+        style={{ maxWidth: "640px", paddingLeft: "16px", paddingRight: "16px", marginTop: 0 }}
       >
-        {/* Measure line: the section heading and subtitle above carry the
-            editorial claim, so the chart states only what is plotted. */}
+        {/* Measure line: the section heading above carries the editorial
+            claim, so the chart states only what is plotted. */}
         <p
           style={{
             fontFamily: "var(--font-sans)",
@@ -252,7 +253,7 @@ export default function FinanceGap() {
             color: "var(--text-secondary, #707070)",
             opacity: 0.85,
             lineHeight: 1.4,
-            marginBottom: "18px",
+            marginBottom: "12px",
           }}
         >
           Projected annual adaptation financing need and recent annual
@@ -354,15 +355,18 @@ export default function FinanceGap() {
             })()}
           </svg>
         </div>
+      </div>
 
-        <figcaption
-          className="mt-4 chart-caption text-left"
-          style={{
-            fontSize: captionSize,
-            color: "var(--text-secondary, #64748b)",
-            lineHeight: 1.6,
-          }}
-        >
+      <figcaption
+        className="mt-4 chart-caption text-left mx-auto w-full px-4"
+        style={{
+          /* Same geometry as Container: the one text-column definition. */
+          maxWidth: CONTAINER_WIDTH,
+          fontSize: captionSize,
+          color: "var(--text-secondary, #64748b)",
+          lineHeight: 1.6,
+        }}
+      >
           <span className="font-medium">Note: </span>The comparison is a
           coverage ratio rather than a same-year subtraction, and disbursed
           amounts are estimates; at recent funding levels about {fundedPct}% of
@@ -378,31 +382,32 @@ export default function FinanceGap() {
           .
         </figcaption>
 
-        {picMatch && (
-          <p
-            style={{
-              maxWidth: "640px",
-              margin: "14px auto 0",
-              padding: "10px 12px",
-              fontFamily: "var(--font-serif)",
-              fontSize: "0.95rem",
-              lineHeight: 1.6,
-              background: "#fdf6e9",
-              borderLeft: "3px solid #b45309",
-            }}
-          >
-            For <strong>{picMatch.country}</strong>, projected adaptation needs
-            equal <strong>{picMatch.needPctGdp}%</strong> of GDP each year.
-            {picMatch.coveragePct !== null && (
-              <>
-                {" "}
-                Recent finance covers about{" "}
-                <strong>{picMatch.coveragePct}%</strong> of its estimated need.
-              </>
-            )}
-          </p>
-        )}
-      </div>
+      {picMatch && (
+        <p
+          style={{
+            /* Inset by the column's 16px side padding so the callout's
+               left border sits exactly where the narrative text starts. */
+            maxWidth: CONTAINER_WIDTH - 32,
+            margin: "14px auto 0",
+            padding: "10px 12px",
+            fontFamily: "var(--font-serif)",
+            fontSize: "0.95rem",
+            lineHeight: 1.6,
+            background: "#fdf6e9",
+            borderLeft: "3px solid #b45309",
+          }}
+        >
+          For <strong>{picMatch.country}</strong>, projected adaptation needs
+          equal <strong>{picMatch.needPctGdp}%</strong> of GDP each year.
+          {picMatch.coveragePct !== null && (
+            <>
+              {" "}
+              Recent finance covers about{" "}
+              <strong>{picMatch.coveragePct}%</strong> of its estimated need.
+            </>
+          )}
+        </p>
+      )}
     </figure>
   );
 }

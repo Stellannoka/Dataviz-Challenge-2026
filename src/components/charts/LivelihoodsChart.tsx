@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { scaleLog } from "d3-scale";
 import { useChartWidth } from "@/hooks/useChartWidth";
+import { CONTAINER_WIDTH } from "@/components/Container";
 import { asset } from "@/lib/basePath";
 
 /* ------------------------------------------------------------------ types */
@@ -46,7 +47,7 @@ export default function LivelihoodsChart() {
   const isSmall = width > 0 && width < 480;
   const isMedium = width >= 480 && width < 768;
 
-  const chartMaxWidth = 640;
+  const chartMaxWidth = CONTAINER_WIDTH;
   const chartWidth = Math.min(width || chartMaxWidth, chartMaxWidth);
 
   /* Countries reporting both series, largest impacts first */
@@ -92,7 +93,7 @@ export default function LivelihoodsChart() {
   return (
     <figure
       className="w-full"
-      style={{ maxWidth: "640px", marginLeft: "auto", marginRight: "auto" }}
+      style={{ maxWidth: CONTAINER_WIDTH, marginLeft: "auto", marginRight: "auto" }}
     >
       {/* Title */}
       <p
@@ -312,7 +313,7 @@ export default function LivelihoodsChart() {
       <figcaption
         className="mt-4 leading-snug chart-caption text-left"
         style={{
-          maxWidth: "640px",
+          maxWidth: CONTAINER_WIDTH,
           marginLeft: "auto",
           marginRight: "auto",
           paddingLeft: "16px",

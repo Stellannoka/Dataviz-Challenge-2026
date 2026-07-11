@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { geoEquirectangular } from "d3-geo";
 import { scaleSqrt } from "d3-scale";
+import { CONTAINER_WIDTH } from "@/components/Container";
 import { asset } from "@/lib/basePath";
 
 /* ------------------------------------------------------------------ types */
@@ -552,7 +553,7 @@ export default function PacificScrollyMap({
             className="w-full"
             style={{
               flexShrink: 0,
-              maxWidth: 640,
+              maxWidth: CONTAINER_WIDTH,
               marginLeft: "auto",
               marginRight: "auto",
               paddingLeft: 16,
@@ -904,7 +905,7 @@ export default function PacificScrollyMap({
       <div
         className="w-full"
         style={{
-          maxWidth: 640,
+          maxWidth: CONTAINER_WIDTH,
           marginLeft: "auto",
           marginRight: "auto",
           paddingLeft: 16,
