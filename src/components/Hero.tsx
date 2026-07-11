@@ -3,7 +3,19 @@ import GlossaryTerm from "./Glossaryterm";
 
 export default function Hero() {
   return (
-    <header className="pt-0 pb-6 md:pt-0">
+    <header
+      className="pt-0 pb-6 md:pt-0"
+      style={{
+        /* Overlap release: the Hero slides up over the cold open's fading
+           final beat instead of arriving after a blank frame. The negative
+           margin controls how early it intrudes; -55vh leaves the final
+           message roughly half its beat to be read before the title rises. */
+        position: "relative",
+        zIndex: 10,
+        marginTop: "-55vh",
+        background: "var(--surface, #ffffff)",
+      }}
+    >
       <Container>
         <p
           style={{
@@ -15,6 +27,7 @@ export default function Hero() {
             color: 'var(--primary, #5a8fb0)',
             textAlign: 'center',
             marginBottom: '0.5rem',
+            paddingTop: '2.5rem',
           }}
         >
           Climate Change

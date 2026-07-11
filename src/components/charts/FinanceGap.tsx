@@ -33,7 +33,6 @@ export default function FinanceGap() {
   const { ref, width } = useChartWidth();
   const figureRef = useRef<HTMLElement>(null);
   const [data, setData] = useState<FinanceData | null>(null);
-  const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [query, setQuery] = useState("");
@@ -92,30 +91,6 @@ export default function FinanceGap() {
       .catch((err) => console.error("Failed to load finance data:", err));
   }, []);
 
-  /* One-time rise animation when the chart scrolls into view.
-     Respects prefers-reduced-motion by showing the final state directly. */
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-    if (reduce || !("IntersectionObserver" in window)) {
-      setVisible(true);
-      return;
-    }
-    const el = figureRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.35 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [data]);
-
   const isSmall = width > 0 && width < 480;
   const isMedium = width >= 480 && width < 768;
 
@@ -161,12 +136,6 @@ export default function FinanceGap() {
     fontFamily: "var(--font-sans)",
     fontSize: 11,
     fill: INK,
-  };
-
-  /* Fade-in for the disbursed value and bracket, after the bar has risen */
-  const revealStyle: React.CSSProperties = {
-    opacity: visible ? 1 : 0,
-    transition: "opacity 0.5s ease 0.55s",
   };
 
   return (
@@ -335,14 +304,7 @@ export default function FinanceGap() {
             </text>
 
             {/* RECEIVED bar — rises once when scrolled into view */}
-            <rect
-              x={recvX}
-              y={visible ? recvY : BASE_Y}
-              width={barW}
-              height={visible ? recvH : 0}
-              fill={PRIMARY_COLOR}
-              style={{ transition: "y 0.7s ease-out, height 0.7s ease-out" }}
-            />
+            <rect x={recvX} y={recvY} width={barW} height={recvH} fill={PRIMARY_COLOR} />
 
             <text
               x={recvCx}
@@ -351,7 +313,6 @@ export default function FinanceGap() {
               fontSize={24}
               fontWeight={700}
               fill={PRIMARY_DARK}
-              style={revealStyle}
             >
               US${disbursed.toFixed(1)}bn
             </text>
@@ -371,7 +332,7 @@ export default function FinanceGap() {
               const armBot = recvTopY;
               const mid = (armTop + armBot) / 2;
               return (
-                <g style={revealStyle}>
+                <g>
                   <path
                     d={`M ${bx} ${armTop} h 10 V ${armBot} h -10`}
                     fill="none"
