@@ -34,10 +34,10 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-          Compared with countries around the world, several Pacific Island Countries sit in the quadrant combining high vulnerability with both limited readiness and a high urgency to adapt. Others score comparatively high on readiness. In the ND-GAIN framework, this means they are better positioned to translate investment into adaptation, not that their climate risks or adaptation needs are low. Although individual countries shift over time, this broader pattern changes remarkably little.
+         Compared with countries around the world, several Pacific Island Countries occupy the quadrant where high vulnerability coincides with limited readiness and a high urgency to adapt. Others are comparatively more ready to adapt, which in the ND-GAIN framework means they are better positioned to translate investment into adaptation, but their climate risks and adaptation needs remain high.
             </p>
             <p>
-           What that pattern means becomes clear when climate-related <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike. The impacts are first seen in the people affected, and in the livelihoods they depend on.
+           Although individual countries shift over time, this broader pattern changes remarkably little, and its consequences become clear when climate-related <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike. The impacts are first seen in the people affected, and in the livelihoods they depend on.
             </p>
           </div>
         </Prose>
@@ -61,7 +61,7 @@ export default function Home() {
             In some Pacific Island Countries, the scale of livelihood disruption approached the number of people directly affected by disasters. The Marshall Islands recorded the starkest example, where livelihoods disrupted were equivalent to more than nine in ten people affected.
             </p>
             <p>
-              Behind those figures are households whose farms, fisheries and businesses were disrupted, leaving recovery to depend not only on repairing damaged infrastructure, but also on restoring the means to earn a living
+              Behind those figures are households whose farms, fisheries and businesses were disrupted, leaving recovery to depend not only on repairing damaged infrastructure, but also on restoring the means to earn a living.
             </p>
           </div>
         </Prose>
@@ -74,13 +74,13 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-              Pacific Island Countries cannot choose the climate hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. What can change is their readiness to withstand and recover from those hazards.
+            Pacific Island Countries cannot choose the climate hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. What can change is their readiness to adapt to and recover from those hazards.
             </p>
             <p>
-              Strengthening infrastructure, expanding early warning systems and building resilient institutions can reduce the human and economic costs of climate-related disasters. But building that readiness requires sustained investment.
+             Strengthening infrastructure, expanding early warning systems and building resilient institutions can reduce the human and economic costs of climate-related disasters. But building that readiness requires sustained investment.
             </p>
             <p>
-              For many Pacific Island Countries, the scale of that investment is beyond what domestic resources alone can support. Estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average just over one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year across the region, and exceed one-third for some atoll nations. Meeting adaptation needs on that scale therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
+              For many Pacific Island Countries, the investment needed to strengthen readiness is beyond what domestic resources alone can support. Across the region, estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average just over one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year, and exceed one-third for some atoll nations. Meeting needs on that scale therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
             </p>
           </div>
         </Prose>
@@ -103,10 +103,10 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-          Under the Paris Agreement, developed countries committed to provide climate finance for adaptation in developing countries. For Pacific Island Countries, that commitment is the main route to investment on the scale their needs require. Yet the adaptation finance reaching them falls well short: at recent funding levels, it would meet only about one-quarter (26%) of projected annual adaptation finance needs.
+          Under the <GlossaryTerm term="paris agreement">Paris Agreement</GlossaryTerm>, developed countries committed to provide climate finance for adaptation in developing countries. For Pacific Island Countries, that commitment is the main route to investment on the scale their needs require. Yet the adaptation finance reaching them falls well short: at recent funding levels, it would meet only about one-quarter (26%) of projected annual adaptation finance needs.
             </p>
             <p>
-              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. And readiness, however high, can only convert the finance that arrives. What stands between adaptation needs and adaptation itself is the shortfall between the finance needed and the finance delivered.
+              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. Even the countries best positioned to translate investment into adaptation can only build resilience with the finance that is available. Closing the gap between vulnerability and readiness therefore depends on narrowing the gap between the finance needed and the finance delivered.
             </p>
           </div>
         </Prose>
@@ -120,7 +120,10 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p className={narrative} style={{ marginBottom: 0 }}>
-             Climate hazards cannot always be prevented. But the readiness to withstand them can be built, and the investment needed to build it is still falling far short. That is the gap, and its cost is measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
+             Climate hazards cannot always be prevented. But countries can strengthen their readiness to adapt, and the investment needed to do so still falls far short of what is required.
+            </p>
+             <p className={narrative} style={{ marginBottom: 0 }}>
+             That is the gap, and its cost is measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
             </p>
           </div>
         </Prose>

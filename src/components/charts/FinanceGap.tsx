@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useFollow } from "@/lib/follow";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useChartWidth } from "@/hooks/useChartWidth";
 import { asset } from "@/lib/basePath";
 
@@ -18,17 +18,72 @@ interface CountryNeed {
   needPctGdp: number;
   atoll: boolean;
 }
+interface CountryCoverage {
+  country: string;
+  iso: string;
+  coveragePct: number;
+}
 interface FinanceData {
   region: RegionData;
   needsByCountryPctGdp: CountryNeed[];
+  countriesDisbursementCoverage: CountryCoverage[];
 }
 
 export default function FinanceGap() {
   const { ref, width } = useChartWidth();
   const figureRef = useRef<HTMLElement>(null);
   const [data, setData] = useState<FinanceData | null>(null);
-  const { followedIso } = useFollow();
   const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [query, setQuery] = useState("");
+  const [listOpen, setListOpen] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  /* Section-scoped search bar: appears while the finance section is on
+     screen, disappears once it scrolls past. Mirrors the scatter's bar. */
+  useEffect(() => {
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      setOverlayVisible(true);
+      return;
+    }
+    const el = figureRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => setOverlayVisible(entries.some((e) => e.isIntersecting)),
+      { threshold: 0, rootMargin: "0px 0px -60% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [data]);
+
+  const picMatch = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q || !data) return null;
+    const need = data.needsByCountryPctGdp.find((c) =>
+      c.country.toLowerCase().includes(q)
+    );
+    if (!need) return null;
+    const cov = data.countriesDisbursementCoverage.find(
+      (c) => c.iso === need.iso
+    );
+    return { ...need, coveragePct: cov?.coveragePct ?? null };
+  }, [query, data]);
+
+  const suggestions = useMemo(() => {
+    if (!data) return [];
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return [...data.needsByCountryPctGdp]
+      .filter((c) => c.country.toLowerCase().includes(q))
+      .sort((a, b) => {
+        const as = a.country.toLowerCase().startsWith(q) ? 0 : 1;
+        const bs = b.country.toLowerCase().startsWith(q) ? 0 : 1;
+        return as - bs || a.country.localeCompare(b.country);
+      })
+      .slice(0, 3);
+  }, [query, data]);
 
   useEffect(() => {
     fetch(asset("/data/section5_finance.json"))
@@ -116,13 +171,121 @@ export default function FinanceGap() {
 
   return (
     <figure ref={figureRef} className="w-full">
+      {mounted &&
+        data &&
+        createPortal(
+          <div
+            role="search"
+            aria-label="Look up a Pacific Island Country's adaptation finance figures"
+            style={{
+              position: "fixed",
+              top: `calc(env(safe-area-inset-top, 0px) + ${isSmall ? 36 : 12}px)`,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "min(92vw, 340px)",
+              zIndex: 40,
+              opacity: overlayVisible ? 1 : 0,
+              pointerEvents: overlayVisible ? "auto" : "none",
+              transition: "opacity 0.25s ease",
+              fontFamily: "var(--font-sans)",
+            }}
+          >
+            <div className="relative">
+              <svg
+                className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+                width={isSmall ? 13 : 15}
+                height={isSmall ? 13 : 15}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <circle cx={11} cy={11} r={7} />
+                <line x1={21} y1={21} x2={16.2} y2={16.2} />
+              </svg>
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setListOpen(true);
+                }}
+                onFocus={() => setListOpen(true)}
+                onBlur={() => setListOpen(false)}
+                placeholder="Search a Pacific Island Country"
+                className="w-full rounded-md bg-white py-1 pl-8 pr-8 text-slate-700 shadow-md outline-none"
+                style={{
+                  fontSize: isSmall ? "0.72rem" : "0.8rem",
+                  border: "1.5px solid var(--primary, #5a8fb0)",
+                }}
+                aria-label="Search a Pacific Island Country"
+                autoComplete="off"
+                aria-expanded={listOpen}
+                role="combobox"
+                aria-controls="pic-suggestions"
+              />
+              {query && (
+                <button
+                  onClick={() => setQuery("")}
+                  aria-label="Clear search"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400"
+                  style={{ cursor: "pointer", fontSize: "0.9rem" }}
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+            {listOpen && suggestions.length > 0 && (
+              <ul
+                id="pic-suggestions"
+                role="listbox"
+                className="mt-1 max-h-56 overflow-auto rounded-md bg-white shadow-md"
+                style={{
+                  listStyle: "none",
+                  margin: "4px 0 0",
+                  padding: "4px 0",
+                  border: "1px solid var(--faint, #e9e9f1)",
+                  fontSize: isSmall ? "0.72rem" : "0.8rem",
+                }}
+              >
+                {suggestions.map((c) => (
+                  <li
+                    key={c.iso}
+                    role="option"
+                    aria-selected={picMatch?.iso === c.iso}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      setQuery(c.country);
+                      setListOpen(false);
+                    }}
+                    className="cursor-pointer px-3 py-1.5 text-slate-700 hover:bg-slate-100"
+                  >
+                    {c.country}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>,
+          document.body
+        )}
       <div
         className="mx-auto w-full"
         style={{ maxWidth: "640px", paddingLeft: "16px", paddingRight: "16px", marginTop: isSmall ? "1.25rem" : "1.75rem" }}
       >
         {/* Measure line: the section heading and subtitle above carry the
             editorial claim, so the chart states only what is plotted. */}
-        <p className="section-subtitle" style={{ marginBottom: "18px" }}>
+        <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "0.76rem",
+            color: "var(--text-secondary, #707070)",
+            opacity: 0.85,
+            lineHeight: 1.4,
+            marginBottom: "18px",
+          }}
+        >
           Projected annual adaptation financing need and recent annual
           adaptation finance disbursed, Pacific Island Countries, US$ billion.
         </p>
@@ -254,30 +417,30 @@ export default function FinanceGap() {
           .
         </figcaption>
 
-        {followedIso &&
-          (() => {
-            const c = data?.needsByCountryPctGdp?.find(
-              (d) => d.iso === followedIso
-            );
-            if (!c) return null;
-            return (
-              <p
-                style={{
-                  maxWidth: "640px",
-                  margin: "14px auto 0",
-                  padding: "10px 12px",
-                  fontFamily: "var(--font-serif)",
-                  fontSize: "0.95rem",
-                  lineHeight: 1.6,
-                  background: "#fdf6e9",
-                  borderLeft: "3px solid #b45309",
-                }}
-              >
-                For <strong>{c.country}</strong>, projected adaptation needs
-                equal <strong>{c.needPctGdp}%</strong> of GDP each year.
-              </p>
-            );
-          })()}
+        {picMatch && (
+          <p
+            style={{
+              maxWidth: "640px",
+              margin: "14px auto 0",
+              padding: "10px 12px",
+              fontFamily: "var(--font-serif)",
+              fontSize: "0.95rem",
+              lineHeight: 1.6,
+              background: "#fdf6e9",
+              borderLeft: "3px solid #b45309",
+            }}
+          >
+            For <strong>{picMatch.country}</strong>, projected adaptation needs
+            equal <strong>{picMatch.needPctGdp}%</strong> of GDP each year.
+            {picMatch.coveragePct !== null && (
+              <>
+                {" "}
+                Recent finance covers about{" "}
+                <strong>{picMatch.coveragePct}%</strong> of its estimated need.
+              </>
+            )}
+          </p>
+        )}
       </div>
     </figure>
   );

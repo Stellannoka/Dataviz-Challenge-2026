@@ -12,7 +12,7 @@ export default function Hero() {
             fontWeight: 400,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'var(--text-secondary, #707070)',
+            color: 'var(--primary, #5a8fb0)',
             textAlign: 'center',
             marginBottom: '0.5rem',
           }}
@@ -42,51 +42,12 @@ export default function Hero() {
           <p className="hero-subtitle">August 25, 2026</p>
         </div>
 
-        {/* GLOSSARY CUE — centered under the date */}
-        <p
-          style={{
-            fontSize: '0.88rem',
-            fontFamily: 'var(--font-sans)',
-            fontStyle: 'italic',
-            fontWeight: 400,
-            color: 'var(--text-secondary, #707070)',
-            opacity: 0.7,
-            textAlign: 'center',
-            marginTop: '1rem',
-            marginBottom: 0,
-          }}
-        >
-          <span className="glossary-cue-hover" style={{ display: 'none' }}>
-            Hover over{' '}
-            <span style={{ borderBottom: '1.5px dashed currentColor', paddingBottom: '1px' }}>
-              dashed-underlined
-            </span>{' '}
-            terms for definitions.
-          </span>
-          <span className="glossary-cue-tap">
-            Tap{' '}
-            <span style={{ borderBottom: '1.5px dashed currentColor', paddingBottom: '1px' }}>
-              dashed-underlined
-            </span>{' '}
-            terms for definitions.
-          </span>
-        </p>
-
-        <style>{`
-          .glossary-cue-hover { display: none !important; }
-          .glossary-cue-tap { display: inline !important; }
-          @media (min-width: 768px) {
-            .glossary-cue-hover { display: inline !important; }
-            .glossary-cue-tap { display: none !important; }
-          }
-        `}</style>
-
         <div className="hero-narrative" style={{ marginTop: '3rem' }}>
           <p>
             Climate change is making <GlossaryTerm term="hazards">hazards</GlossaryTerm> such as floods, droughts, tropical cyclones and sea-level rise more frequent, and in many cases more intense. Yet the damage they cause depends not only on the hazards themselves, but also on how prepared countries are to withstand and recover from them.
           </p>
           <p>
-            For many Pacific Islands, that preparedness has not kept pace. For more than two decades, every one of the twelve  countries in the data has sat in the world's high-vulnerability half, most ranking among the most climate-vulnerable nations anywhere. <GlossaryTerm term="readiness">Readiness</GlossaryTerm> is more uneven. Several remain among the least ready to adapt, while others have improved over time. Yet none has escaped the region's consistently high <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm>. That imbalance between vulnerability and readiness has changed remarkably little over the past years.
+           For many Pacific Island Countries, that preparedness has not kept pace. For more than two decades, every one of the twelve countries in this story has remained in the world's high-vulnerability half. <GlossaryTerm term="readiness">Readiness</GlossaryTerm> has varied, with some countries improving more than others. Yet none has escaped the region's persistently high climate <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm>. That imbalance between vulnerability and readiness has changed remarkably little over the past years.
           </p>
         </div>
       </Container>

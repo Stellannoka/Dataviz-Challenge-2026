@@ -671,9 +671,15 @@ export default function PacificScrollyMap({
                                 hasValue ? (isFoc ? 0.62 : anyFocus ? 0.22 : 0.32) : 0
                               }
                               stroke={
-                                isFoc ? accent : hasValue ? "none" : PALETTE.line
+                                isFoc
+                                  ? accent
+                                  : hasValue
+                                  ? "none"
+                                  : PALETTE.line
                               }
-                              strokeWidth={hasValue ? 2 : 1.2}
+                              strokeWidth={
+                                hasValue ? 2 : 1.2
+                              }
                               strokeDasharray={hasValue ? undefined : "2 3"}
                               style={{
                                 transition:
