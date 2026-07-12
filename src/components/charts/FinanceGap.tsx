@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { useChartWidth } from "@/hooks/useChartWidth";
-import { CONTAINER_WIDTH } from "@/components/Container";
 import { asset } from "@/lib/basePath";
+import FinanceCountryCard from "./FinanceCountryCard";
 
 interface RegionData {
   annualNeedUsdBn: number;
@@ -32,58 +31,52 @@ interface FinanceData {
 
 export default function FinanceGap() {
   const { ref, width } = useChartWidth();
-  const figureRef = useRef<HTMLElement>(null);
   const [data, setData] = useState<FinanceData | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [overlayVisible, setOverlayVisible] = useState(false);
-  const [query, setQuery] = useState("");
-  const [listOpen, setListOpen] = useState(false);
+  const [selectedIso, setSelectedIso] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => setMounted(true), []);
 
-  /* Section-scoped search bar: appears while the finance section is on
-     screen, disappears once it scrolls past. Mirrors the scatter's bar. */
-  useEffect(() => {
-    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
-      setOverlayVisible(true);
-      return;
-    }
-    const el = figureRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => setOverlayVisible(entries.some((e) => e.isIntersecting)),
-      { threshold: 0, rootMargin: "0px 0px -60% 0px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [data]);
-
   const picMatch = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q || !data) return null;
-    const need = data.needsByCountryPctGdp.find((c) =>
-      c.country.toLowerCase().includes(q)
-    );
+    if (!selectedIso || !data) return null;
+    const need = data.needsByCountryPctGdp.find((c) => c.iso === selectedIso);
     if (!need) return null;
     const cov = data.countriesDisbursementCoverage.find(
       (c) => c.iso === need.iso
     );
     return { ...need, coveragePct: cov?.coveragePct ?? null };
-  }, [query, data]);
+  }, [selectedIso, data]);
 
-  const suggestions = useMemo(() => {
-    if (!data) return [];
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    return [...data.needsByCountryPctGdp]
-      .filter((c) => c.country.toLowerCase().includes(q))
-      .sort((a, b) => {
-        const as = a.country.toLowerCase().startsWith(q) ? 0 : 1;
-        const bs = b.country.toLowerCase().startsWith(q) ? 0 : 1;
-        return as - bs || a.country.localeCompare(b.country);
-      })
-      .slice(0, 3);
-  }, [query, data]);
+  /* Countries ordered by need, so the dropdown itself carries information */
+  const chips = useMemo(
+    () =>
+      data
+        ? [...data.needsByCountryPctGdp].sort(
+            (a, b) => b.needPctGdp - a.needPctGdp
+          )
+        : [],
+    [data]
+  );
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     fetch(asset("/data/section5_finance.json"))
@@ -115,16 +108,19 @@ export default function FinanceGap() {
   const PRIMARY_COLOR = "var(--primary, #5a8fb0)";
   const PRIMARY_DARK = "var(--primary-dark, #3f6e8c)";
 
-  // ---- shared geometry (viewBox space), matching the Option A prototype ----
-  const VB_W = 620;
-  const VB_H = 380;
-  const BASE_Y = 300;
+  /* ---- geometry (viewBox space) ----
+     Phones use a narrower viewBox so the same type sizes render larger
+     relative to the chart, and the shortfall note sits below the bars
+     rather than in a right-hand margin there is no room for. */
+  const VB_W = isSmall ? 360 : 620;
+  const VB_H = isSmall ? 400 : 380;
+  const BASE_Y = isSmall ? 286 : 300;
   const TOP_Y = 40;
   const FULL_H = BASE_Y - TOP_Y;
-  const barW = 118;
+  const barW = isSmall ? 96 : 118;
 
-  const needX = 96;
-  const recvX = 288;
+  const needX = isSmall ? 44 : 96;
+  const recvX = isSmall ? 196 : 288;
   const needCx = needX + barW / 2;
   const recvCx = recvX + barW / 2;
 
@@ -135,132 +131,156 @@ export default function FinanceGap() {
 
   const subtitleStyle = {
     fontFamily: "var(--font-sans)",
-    fontSize: 11,
+    fontSize: isSmall ? 9.5 : 11,
     fill: INK,
   };
+  const valueSize = isSmall ? 20 : 24;
+  const barLabelSize = isSmall ? 12 : 13.5;
+  const noteSize = isSmall ? 12.5 : 14;
 
   return (
-    <figure ref={figureRef} className="w-full">
-      {mounted &&
-        data &&
-        createPortal(
-          <div
-            role="search"
-            aria-label="Look up a Pacific Island Country's adaptation finance figures"
-            style={{
-              position: "fixed",
-              top: `calc(env(safe-area-inset-top, 0px) + ${isSmall ? 36 : 12}px)`,
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "min(92vw, 340px)",
-              zIndex: 40,
-              opacity: overlayVisible ? 1 : 0,
-              pointerEvents: overlayVisible ? "auto" : "none",
-              transition: "opacity 0.25s ease",
-              fontFamily: "var(--font-sans)",
-            }}
-          >
-            <div className="relative">
-              <svg
-                className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
-                width={isSmall ? 13 : 15}
-                height={isSmall ? 13 : 15}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                aria-hidden="true"
-              >
-                <circle cx={11} cy={11} r={7} />
-                <line x1={21} y1={21} x2={16.2} y2={16.2} />
-              </svg>
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setListOpen(true);
-                }}
-                onFocus={() => setListOpen(true)}
-                onBlur={() => setListOpen(false)}
-                placeholder="Search a Pacific Island Country"
-                className="w-full rounded-md bg-white py-1 pl-8 pr-8 text-slate-700 shadow-md outline-none"
-                style={{
-                  fontSize: isSmall ? "0.72rem" : "0.8rem",
-                  border: "1.5px solid var(--primary, #5a8fb0)",
-                }}
-                aria-label="Search a Pacific Island Country"
-                autoComplete="off"
-                aria-expanded={listOpen}
-                role="combobox"
-                aria-controls="pic-suggestions"
-              />
-              {query && (
-                <button
-                  onClick={() => setQuery("")}
-                  aria-label="Clear search"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400"
-                  style={{ cursor: "pointer", fontSize: "0.9rem" }}
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-            {listOpen && suggestions.length > 0 && (
-              <ul
-                id="pic-suggestions"
-                role="listbox"
-                className="mt-1 max-h-56 overflow-auto rounded-md bg-white shadow-md"
-                style={{
-                  listStyle: "none",
-                  margin: "4px 0 0",
-                  padding: "4px 0",
-                  border: "1px solid var(--faint, #e9e9f1)",
-                  fontSize: isSmall ? "0.72rem" : "0.8rem",
-                }}
-              >
-                {suggestions.map((c) => (
-                  <li
-                    key={c.iso}
-                    role="option"
-                    aria-selected={picMatch?.iso === c.iso}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      setQuery(c.country);
-                      setListOpen(false);
-                    }}
-                    className="cursor-pointer px-3 py-1.5 text-slate-700 hover:bg-slate-100"
-                  >
-                    {c.country}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>,
-          document.body
-        )}
+    <figure className="w-full">
       <div
         className="mx-auto w-full"
-        style={{ maxWidth: "640px", paddingLeft: "16px", paddingRight: "16px", marginTop: 0 }}
+        style={{ maxWidth: "640px", paddingLeft: "16px", paddingRight: "16px", marginTop: isSmall ? "1.25rem" : "1.75rem" }}
       >
-        {/* Measure line: the section heading above carries the editorial
-            claim, so the chart states only what is plotted. */}
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "0.76rem",
-            color: "var(--text-secondary, #707070)",
-            opacity: 0.85,
-            lineHeight: 1.4,
-            marginBottom: "12px",
-          }}
+        {/* Measure line: the section heading and subtitle above carry the
+            editorial claim, so the chart states only what is plotted. */}
+        {/* Measure line, with the country selector set inside it: the caption
+            names what is plotted, and the dropdown changes what that is. */}
+        <div
+          className="section-subtitle"
+          style={{ lineHeight: "1.9rem", marginBottom: "18px" }}
         >
-          Projected annual adaptation financing need and recent annual
-          adaptation finance disbursed, Pacific Island Countries, US$ billion.
-        </p>
+          {picMatch
+            ? "Adaptation finance received against estimated annual need, "
+            : "Projected annual adaptation financing need and recent annual adaptation finance disbursed, "}
+          <span
+            ref={menuRef}
+            style={{ position: "relative", display: "inline-block" }}
+          >
+            <button
+              type="button"
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-haspopup="listbox"
+              aria-expanded={menuOpen}
+              aria-label="Choose the twelve countries combined, or a single country"
+              style={{
+                all: "unset",
+                boxSizing: "border-box",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 8,
+                /* never let the label break across lines */
+                whiteSpace: "nowrap",
+                verticalAlign: "middle",
+                fontFamily: "var(--font-sans)",
+                fontSize: "0.88rem",
+                fontWeight: 600,
+                color: "var(--primary-dark, #3f6e8c)",
+                background: "#f2f7fa",
+                border: "1.5px solid var(--primary, #5a8fb0)",
+                borderRadius: 6,
+                padding: "2px 8px 2px 10px",
+                lineHeight: 1.6,
+                boxShadow: menuOpen
+                  ? "0 0 0 3px rgba(90,143,176,0.18)"
+                  : "none",
+                transition: "box-shadow 0.15s ease, background-color 0.15s ease",
+              }}
+            >
+              {picMatch ? picMatch.country : "Pacific Island Countries"}
+              <svg
+                aria-hidden="true"
+                width="10"
+                height="10"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                  flexShrink: 0,
+                  transform: menuOpen ? "rotate(180deg)" : "none",
+                  transition: "transform 0.18s ease",
+                }}
+              >
+                <path d="M2 4.5 L6 8.5 L10 4.5" />
+              </svg>
+            </button>
 
-        <div ref={ref} className="w-full">
+            {menuOpen && (
+              <ul
+                role="listbox"
+                aria-label="Countries"
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: "calc(100% + 4px)",
+                  zIndex: 30,
+                  listStyle: "none",
+                  margin: 0,
+                  padding: "4px 0",
+                  minWidth: "100%",
+                  width: "max-content",
+                  maxWidth: 240,
+                  /* capped so the list never covers the chart */
+                  maxHeight: 168,
+                  overflowY: "auto",
+                  background: "#ffffff",
+                  border: "1px solid var(--faint, #e9e9f1)",
+                  borderRadius: 6,
+                  boxShadow: "0 6px 18px rgba(43,52,64,0.12)",
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "0.8rem",
+                }}
+              >
+                {[
+                  { iso: null as string | null, country: "Pacific Island Countries" },
+                  ...chips.map((c) => ({ iso: c.iso as string | null, country: c.country })),
+                ].map((c) => {
+                  const on = selectedIso === c.iso;
+                  return (
+                    <li
+                      key={c.iso ?? "all"}
+                      role="option"
+                      aria-selected={on}
+                      onClick={() => {
+                        setSelectedIso(c.iso);
+                        setMenuOpen(false);
+                      }}
+                      className="cursor-pointer px-3 py-1.5 hover:bg-slate-100"
+                      style={{
+                        color: "#2b3440",
+                        fontWeight: on ? 600 : 400,
+                        background: on ? "#f2f7fa" : undefined,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {c.country}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </span>
+          {picMatch ? "." : ", US$ billion."}
+        </div>
+
+        {picMatch && (
+          <FinanceCountryCard
+            country={picMatch.country}
+            needPctGdp={picMatch.needPctGdp}
+            coveragePct={picMatch.coveragePct}
+            regionCoveragePct={region.disbursementCoveragePct}
+            isSmall={isSmall}
+          />
+        )}
+
+        <div ref={ref} className="w-full" hidden={picMatch !== null}>
           <svg
             viewBox={`0 0 ${VB_W} ${VB_H}`}
             width="100%"
@@ -292,11 +312,11 @@ export default function FinanceGap() {
             <rect x={needX} y={needTopY} width={barW} height={FULL_H} fill="url(#fg-need-hatch)" />
             <rect x={needX} y={needTopY} width={barW} height={FULL_H} fill="none" stroke={NEED_STROKE} strokeWidth={1.25} />
 
-            <text x={needCx} y={needTopY - 16} textAnchor="middle" fontSize={24} fontWeight={700} fill={INK}>
+            <text x={needCx} y={needTopY - 16} textAnchor="middle" fontSize={valueSize} fontWeight={700} fill={INK}>
               US${need.toFixed(1)}bn
             </text>
 
-            <text x={needCx} y={BASE_Y + 22} textAnchor="middle" fontSize={13.5} fontWeight={700} fill={INK}>
+            <text x={needCx} y={BASE_Y + 22} textAnchor="middle" fontSize={barLabelSize} fontWeight={700} fill={INK}>
               Projected annual need
             </text>
 
@@ -311,14 +331,14 @@ export default function FinanceGap() {
               x={recvCx}
               y={recvY - 16}
               textAnchor="middle"
-              fontSize={24}
+              fontSize={valueSize}
               fontWeight={700}
               fill={PRIMARY_DARK}
             >
               US${disbursed.toFixed(1)}bn
             </text>
 
-            <text x={recvCx} y={BASE_Y + 22} textAnchor="middle" fontSize={13.5} fontWeight={700} fill={INK}>
+            <text x={recvCx} y={BASE_Y + 22} textAnchor="middle" fontSize={barLabelSize} fontWeight={700} fill={INK}>
               Recent annual finance
             </text>
 
@@ -326,12 +346,60 @@ export default function FinanceGap() {
               EST. DISBURSEMENTS, 2021&ndash;2023 AVERAGE
             </text>
 
-            {/* MEASUREMENT BRACKET — matches the Option A prototype */}
+            {/* SHORTFALL ANNOTATION
+                Wide: a bracket in the right margin spanning the gap.
+                Phone: no right margin exists, so the same figure is stated
+                beneath the bars with a short connector to the empty space. */}
             {(() => {
-              const bx = recvX + barW + 22;
               const armTop = needTopY;
               const armBot = recvTopY;
               const mid = (armTop + armBot) / 2;
+
+              if (isSmall) {
+                return (
+                  <g>
+                    <path
+                      d={`M ${recvCx} ${armTop + 6} v ${armBot - armTop - 14}`}
+                      stroke={INK}
+                      strokeWidth={1}
+                      strokeDasharray="3 3"
+                      fill="none"
+                      opacity={0.5}
+                    />
+                    <text
+                      x={VB_W / 2}
+                      y={BASE_Y + 74}
+                      textAnchor="middle"
+                      fontSize={noteSize}
+                      fontWeight={700}
+                      fill={INK}
+                    >
+                      {unfundedPct}% of projected need
+                    </text>
+                    <text
+                      x={VB_W / 2}
+                      y={BASE_Y + 92}
+                      textAnchor="middle"
+                      fontSize={noteSize}
+                      fontWeight={700}
+                      fill={INK}
+                    >
+                      remains unmet
+                    </text>
+                    <text
+                      x={VB_W / 2}
+                      y={BASE_Y + 110}
+                      textAnchor="middle"
+                      fontSize={10.5}
+                      fill="#707070"
+                    >
+                      at recent funding levels
+                    </text>
+                  </g>
+                );
+              }
+
+              const bx = recvX + barW + 22;
               return (
                 <g>
                   <path
@@ -341,10 +409,10 @@ export default function FinanceGap() {
                     strokeWidth={1.5}
                   />
                   <line x1={bx + 10} y1={mid} x2={bx + 24} y2={mid} stroke={INK} strokeWidth={1.5} />
-                  <text x={bx + 32} y={mid - 12} textAnchor="start" fontSize={14} fontWeight={700} fill={INK}>
+                  <text x={bx + 32} y={mid - 12} textAnchor="start" fontSize={noteSize} fontWeight={700} fill={INK}>
                     {unfundedPct}% of projected need
                   </text>
-                  <text x={bx + 32} y={mid + 6} textAnchor="start" fontSize={14} fontWeight={700} fill={INK}>
+                  <text x={bx + 32} y={mid + 6} textAnchor="start" fontSize={noteSize} fontWeight={700} fill={INK}>
                     remains unmet
                   </text>
                   <text x={bx + 32} y={mid + 26} textAnchor="start" fontSize={11.5} fill="#707070">
@@ -355,18 +423,15 @@ export default function FinanceGap() {
             })()}
           </svg>
         </div>
-      </div>
 
-      <figcaption
-        className="mt-4 chart-caption text-left mx-auto w-full px-4"
-        style={{
-          /* Same geometry as Container: the one text-column definition. */
-          maxWidth: CONTAINER_WIDTH,
-          fontSize: captionSize,
-          color: "var(--text-secondary, #64748b)",
-          lineHeight: 1.6,
-        }}
-      >
+        <figcaption
+          className="mt-4 chart-caption text-left"
+          style={{
+            fontSize: captionSize,
+            color: "var(--text-secondary, #64748b)",
+            lineHeight: 1.6,
+          }}
+        >
           <span className="font-medium">Note: </span>The comparison is a
           coverage ratio rather than a same-year subtraction, and disbursed
           amounts are estimates; at recent funding levels about {fundedPct}% of
@@ -382,32 +447,7 @@ export default function FinanceGap() {
           .
         </figcaption>
 
-      {picMatch && (
-        <p
-          style={{
-            /* Inset by the column's 16px side padding so the callout's
-               left border sits exactly where the narrative text starts. */
-            maxWidth: CONTAINER_WIDTH - 32,
-            margin: "14px auto 0",
-            padding: "10px 12px",
-            fontFamily: "var(--font-serif)",
-            fontSize: "0.95rem",
-            lineHeight: 1.6,
-            background: "#fdf6e9",
-            borderLeft: "3px solid #b45309",
-          }}
-        >
-          For <strong>{picMatch.country}</strong>, projected adaptation needs
-          equal <strong>{picMatch.needPctGdp}%</strong> of GDP each year.
-          {picMatch.coveragePct !== null && (
-            <>
-              {" "}
-              Recent finance covers about{" "}
-              <strong>{picMatch.coveragePct}%</strong> of its estimated need.
-            </>
-          )}
-        </p>
-      )}
+      </div>
     </figure>
   );
 }

@@ -86,10 +86,18 @@ export default function Home() {
         </Prose>
       </Section>
 
-      {/* SECTION 3 — the finance gap */}
+            {/* SECTION 3 — the finance gap */}
       <Section
         heading="Adaptation Remains Underfunded"
       >
+        <Prose>
+          <div className={narrative}>
+            <p>
+              Under the <GlossaryTerm term="paris agreement">Paris Agreement</GlossaryTerm>, developed countries committed to provide climate finance for adaptation in developing countries. For Pacific Island Countries, that commitment is the main route to investment on the scale their needs require. Yet the adaptation finance reaching them falls well short: at recent funding levels, it would meet only about one-quarter (26%) of projected annual adaptation finance needs. That figure is a regional average, and the share of estimated needs met varies widely across countries.
+            </p>
+          </div>
+        </Prose>
+        
         <ChartBand>
           <FinanceGap />
         </ChartBand>
@@ -97,10 +105,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-          Under the <GlossaryTerm term="paris agreement">Paris Agreement</GlossaryTerm>, developed countries committed to provide climate finance for adaptation in developing countries. For Pacific Island Countries, that commitment is the main route to investment on the scale their needs require. Yet the adaptation finance reaching them falls well short: at recent funding levels, it would meet only about one-quarter (26%) of projected annual adaptation finance needs.
-            </p>
-            <p>
-              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. Even the countries best positioned to translate investment into adaptation can only build resilience with the finance that is available. Closing the gap between vulnerability and readiness therefore depends on narrowing the gap between the finance needed and the finance delivered.
+              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. And readiness, however high, can only convert the finance that arrives. What stands between adaptation needs and adaptation itself is the shortfall between the finance needed and the finance delivered.
             </p>
           </div>
         </Prose>

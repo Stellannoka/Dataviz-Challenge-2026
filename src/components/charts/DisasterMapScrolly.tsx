@@ -514,6 +514,12 @@ export default function PacificScrollyMap({
     return null;
   }, [step, inPer, perByIso, rawByIso]);
 
+  /* Scaling annotation: pinned under the subtitle so the encoding is
+     explained while the circles are on screen. Text is phase-aware. */
+  const scaleNote = inPer
+    ? "Filled circles are scaled to people directly affected per 100,000 residents. Outer rings are fixed for comparison."
+    : "Circles are scaled to the number of people directly affected.";
+
   const travelTop = useMemo(() => {
     if (!height) return 0;
     const vh = viewportH || height;
@@ -564,6 +570,16 @@ export default function PacificScrollyMap({
           >
             <h2 className="section-title">{title}</h2>
             <p className="section-subtitle">{subtitle}</p>
+            <p
+              style={{
+                marginTop: isSmall ? 3 : 5,
+                fontSize: isSmall ? "0.66rem" : "0.74rem",
+                color: PALETTE.faint,
+                fontFamily: "var(--font-sans)",
+              }}
+            >
+              {scaleNote}
+            </p>
           </div>
 
           {/* Map stage */}
@@ -915,7 +931,7 @@ export default function PacificScrollyMap({
         }}
       >
         <p className="chart-caption text-left" style={{ paddingBottom: 0 }}>
-          <span className="font-medium">Note: </span> 2020 is shown because it recorded disaster impacts in more Pacific Island Countries than any other year in the dataset. Rates can exceed 100,000 per 100,000 population where people were affected by more than one disaster in the same year. Number of directly affected persons attributed to disasters and people directly affected per 100,000 population are sourced from{" "}
+          <span className="font-medium">Note: </span> 2020 is shown because it recorded disaster impacts in more Pacific Island Countries than any other year in the dataset. Rates can exceed 100,000 per 100,000 population where people were affected by more than one disaster in the same year. In the population-adjusted view, each filled circle is scaled to this rate and the outer rings are a fixed reference. Number of directly affected persons attributed to disasters and people directly affected per 100,000 population are sourced from{" "}
           <a
             href="https://stats.pacificdata.org/vis?lc=en&df[ds]=ds%3ASPC2&df[id]=DF_SDG_11&df[ag]=SPC&df[vs]=3.0&dq=A.VC_DSR_AFFCT.........&pd=,&to[TIME_PERIOD]=false&lb=bt"
             target="_blank"
