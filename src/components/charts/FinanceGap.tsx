@@ -144,8 +144,6 @@ export default function FinanceGap() {
         className="mx-auto w-full"
         style={{ maxWidth: "640px", paddingLeft: "16px", paddingRight: "16px", marginTop: isSmall ? "1.25rem" : "1.75rem" }}
       >
-        {/* Measure line: the section heading and subtitle above carry the
-            editorial claim, so the chart states only what is plotted. */}
         {/* Measure line, with the country selector set inside it: the caption
             names what is plotted, and the dropdown changes what that is. */}
         <div
@@ -173,7 +171,6 @@ export default function FinanceGap() {
                 alignItems: "center",
                 justifyContent: "space-between",
                 gap: 8,
-                /* never let the label break across lines */
                 whiteSpace: "nowrap",
                 verticalAlign: "middle",
                 fontFamily: "var(--font-sans)",
@@ -227,7 +224,6 @@ export default function FinanceGap() {
                   minWidth: "100%",
                   width: "max-content",
                   maxWidth: 240,
-                  /* capped so the list never covers the chart */
                   maxHeight: 168,
                   overflowY: "auto",
                   background: "#ffffff",
@@ -324,7 +320,7 @@ export default function FinanceGap() {
               IMF ESTIMATE, 2024 PRICES
             </text>
 
-            {/* RECEIVED bar — rises once when scrolled into view */}
+            {/* RECEIVED bar */}
             <rect x={recvX} y={recvY} width={barW} height={recvH} fill={PRIMARY_COLOR} />
 
             <text
@@ -346,10 +342,7 @@ export default function FinanceGap() {
               EST. DISBURSEMENTS, 2021&ndash;2023 AVERAGE
             </text>
 
-            {/* SHORTFALL ANNOTATION
-                Wide: a bracket in the right margin spanning the gap.
-                Phone: no right margin exists, so the same figure is stated
-                beneath the bars with a short connector to the empty space. */}
+            {/* SHORTFALL ANNOTATION */}
             {(() => {
               const armTop = needTopY;
               const armBot = recvTopY;
@@ -432,19 +425,24 @@ export default function FinanceGap() {
             lineHeight: 1.6,
           }}
         >
-          <span className="font-medium">Note: </span>The comparison is a
-          coverage ratio rather than a same-year subtraction, and disbursed
-          amounts are estimates; at recent funding levels about {fundedPct}% of
-          projected need would be met. Source:{" "}
-          <a
-            href="https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026083-source-pdf.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-sky-700"
-          >
-            IMF Working Paper WP/26/83 (Gonguet et al., 2026)
-          </a>
-          .
+          <p style={{ margin: 0 }}>
+            <span className="font-medium">Note: </span>The comparison is a
+            coverage ratio rather than a same-year subtraction, and disbursed
+            amounts are estimates; at recent funding levels about {fundedPct}%
+            of projected need would be met.
+          </p>
+          <p style={{ margin: 0, marginTop: isSmall ? "6px" : "10px" }}>
+            <span className="font-medium">Sources: </span>
+            <a
+              href="https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026083-source-pdf.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-sky-700"
+            >
+              IMF Working Paper WP/26/83 (Gonguet et al., 2026)
+            </a>
+            .
+          </p>
         </figcaption>
 
       </div>

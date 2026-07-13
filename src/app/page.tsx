@@ -122,7 +122,7 @@ export default function Home() {
              Climate hazards cannot always be prevented. But countries can strengthen their readiness to adapt, and the investment needed to do so still falls far short of what is required.
             </p>
              <p className={narrative} style={{ marginBottom: 0 }}>
-             That is the gap, and its cost is measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
+             That persistent gap carries a cost measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
             </p>
           </div>
         </Prose>

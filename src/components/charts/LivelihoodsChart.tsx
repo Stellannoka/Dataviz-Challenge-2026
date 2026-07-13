@@ -27,8 +27,8 @@ function fmtInt(n: number): string {
 }
 
 /* --------------------------------------------------------------- palette */
-const AFFECTED_STROKE = "#9096a1"; // matches the affected value labels
-const AFFECTED_TEXT = "#9096a1"; // lighter grey: secondary in the pair
+const AFFECTED_STROKE = "#9096a1";
+const AFFECTED_TEXT = "#9096a1";
 const CONNECTOR = "var(--primary-light, #9cc0d8)";
 const LIVELIHOODS_FILL = "var(--primary, #5a8fb0)";
 const LIVELIHOODS_TEXT = "var(--primary-dark, #3f6e8c)";
@@ -83,8 +83,8 @@ export default function LivelihoodsChart() {
   const ticks = [1, 10, 100, 1000, 10000, 100000];
   const tickLabel = (t: number) => (t >= 1000 ? `${t / 1000}k` : `${t}`);
 
-  const dotR = isSmall ? 4.5 : 5;      // livelihoods (filled)
-  const affR = dotR + 2;               // affected ring sits around it when pairs coincide
+  const dotR = isSmall ? 4.5 : 5;
+  const affR = dotR + 2;
 
   const chartBottom = topPad + rows.length * rowH;
   const extraBottomPadding = 24;
@@ -238,8 +238,7 @@ export default function LivelihoodsChart() {
                     strokeOpacity={0.9}
                   />
 
-                  {/* affected — hollow ring, value above; drawn beneath the
-                      filled dot so coincident pairs read as a dot inside a ring */}
+                  {/* affected — hollow ring, value above */}
                   <circle
                     cx={affX}
                     cy={dotCY}
@@ -320,34 +319,36 @@ export default function LivelihoodsChart() {
           paddingRight: "16px",
         }}
       >
-        <span className="font-medium">Note: </span> A logarithmic scale is used
-        so that countries with very different totals remain readable; exact
-        figures are labelled. Covers the {data?.reportingCountries ?? 9} Pacific
-        Island Countries that reported both measures for {data?.year ?? 2020}
-        {data?.notReporting?.length
-          ? `; ${data.notReporting.join(", ")} did not`
-          : ""}
-        . People directly affected are sourced from the{" "}
-        <a
-          href="https://stats.pacificdata.org/vis?lc=en&df[ds]=ds%3ASPC2&df[id]=DF_SDG_11&df[ag]=SPC&df[vs]=3.0&dq=A.VC_DSR_AFFCT.........&pd=,&to[TIME_PERIOD]=false&lb=bt"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:text-sky-700"
-          style={{ color: captionColor }}
-        >
-          Pacific Community (SPC), Pacific Data Hub
-        </a>
-        ; livelihoods disrupted or destroyed are sourced from the{" "}
-        <a
-          href="https://unstats.un.org/sdgs/dataportal"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:text-sky-700"
-          style={{ color: captionColor }}
-        >
-          United Nations Statistics Division
-        </a>
-        .
+        <p style={{ margin: 0 }}>
+          <span className="font-medium">Note: </span>A logarithmic scale is
+          used so that countries with very different totals remain readable;
+          exact figures are labelled. Covers the{" "}
+          {data?.reportingCountries ?? 9} Pacific Island Countries that
+          reported both measures for {data?.year ?? 2020}.
+        </p>
+        <p style={{ margin: 0, marginTop: isSmall ? "6px" : "10px" }}>
+          <span className="font-medium">Sources: </span>
+          <a
+            href="https://stats.pacificdata.org/vis?lc=en&df[ds]=ds%3ASPC2&df[id]=DF_SDG_11&df[ag]=SPC&df[vs]=3.0&dq=A.VC_DSR_AFFCT.........&pd=,&to[TIME_PERIOD]=false&lb=bt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-sky-700"
+            style={{ color: captionColor }}
+          >
+            Pacific Community (SPC), Pacific Data Hub
+          </a>
+          {"; "}
+          <a
+            href="https://unstats.un.org/sdgs/dataportal"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-sky-700"
+            style={{ color: captionColor }}
+          >
+            United Nations Statistics Division
+          </a>
+          .
+        </p>
       </figcaption>
 
       {/* Accessible data payload */}
