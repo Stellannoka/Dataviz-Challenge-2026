@@ -188,7 +188,7 @@ export default function FinanceGap() {
                 transition: "box-shadow 0.15s ease, background-color 0.15s ease",
               }}
             >
-              {picMatch ? picMatch.country : "Pacific Island Countries"}
+              {picMatch ? picMatch.country : "Overall PIC"}
               <svg
                 aria-hidden="true"
                 width="10"
@@ -235,7 +235,7 @@ export default function FinanceGap() {
                 }}
               >
                 {[
-                  { iso: null as string | null, country: "Pacific Island Countries" },
+                  { iso: null as string | null, country: "Overall PIC" },
                   ...chips.map((c) => ({ iso: c.iso as string | null, country: c.country })),
                 ].map((c) => {
                   const on = selectedIso === c.iso;
@@ -335,7 +335,7 @@ export default function FinanceGap() {
             </text>
 
             <text x={recvCx} y={BASE_Y + 22} textAnchor="middle" fontSize={barLabelSize} fontWeight={700} fill={INK}>
-              Recent annual finance
+              Current annual finance
             </text>
 
             <text x={recvCx} y={BASE_Y + 42} textAnchor="middle" style={subtitleStyle}>
@@ -377,7 +377,7 @@ export default function FinanceGap() {
                       fontWeight={700}
                       fill={INK}
                     >
-                      remains unmet
+                      will remain unmet
                     </text>
                     <text
                       x={VB_W / 2}
@@ -386,7 +386,7 @@ export default function FinanceGap() {
                       fontSize={10.5}
                       fill="#707070"
                     >
-                      at recent funding levels
+                      at current funding levels
                     </text>
                   </g>
                 );
@@ -406,10 +406,10 @@ export default function FinanceGap() {
                     {unfundedPct}% of projected need
                   </text>
                   <text x={bx + 32} y={mid + 6} textAnchor="start" fontSize={noteSize} fontWeight={700} fill={INK}>
-                    remains unmet
+                    will remain unmet
                   </text>
                   <text x={bx + 32} y={mid + 26} textAnchor="start" fontSize={11.5} fill="#707070">
-                    at recent funding levels
+                    at current funding levels
                   </text>
                 </g>
               );

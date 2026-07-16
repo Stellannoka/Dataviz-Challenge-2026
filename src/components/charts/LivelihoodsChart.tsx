@@ -107,7 +107,7 @@ export default function LivelihoodsChart() {
           marginBottom: "12px",
         }}
       >
-        In several countries, climate disasters disrupted livelihoods on
+        In several Pacific Islands, climate disasters disrupted livelihoods on
         nearly the same scale as they affected people
       </p>
 

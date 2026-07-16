@@ -55,7 +55,7 @@ const BEATS: Beat[] = [
   {
     kicker: "Every country in the world",
     message:
-      "Placed by how exposed it is to a changing climate, and how ready it is to adapt.",
+      "Placed by how vulnerable it is to a changing climate, and how ready it is to adapt.",
   },
   {
     kicker: "The Pacific Islands",

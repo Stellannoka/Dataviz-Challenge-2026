@@ -18,9 +18,9 @@ export default function Hero() {
     >
       <Container>
         <p
+          className="hero-subtitle"
           style={{
             fontSize: '0.7rem',
-            fontFamily: 'var(--font-sans)',
             fontWeight: 400,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
@@ -36,7 +36,7 @@ export default function Hero() {
           The Cost of the Gap
         </h1>
 
-        <p className="hero-subtitle" style={{ fontSize: '1rem' }}>
+        <p className="hero-subtitle">
           What climate disasters cost the Pacific Islands, and how the gap between vulnerability and readiness shapes those costs.
         </p>
 
@@ -60,7 +60,7 @@ export default function Hero() {
             Climate change is making <GlossaryTerm term="hazards">hazards</GlossaryTerm> such as floods, droughts, tropical cyclones and sea-level rise more frequent, and in many cases more intense. Yet the damage they cause depends not only on the hazards themselves, but also on how prepared countries are to withstand and recover from them.
           </p>
           <p>
-           For many Pacific Island Countries, that preparedness has not kept pace. For more than two decades, every one of the twelve countries in this story has remained in the world's high-vulnerability half. <GlossaryTerm term="readiness">Readiness</GlossaryTerm> has varied, with some countries improving more than others. Yet none has escaped the region's persistently high climate <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm>. Together, those patterns have changed remarkably little over the past years.
+           For many Pacific Island Countries, that preparedness has not kept pace. For more than two decades, every one of the twelve countries in the data has remained in the world's high-vulnerability half. <GlossaryTerm term="readiness">Readiness</GlossaryTerm> has varied, with some countries improving more than others. Yet none has escaped the region's persistently high climate <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm>. Together, those patterns have changed remarkably little over the past years.
           </p>
         </div>
       </Container>

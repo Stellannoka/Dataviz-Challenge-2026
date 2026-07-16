@@ -860,7 +860,7 @@ export default function PacificScrollyMap({
               );
             })()}
 
-            {/* Travelling narrative box */}
+            {/* Travelling narrative box - TRANSPARENT BACKGROUND, NO BLUR */}
             {haveData && (
               <div
                 className="pointer-events-none absolute inset-x-0 flex justify-center"
@@ -877,13 +877,11 @@ export default function PacificScrollyMap({
                   className="w-full rounded-lg px-4 py-3 leading-relaxed"
                   style={{
                     maxWidth: 620,
-                    background: "rgba(255,255,255,0.55)",
+                    background: "rgba(255,255,255,0.85)",
                     color: PALETTE.inkSoft,
                     fontSize: isSmall ? "0.8rem" : "0.9rem",
                     boxShadow: "0 4px 18px rgba(100,116,139,0.14)",
                     opacity: boxOpacity,
-                    backdropFilter: "blur(6px)",
-                    WebkitBackdropFilter: "blur(6px)",
                     pointerEvents: "auto",
                     userSelect: "text",
                     WebkitUserSelect: "text",

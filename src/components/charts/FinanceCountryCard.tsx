@@ -140,12 +140,12 @@ export default function FinanceCountryCard({
             >
               {over ? (
                 <>
-                  Recent finance <strong>exceeds</strong> {country}&rsquo;s
+                  Current finance flows <strong>exceeds</strong> {country}&rsquo;s
                   estimated annual need ({cov}% coverage).
                 </>
               ) : (
                 <>
-                  Recent finance covers about <strong>{cov}%</strong> of{" "}
+                  Current finance flows will cover about <strong>{cov}%</strong> of{" "}
                   {country}&rsquo;s estimated annual need, leaving{" "}
                   <strong>{100 - cov}%</strong> unmet.
                 </>
@@ -194,9 +194,13 @@ export default function FinanceCountryCard({
             color: INK,
           }}
         >
-          A small economy&rsquo;s absolute need is small, so a single project can
-          cover it. The shortfall across the twelve countries is a sum of
-          dollars, weighted towards those with the largest needs.
+          This reflects large, lump-sum financing rather than steady annual
+          flows: three World Bank grants for adaptation-related transportation
+          projects, committed in 2021&ndash;2023, together equal roughly{" "}
+          {country}&rsquo;s entire GDP. The IMF working paper cautions this
+          should not be read as overfinancing, since the 2021&ndash;2023
+          average may not represent the flows {country} receives in future
+          years.
         </p>
       )}
     </div>

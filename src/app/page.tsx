@@ -34,10 +34,11 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-         Compared with countries around the world, several Pacific Island Countries occupy the quadrant where high vulnerability coincides with limited readiness and a high urgency to adapt. Others are comparatively more ready to adapt, which in the ND-GAIN framework means they are better positioned to translate investment into adaptation, but their climate risks and adaptation needs remain high.
+      In the ND-GAIN framework, higher readiness means countries are better positioned to translate investment into adaptation, but their adaptation needs remain high. Even where readiness has improved, it has not kept pace with the region's persistently high vulnerability, leaving a gap between the need to adapt and the capacity to do so.
+
             </p>
             <p>
-           Although individual countries shift over time, this broader pattern changes remarkably little, and its consequences become clear when climate-related <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike. The impacts are first seen in the people affected, and in the livelihoods they depend on.
+           Although individual countries shift over time, this overall pattern remains remarkably consistent. Its consequences become most apparent when climate-related <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike. with the impacts first felt by affected populations and the livelihoods on which they depend.
             </p>
           </div>
         </Prose>
@@ -58,7 +59,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-            In some Pacific Island Countries, the scale of livelihood disruption approached the number of people directly affected by disasters. The Marshall Islands recorded the starkest example, where livelihoods disrupted were equivalent to more than nine in ten people affected.
+            The Marshall Islands recorded the starkest example, where livelihoods disrupted were equivalent to more than nine in ten people affected.
             </p>
             <p>
               Behind those figures are households whose farms, fisheries and businesses were disrupted, leaving recovery to depend not only on repairing damaged infrastructure, but also on restoring the means to earn a living.
@@ -74,13 +75,14 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-            Pacific Island Countries cannot choose the climate hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. What can change is their readiness to adapt to and recover from those hazards.
+          Pacific Island Countries cannot choose the climate hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Nor can these countries choose their small populations or their distance from global markets, conditions that leave less room to absorb a shock than larger, more connected economies have. What can change is their readiness to adapt to and recover from those hazards.
+            </p>
+
+            <p>
+            Strengthening infrastructure, expanding early warning systems and building resilient institutions can reduce the human and economic costs of climate-related disasters. Yet these measures require sustained investment that many Pacific Island Countries cannot finance from domestic resources alone.
             </p>
             <p>
-             Strengthening infrastructure, expanding early warning systems and building resilient institutions can reduce the human and economic costs of climate-related disasters. But building that readiness requires sustained investment.
-            </p>
-            <p>
-              For many Pacific Island Countries, the investment needed to strengthen readiness is beyond what domestic resources alone can support. Across the region, estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average just over one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year, and exceed one-third for some atoll nations. Meeting needs on that scale therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
+              Across the region, estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average just over one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year, and exceed one-third for some atoll nations. Meeting needs on that scale therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
             </p>
           </div>
         </Prose>
@@ -93,7 +95,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-              Under the <GlossaryTerm term="paris agreement">Paris Agreement</GlossaryTerm>, developed countries committed to provide climate finance for adaptation in developing countries. For Pacific Island Countries, that commitment is the main route to investment on the scale their needs require. Yet the adaptation finance reaching them falls well short: at recent funding levels, it would meet only about one-quarter (26%) of projected annual adaptation finance needs. That figure is a regional average, and the share of estimated needs met varies widely across countries.
+              For Pacific Island Countries, international climate finance is essential to securing investment on the scale their adaptation needs require. An estimated $3.3 billion (25.2% of GDP) is needed annually to meet adaptation needs. Yet the adaptation finance reaching them falls well short: at current financing flows, it would meet only about one-quarter (26%) of the projected annual adaptation finance needs. That figure is a regional average, and the share of estimated needs met varies widely across countries.
             </p>
           </div>
         </Prose>
@@ -105,7 +107,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. And readiness, however high, can only convert the finance that arrives. What stands between adaptation needs and adaptation itself is the shortfall between the finance needed and the finance delivered.
+              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. However strong institutions become, they can only translate the finance that arrives into adaptation. Closing the finance gap is therefore essential if adaptation needs are to be met.
             </p>
           </div>
         </Prose>
@@ -119,73 +121,106 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p className={narrative} style={{ marginBottom: 0 }}>
-             Climate hazards cannot always be prevented. But countries can strengthen their readiness to adapt, and the investment needed to do so still falls far short of what is required.
+            Climate hazards cannot always be prevented. But countries can strengthen their readiness to adapt. The investment needed to build that readiness, however, still falls far short of what is required.
             </p>
              <p className={narrative} style={{ marginBottom: 0 }}>
-             That persistent gap carries a cost measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
+           That persistent investment gap carries a cost measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
+            </p>
+             <p className={narrative} style={{ marginBottom: 0 }}>
+          Adaptation finance is therefore an urgent priority for Pacific Island Countries because it is essential to strengthening resilience, protecting livelihoods and reducing the impacts of climate change.
             </p>
           </div>
         </Prose>
       </Section>
 
-      {/* METHODOLOGY */}
-<div className="max-w-[640px] mx-auto px-4">
+    {/* METHODOLOGY */}
+<div className="max-w-[640px] mx-auto px-4" style={{ marginBottom: "4rem" }}>
   <div className="border-t border-slate-200 mb-8" />
+  
+  {/* Tool */}
+  <h4 style={{ 
+    fontSize: "0.85rem", 
+    fontWeight: 600, 
+    color: "#2b3440",
+    marginBottom: "0.25rem",
+    fontFamily: "var(--font-sans)"
+  }}>
+    Tool
+  </h4>
+  <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
+    <p style={{ marginBottom: "1.5rem" }}>
+      This project was created as an entry for the{" "}
+      <a
+        href="https://pacificdatavizchallenge.org/#official-datasets--theme"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold underline underline-offset-2 hover:text-sky-700"
+      >
+        Pacific DataViz Challenge 2026
+      </a>
+      . It was built with{" "}
+      <a
+        href="https://react.dev/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold underline underline-offset-2 hover:text-sky-700"
+      >
+        React
+      </a>
+      ,{" "}
+      <a
+        href="https://d3js.org/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold underline underline-offset-2 hover:text-sky-700"
+      >
+        D3.js
+      </a>
+      , and styled with Tailwind CSS.
+    </p>
+  </div>
+
+  {/* Source */}
+  <h4 style={{ 
+    fontSize: "0.85rem", 
+    fontWeight: 600, 
+    color: "#2b3440",
+    marginBottom: "0.25rem",
+    fontFamily: "var(--font-sans)"
+  }}>
+    Source
+  </h4>
+  <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
+    <p style={{ marginBottom: "1.5rem" }}>
+      The datasets used throughout the project are cited and linked in the caption of each visualisation.
+    </p>
+  </div>
+
+  {/* Methodology */}
+  <h4 style={{ 
+    fontSize: "0.85rem", 
+    fontWeight: 600, 
+    color: "#2b3440",
+    marginBottom: "0.25rem",
+    fontFamily: "var(--font-sans)"
+  }}>
+    Methodology
+  </h4>
+  <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
+    <p style={{ marginBottom: 0 }}>
+      Source code, data files and full methodology notes are available on{" "}
+      <a
+        href="https://github.com/stellannoka/Dataviz-Challenge-2026"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold underline underline-offset-2 hover:text-sky-700"
+      >
+        GitHub
+      </a>
+      .
+    </p>
+  </div>
 </div>
-<Section heading="Methodology">
-  <Prose>
-    <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
-      <p style={{ marginBottom: "0.75rem" }}>
-        This project was created as an entry for the{" "}
-        <a
-          href="https://pacificdatavizchallenge.org/#official-datasets--theme"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold underline underline-offset-2 hover:text-sky-700"
-        >
-          Pacific DataViz Challenge 2026
-        </a>
-        . It was built with{" "}
-        <a
-          href="https://react.dev/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold underline underline-offset-2 hover:text-sky-700"
-        >
-          React
-        </a>
-        ,{" "}
-        <a
-          href="https://d3js.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold underline underline-offset-2 hover:text-sky-700"
-        >
-          D3.js
-        </a>
-        , and styled with Tailwind CSS.
-      </p>
-      <p style={{ marginBottom: "0.75rem" }}>
-        It brings together multiple datasets to examine climate vulnerability, disaster impacts and resilience across Pacific Island Countries. Where appropriate, indicators are presented both as absolute values and population-adjusted measures to support meaningful comparisons between countries of different sizes.
-      </p>
-      <p style={{ marginBottom: "0.75rem" }}>
-        The datasets used throughout the project are cited and linked in the caption of each visualisation.
-      </p>
-      <p style={{ marginBottom: 0 }}>
-        Written and built by Stellamaris Nnoka. Source code, data files and full methodology notes are available on{" "}
-        <a
-          href="https://github.com/stellannoka/Dataviz-Challenge-2026"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold underline underline-offset-2 hover:text-sky-700"
-        >
-          GitHub
-        </a>
-        .
-      </p>
-    </div>
-  </Prose>
-</Section>
     </main>
   );
 }
