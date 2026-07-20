@@ -56,13 +56,58 @@
         "affected": 15
       },
       {
-        "iso": "FSM",
+        "iso": "NC",
+        "country": "New Caledonia",
+        "affected": 2
+      },
+      {
+        "iso": "AS",
+        "country": "American Samoa",
+        "affected": 232
+      },
+      {
+        "iso": "CK",
+        "country": "Cook Islands",
+        "affected": 0
+      },
+      {
+        "iso": "FM",
         "country": "Micronesia (Fed. States)",
+        "affected": 0
+      },
+      {
+        "iso": "GU",
+        "country": "Guam",
+        "affected": 0
+      },
+      {
+        "iso": "MP",
+        "country": "Northern Mariana Islands",
+        "affected": 0
+      },
+      {
+        "iso": "NU",
+        "country": "Niue",
+        "affected": 0
+      },
+      {
+        "iso": "PF",
+        "country": "French Polynesia",
         "affected": 0
       },
       {
         "iso": "PLW",
         "country": "Palau",
+        "affected": 0
+      },
+      {
+        "iso": "TK",
+        "country": "Tokelau",
+        "affected": 0
+      },
+      {
+        "iso": "WF",
+        "country": "Wallis and Futuna",
         "affected": 0
       }
     ]
@@ -117,18 +162,63 @@
         "per100k": 12
       },
       {
-        "iso": "TON",
-        "country": "Tonga",
+        "iso": "AS",
+        "country": "American Samoa",
         "per100k": 0
       },
       {
-        "iso": "FSM",
+        "iso": "CK",
+        "country": "Cook Islands",
+        "per100k": 0
+      },
+      {
+        "iso": "FM",
         "country": "Micronesia (Fed. States)",
+        "per100k": 0
+      },
+      {
+        "iso": "GU",
+        "country": "Guam",
+        "per100k": 0
+      },
+      {
+        "iso": "MP",
+        "country": "Northern Mariana Islands",
+        "per100k": 0
+      },
+      {
+        "iso": "NC",
+        "country": "New Caledonia",
+        "per100k": 0
+      },
+      {
+        "iso": "NU",
+        "country": "Niue",
+        "per100k": 0
+      },
+      {
+        "iso": "PF",
+        "country": "French Polynesia",
         "per100k": 0
       },
       {
         "iso": "PLW",
         "country": "Palau",
+        "per100k": 0
+      },
+      {
+        "iso": "TK",
+        "country": "Tokelau",
+        "per100k": 0
+      },
+      {
+        "iso": "TON",
+        "country": "Tonga",
+        "per100k": 0
+      },
+      {
+        "iso": "WF",
+        "country": "Wallis and Futuna",
         "per100k": 0
       }
     ]
