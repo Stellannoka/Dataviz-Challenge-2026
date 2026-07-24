@@ -34,11 +34,11 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-      In the ND-GAIN framework, higher readiness means countries are better positioned to translate investment into adaptation, but their adaptation needs remain high. Even where readiness has improved, it has not kept pace with the region's persistently high vulnerability, leaving a gap between the need to adapt and the capacity to do so.
+      In the ND-GAIN framework, vulnerability reflects exposure and sensitivity to climate hazards, while readiness measures a country's capacity to invest in and implement adaptation. When vulnerability continues to outpace readiness, climate shocks become harder to withstand and recover from.
 
             </p>
             <p>
-           Although individual countries shift over time, this overall pattern remains remarkably consistent. Its consequences become most apparent when climate-related <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike. with the impacts first felt by affected populations and the livelihoods on which they depend.
+           The consequences of that imbalance become most apparent when <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike, first through the people affected and the livelihoods on which they depend.
             </p>
           </div>
         </Prose>
@@ -62,7 +62,7 @@ export default function Home() {
             The Marshall Islands recorded the starkest example, where livelihoods disrupted were equivalent to more than nine in ten people affected.
             </p>
             <p>
-              Behind those figures are households whose farms, fisheries and businesses were disrupted, leaving recovery to depend not only on repairing damaged infrastructure, but also on restoring the means to earn a living.
+              Behind those figures are households whose farms, fisheries and businesses were disrupted, leaving recovery to depend not only on repairing damaged infrastructure, but also on restoring the means to earn a living. These impacts reflect not only the hazards countries face, but also how prepared they are to withstand and recover from them.
             </p>
           </div>
         </Prose>
@@ -75,11 +75,11 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-          Pacific Island Countries cannot choose the climate hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Nor can these countries choose their small populations or their distance from global markets, conditions that leave less room to absorb a shock than larger, more connected economies have. What can change is their readiness to adapt to and recover from those hazards.
+          Pacific Island Countries cannot choose the climate hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Nor can these countries choose their small populations or geographic isolation, both of which leave them with fewer resources to absorb and recover from climate shocks. What can change is their readiness to adapt to and recover from those hazards.
             </p>
 
             <p>
-            Strengthening infrastructure, expanding early warning systems and building resilient institutions can reduce the human and economic costs of climate-related disasters. Yet these measures require sustained investment that many Pacific Island Countries cannot finance from domestic resources alone.
+           Turning readiness into effective adaptation requires sustained investment in infrastructure, early warning systems and resilient institutions. Yet many Pacific Island Countries cannot finance those investments from domestic resources alone.
             </p>
             <p>
               Across the region, estimated <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> needs average just over one-fifth of <GlossaryTerm term="gdp">GDP</GlossaryTerm> each year, and exceed one-third for some atoll nations. Meeting needs on that scale therefore depends heavily on international <GlossaryTerm term="climate finance">climate finance</GlossaryTerm>.
@@ -88,14 +88,14 @@ export default function Home() {
         </Prose>
       </Section>
 
-            {/* SECTION 3 — the finance gap */}
+      {/* SECTION 3 — the finance gap */}
       <Section
         heading="Adaptation Remains Underfunded"
       >
         <Prose>
           <div className={narrative}>
             <p>
-              For Pacific Island Countries, international climate finance is essential to securing investment on the scale their adaptation needs require. An estimated $3.3 billion (25.2% of GDP) is needed annually to meet adaptation needs. Yet the adaptation finance reaching them falls well short: at current financing flows, it would meet only about one-quarter (26%) of the projected annual adaptation finance needs. That figure is a regional average, and the share of estimated needs met varies widely across countries.
+         Despite its importance, adaptation finance reaching Pacific Island Countries falls far short of what is needed. Between 2021 and 2023, the region received an average of about USD 0.9 billion a year in adaptation finance. Estimated annual adaptation needs, however, are about USD 3.3 billion, meaning current finance would cover only around 26% of what is required.
             </p>
           </div>
         </Prose>
@@ -107,31 +107,15 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-              Without investment that better matches the scale of adaptation needs, strengthening readiness will remain difficult. However strong institutions become, they can only translate the finance that arrives into adaptation. Closing the finance gap is therefore essential if adaptation needs are to be met.
+           Without investment that better matches the scale of adaptation needs, strengthening resilience will remain difficult. However high a country's readiness becomes, it can only translate the finance that arrives into adaptation.
+            </p>
+            <p>
+           Closing the gap between vulnerability and readiness will therefore require adaptation finance that better matches the scale of need, alongside the capacity to access and turn that investment into effective adaptation.
             </p>
           </div>
         </Prose>
       </Section>
 
-      {/* CONCLUSION */}
-      <div className="max-w-[640px] mx-auto px-4">
-        <div className="border-t border-slate-200 mb-8" />
-      </div>
-      <Section heading="Conclusion">
-        <Prose>
-          <div className={narrative}>
-            <p className={narrative} style={{ marginBottom: 0 }}>
-            Climate hazards cannot always be prevented. But countries can strengthen their readiness to adapt. The investment needed to build that readiness, however, still falls far short of what is required.
-            </p>
-             <p className={narrative} style={{ marginBottom: 0 }}>
-           That persistent investment gap carries a cost measured not in dollars alone, but in the people, livelihoods and communities it leaves most exposed.
-            </p>
-             <p className={narrative} style={{ marginBottom: 0 }}>
-          Adaptation finance is therefore an urgent priority for Pacific Island Countries because it is essential to strengthening resilience, protecting livelihoods and reducing the impacts of climate change.
-            </p>
-          </div>
-        </Prose>
-      </Section>
 
     {/* METHODOLOGY */}
 <div className="max-w-[640px] mx-auto px-4" style={{ marginBottom: "4rem" }}>
@@ -141,29 +125,21 @@ export default function Home() {
   <h4 style={{ 
     fontSize: "0.85rem", 
     fontWeight: 600, 
-    color: "#2b3440",
-    marginBottom: "0.25rem",
-    fontFamily: "var(--font-sans)"
+    fontFamily: "var(--font-sans)",
+    color: "var(--text-color)",
+    marginBottom: "0.5rem"
   }}>
     Tool
   </h4>
   <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
     <p style={{ marginBottom: "1.5rem" }}>
-      This project was created as an entry for the{" "}
-      <a
-        href="https://pacificdatavizchallenge.org/#official-datasets--theme"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-semibold underline underline-offset-2 hover:text-sky-700"
-      >
-        Pacific DataViz Challenge 2026
-      </a>
-      . It was built with{" "}
+      This project was built with{" "}
       <a
         href="https://react.dev/"
         target="_blank"
         rel="noopener noreferrer"
-        className="font-semibold underline underline-offset-2 hover:text-sky-700"
+        className="underline underline-offset-2 hover:text-sky-700"
+        style={{ fontWeight: 500, color: "rgb(112, 112, 112)" }}
       >
         React
       </a>
@@ -172,11 +148,32 @@ export default function Home() {
         href="https://d3js.org/"
         target="_blank"
         rel="noopener noreferrer"
-        className="font-semibold underline underline-offset-2 hover:text-sky-700"
+        className="underline underline-offset-2 hover:text-sky-700"
+        style={{ fontWeight: 500, color: "rgb(112, 112, 112)" }}
       >
         D3.js
       </a>
-      , and styled with Tailwind CSS.
+      , and styled with{" "}
+      <a
+        href="https://tailwindcss.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 hover:text-sky-700"
+        style={{ fontWeight: 500, color: "rgb(112, 112, 112)" }}
+      >
+        Tailwind CSS
+      </a>
+      . Created as an entry for the{" "}
+      <a
+        href="https://pacificdatavizchallenge.org/#official-datasets--theme"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 hover:text-sky-700"
+        style={{ fontWeight: 500, color: "rgb(112, 112, 112)" }}
+      >
+        Pacific DataViz Challenge 2026
+      </a>
+      .
     </p>
   </div>
 
@@ -184,11 +181,11 @@ export default function Home() {
   <h4 style={{ 
     fontSize: "0.85rem", 
     fontWeight: 600, 
-    color: "#2b3440",
+    color: "rgb(44, 62, 80)",
     marginBottom: "0.25rem",
     fontFamily: "var(--font-sans)"
   }}>
-    Source
+    Sources
   </h4>
   <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
     <p style={{ marginBottom: "1.5rem" }}>
@@ -200,7 +197,7 @@ export default function Home() {
   <h4 style={{ 
     fontSize: "0.85rem", 
     fontWeight: 600, 
-    color: "#2b3440",
+    color: "rgb(44, 62, 80)",
     marginBottom: "0.25rem",
     fontFamily: "var(--font-sans)"
   }}>
@@ -213,7 +210,8 @@ export default function Home() {
         href="https://github.com/stellannoka/Dataviz-Challenge-2026"
         target="_blank"
         rel="noopener noreferrer"
-        className="font-semibold underline underline-offset-2 hover:text-sky-700"
+        className="underline underline-offset-2 hover:text-sky-700"
+        style={{ fontWeight: 500, color: "rgb(112, 112, 112)" }}
       >
         GitHub
       </a>

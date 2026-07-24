@@ -35,10 +35,16 @@ interface GeoData {
   features: GeoFeature[];
 }
 
-/* --------------------------------------------------------------- palette */
+/* --------------------------------------------------------------- palette
+   Both phases now draw from the WARM family. The raw -> per-100k change is
+   the SAME disaster data with only the denominator changed, so the encoding
+   must not switch hue at the flip. The phase change is already carried by
+   the Dorling grid morph (map dissolves into ringed cells), so colour is
+   free to stay constant and say "same subject". Blue is reserved entirely
+   for finance (Section 3). */
 const PALETTE = {
   raw: { accent: "var(--accent, #b45309)", bubble: "var(--accent-bubble, #e0793a)" },
-  per: { accent: "var(--primary, #3f6e8c)", bubble: "var(--primary-bubble, #5a8fb0)" },
+  per: { accent: "var(--accent-dark, #92400e)", bubble: "var(--accent-bubble, #e0793a)" },
   ink: "var(--ink, #0f172a)",
   inkSoft: "var(--ink-soft, #1e293b)",
   muted: "var(--muted, #475569)",
@@ -49,10 +55,35 @@ const PALETTE = {
   surface: "var(--surface, #ffffff)",
   land: "var(--land, #f5f5f5)",
   landStroke: "var(--land-stroke, #cfcfcf)",
+  neutralBubble: "#d3d3d3", // Light grey for initial state
 } as const;
 
 /* ----------------------------------------------- explicit bubble anchors */
-const COORDS: Record<string, { lon: number; lat: number }> = {
+const COORDS_RAW: Record<string, { lon: number; lat: number }> = {
+  FJI: { lon: 178.0, lat: -17.8 },
+  VUT: { lon: 167.0, lat: -16.5 },
+  SLB: { lon: 160.0, lat: -9.6 },
+  TON: { lon: -175.2, lat: -21.2 },
+  WSM: { lon: -172.1, lat: -13.6 },
+  MHL: { lon: 171.2, lat: 7.1 },
+  FSM: { lon: 158.2, lat: 6.9 },
+  PLW: { lon: 134.5, lat: 7.5 },
+  KIR: { lon: 173.0, lat: 1.4 },
+  TUV: { lon: 179.2, lat: -8.5 },
+  NRU: { lon: 166.9, lat: -0.5 },
+  PNG: { lon: 144.3, lat: -6.0 },
+  AS: { lon: -170.1, lat: -14.3 },
+  CK: { lon: -159.8, lat: -21.2 },
+  GU: { lon: 144.8, lat: 13.4 },
+  MP: { lon: 145.8, lat: 15.2 },
+  NC: { lon: 165.9, lat: -21.5 },
+  NU: { lon: -169.9, lat: -19.1 },
+  PF: { lon: -149.6, lat: -17.5 },
+  TK: { lon: -171.8, lat: -9.2 },
+  WF: { lon: -176.2, lat: -14.3 }
+};
+
+const COORDS_PER100K: Record<string, { lon: number; lat: number }> = {
   FJI: { lon: 178.0, lat: -17.8 },
   VUT: { lon: 167.0, lat: -16.5 },
   SLB: { lon: 160.0, lat: -9.6 },
@@ -87,14 +118,14 @@ const STEPS: Step[] = [
     kind: "intro",
     focus: [],
     title: "Intro",
-    body: "Climate-related disasters directly affected more than half a million people across the Pacific Island Countries in 2020. The data show disaster impacts in more Pacific Island Countries that year than in any other over the past two decades. But those impacts were far from evenly distributed.",
+    body: "Disasters directly affected more than half a million people across the Pacific Island Countries in 2020. More countries recorded disaster impacts that year than at any other point over the past two decades. But while disasters were widespread, the number of people affected varied greatly from one country to another.",
   },
   {
     phase: "raw",
     kind: "highlight",
     focus: ["VUT"],
     title: "Vanuatu",
-    body: "Vanuatu recorded the largest number of people directly affected. Nearly 247,000 people were affected by climate-related disasters, more than the entire population of many Pacific Island nations.",
+    body: "Vanuatu recorded the largest number of people directly affected. Nearly 247,000 people experienced the immediate impacts of disasters; more than the entire population of many Pacific Island countries.",
   },
   {
     phase: "raw",
@@ -108,14 +139,14 @@ const STEPS: Step[] = [
     kind: "highlight",
     focus: ["MHL"],
     title: "Marshall Islands",
-    body: "The Marshall Islands recorded far fewer people affected than Fiji or Vanuatu. At first glance, it appears to have escaped the worst impacts.",
+    body: "The Marshall Islands recorded far fewer people directly affected than Fiji or Vanuatu. Judged by total numbers alone, it appears to have experienced a much smaller disaster.",
   },
   {
     phase: "raw",
     kind: "setup",
     focus: ["VUT", "FJI"],
     title: "",
-    body: "But absolute numbers reveal where the greatest numbers of people were affected. They do not, however, show how widespread those impacts were within each country. Viewing people affected relative to population offers another perspective.",
+    body: "But absolute numbers reveal where the greatest numbers of people were affected. They do not, however, show how widespread those impacts were within each country. Looking at people affected relative to population reveals a different picture.",
   },
 
   /* ---------------- PHASE 2 — PER 100,000 (2020) ---------------- */
@@ -131,21 +162,21 @@ const STEPS: Step[] = [
     kind: "highlight",
     focus: ["MHL", "VUT"],
     title: "",
-    body: "Once population is taken into account, the picture changes. The Marshall Islands joins Vanuatu among the countries most heavily affected relative to their population.",
+    body: "Once population is taken into account, the picture changes. The Marshall Islands joins Vanuatu among the countries most heavily affected, showing that disasters reached a much larger share of the population than absolute numbers alone suggest.",
   },
   {
     phase: "per",
     kind: "highlight",
     focus: ["TUV"],
     title: "",
-    body: "Tuvalu also rises to the top. These countries no longer stand out because they have larger populations but rather a much greater share of their people were affected.",
+    body: "Tuvalu also rises to the top. Although fewer people were affected in total, they represented a much larger share of the country's population, revealing how heavily disasters can affect even the smallest island nations.",
   },
   {
     phase: "per",
     kind: "reveal",
     focus: [],
     title: "",
-    body: "Whether measured in absolute numbers or relative to population, the charts show that climate-related disasters affected thousands of people across the Pacific Islands. Going deeper, the impacts are also felt in the livelihoods that sustain these people.",
+    body: "Whether measured by the number of people affected or by the share of the population impacted, disasters can touch a substantial part of a country's population. But the immediate human toll is only one measure of their impact. The disruption often continues long after the disaster itself has passed.",
   },
 ];
 
@@ -196,7 +227,7 @@ interface PacificScrollyMapProps {
 
 export default function PacificScrollyMap({
   title = "The Cost of Disasters",
-  subtitle = "Hundreds of thousands of people across the Pacific Islands were directly affected by climate-related disasters in 2020",
+  subtitle = "Hundreds of thousands of people across the Pacific Islands were directly affected by disasters in 2020",
 }: PacificScrollyMapProps = {}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -210,6 +241,7 @@ export default function PacificScrollyMap({
 
   const [tooltip, setTooltip] = useState<{ iso: string; x: number; y: number } | null>(null);
   const [viewportH, setViewportH] = useState(0);
+  const [hasStartedScrolling, setHasStartedScrolling] = useState(false);
 
   /* ---- data load */
   useEffect(() => {
@@ -258,6 +290,11 @@ export default function PacificScrollyMap({
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
       const p = total > 0 ? scrolled / total : 0;
 
+      // Track if user has started scrolling
+      if (scrolled > 0) {
+        setHasStartedScrolling(true);
+      }
+
       const scaled = p * totalSegments;
       let idx = Math.floor(scaled);
       if (idx >= totalSegments) idx = totalSegments - 1;
@@ -286,10 +323,22 @@ export default function PacificScrollyMap({
   const focusISOs: string[] = useMemo(() => step?.focus ?? [], [step]);
   const anyFocus = focusISOs.length > 0;
 
-  const gridT = useMemo(
-    () => (segIndex >= FLIP_STEP_INDEX ? 1 : 0),
-    [segIndex]
-  );
+  /* ---- GRADUAL TRANSITION: gridT completes BEFORE the flip step reaches the top */
+  const gridT = useMemo(() => {
+    // Before the flip step: no grid (0)
+    if (segIndex < FLIP_STEP_INDEX) return 0;
+
+    // During the flip step: transition completes in the first 30% of the step
+    // so by the time the flip step reaches the top of the viewport, it's done
+    if (segIndex === FLIP_STEP_INDEX) {
+      const t = Math.min(1, Math.max(0, segProgress / 0.3)); // Complete by 30% of scroll
+      // Cubic ease in-out for smoother motion
+      return t * t * (3 - 2 * t);
+    }
+
+    // After the flip step: fully in grid mode (1)
+    return 1;
+  }, [segIndex, segProgress]);
 
   /* ---- lookups */
   const rawByIso = useMemo(() => {
@@ -304,7 +353,9 @@ export default function PacificScrollyMap({
     return m;
   }, [yearData]);
 
-  const isoList = useMemo(() => Object.keys(COORDS), []);
+  // Use different COORDS based on phase
+  const coords = inPer ? COORDS_PER100K : COORDS_RAW;
+  const isoList = useMemo(() => Object.keys(coords), [coords]);
 
   const nameFor = useCallback(
     (iso: string): string =>
@@ -318,7 +369,7 @@ export default function PacificScrollyMap({
     const shiftLon = (lon: number) => (lon < 0 ? lon + 360 : lon);
     const fitPoints = {
       type: "MultiPoint" as const,
-      coordinates: Object.values(COORDS).map((c) => [shiftLon(c.lon), c.lat]),
+      coordinates: Object.values(coords).map((c) => [shiftLon(c.lon), c.lat]),
     };
     const padFrac = isSmall ? 0.1 : isMedium ? 0.08 : 0.06;
     const pad = Math.min(width, height) * padFrac;
@@ -332,7 +383,7 @@ export default function PacificScrollyMap({
       fitPoints
     );
     return proj;
-  }, [width, height, isSmall, isMedium]);
+  }, [width, height, isSmall, isMedium, coords]);
 
   /* ---- radius scales */
   const rScaleRaw = useMemo(() => {
@@ -357,14 +408,14 @@ export default function PacificScrollyMap({
     if (!projection) return [];
     return isoList
       .map((iso) => {
-        const c = COORDS[iso];
+        const c = coords[iso];
         if (!c) return null;
         const pt = projection([c.lon, c.lat]) as [number, number] | null;
         if (!pt || Number.isNaN(pt[0])) return null;
         return { iso, x: pt[0], y: pt[1] };
       })
       .filter((d): d is { iso: string; x: number; y: number } => d !== null);
-  }, [projection, isoList]);
+  }, [projection, isoList, coords]);
 
   const ringR = isSmall ? 16 : isMedium ? 22 : 26;
 
@@ -530,7 +581,16 @@ export default function PacificScrollyMap({
     return startY + (endY - startY) * segProgress;
   }, [height, viewportH, segProgress, isSmall]);
 
-  const boxOpacity = segProgress < 0.06 ? segProgress / 0.06 : 1;
+  // Delay the appearance of the narrative box until user has scrolled a bit
+  const boxOpacity = useMemo(() => {
+    if (!hasStartedScrolling) return 0;
+    // Fade in over the first 10% of the first scroll
+    const progress = segProgress;
+    if (segIndex === 0) {
+      return Math.min(1, Math.max(0, (progress - 0.05) / 0.15));
+    }
+    return 1;
+  }, [hasStartedScrolling, segIndex, segProgress]);
 
   const accent = inPer ? PALETTE.per.accent : PALETTE.raw.accent;
   const bubbleFill = inPer ? PALETTE.per.bubble : PALETTE.raw.bubble;
@@ -546,6 +606,9 @@ export default function PacificScrollyMap({
   };
 
   const flyTransition = "transform 0.9s cubic-bezier(0.4,0,0.2,1)";
+
+  // Check if we're in the initial state (before any scrolling)
+  const isInitialState = !hasStartedScrolling || (segIndex === 0 && segProgress < 0.05);
 
   return (
     <figure className="w-full" aria-label="Pacific disaster scrollytelling map">
@@ -574,6 +637,7 @@ export default function PacificScrollyMap({
               style={{
                 marginTop: isSmall ? 10 : 14,
                 fontSize: isSmall ? "0.66rem" : "0.74rem",
+                fontWeight: 300,
                 color: PALETTE.faint,
                 fontFamily: "var(--font-sans)",
               }}
@@ -667,6 +731,9 @@ export default function PacificScrollyMap({
                     const gridName = nameFor(iso);
                     const gridDim = anyFocus && !isFoc ? 0.4 : 1;
 
+                    // Determine if we should use neutral color (initial state)
+                    const useNeutral = isInitialState;
+
                     return (
                       <g
                         key={iso}
@@ -683,24 +750,24 @@ export default function PacificScrollyMap({
                           <g style={{ opacity: mapOpacity }}>
                             <circle
                               r={displayR}
-                              fill={hasValue ? bubbleFill : "none"}
+                              fill={useNeutral ? PALETTE.neutralBubble : (hasValue ? bubbleFill : "none")}
                               fillOpacity={
-                                hasValue ? (isFoc ? 0.62 : anyFocus ? 0.22 : 0.32) : 0
+                                useNeutral ? 0.9 : (hasValue ? (isFoc ? 0.62 : anyFocus ? 0.22 : 0.32) : 0)
                               }
                               stroke={
-                                isFoc
+                                useNeutral
+                                  ? PALETTE.neutralBubble
+                                  : (isFoc
                                   ? accent
                                   : hasValue
-                                  ? "none"
-                                  : PALETTE.line
+                                  ? PALETTE.neutralBubble
+                                  : PALETTE.line)
                               }
-                              strokeWidth={
-                                hasValue ? 2 : 1.2
-                              }
-                              strokeDasharray={hasValue ? undefined : "2 3"}
+                              strokeWidth={0.8}
+                              strokeDasharray={useNeutral ? undefined : (hasValue ? undefined : "2 3")}
                               style={{
                                 transition:
-                                  "r 0.6s cubic-bezier(0.34,1.56,0.64,1), fill-opacity 0.4s ease",
+                                  "r 0.6s cubic-bezier(0.34,1.56,0.64,1), fill-opacity 0.4s ease, fill 0.4s ease, stroke 0.4s ease",
                               }}
                             />
 
@@ -710,10 +777,15 @@ export default function PacificScrollyMap({
                               const datum = rawByIso.get(iso);
                               const countryName = datum?.country ?? iso;
                               const labelDimmed = anyFocus && !isFoc;
-                              const nameColor = labelDimmed ? PALETTE.faint : isFoc ? PALETTE.ink : PALETTE.mutedSoft;
-                              const valueColor = labelDimmed ? PALETTE.faint : isFoc ? accent : PALETTE.faint;
-                              const nameOpacity = labelDimmed ? 0.55 : isFoc ? 1 : 0.9;
-                              const valueOpacity = labelDimmed ? 0.45 : 1;
+
+                              // In initial state: only show country name, no figures
+                              const showFigures = !isInitialState;
+
+                              const nameColor = useNeutral ? PALETTE.mutedSoft : (labelDimmed ? PALETTE.faint : isFoc ? PALETTE.ink : PALETTE.mutedSoft);
+                              const valueColor = useNeutral ? PALETTE.mutedSoft : (labelDimmed ? PALETTE.faint : isFoc ? accent : PALETTE.faint);
+                              // Reduced opacity for neutral state country labels
+                              const nameOpacity = useNeutral ? 0.45 : (labelDimmed ? 0.55 : isFoc ? 1 : 0.9);
+                              const valueOpacity = useNeutral ? 0 : (labelDimmed ? 0.45 : 1);
                               const nameFW = isFoc ? 700 : 600;
 
                               if (isSmall) {
@@ -728,7 +800,7 @@ export default function PacificScrollyMap({
                                       fillOpacity={nameOpacity}
                                       style={{ fontFamily: "var(--font-sans)" }}
                                     >
-                                      {`${iso} ${fmtInt(value)}`}
+                                      {showFigures ? `${iso} ${fmtInt(value)}` : iso}
                                     </text>
                                   </g>
                                 );
@@ -746,17 +818,19 @@ export default function PacificScrollyMap({
                                   >
                                     {countryName}
                                   </text>
-                                  <text
-                                    y={13}
-                                    textAnchor="middle"
-                                    fontSize={9.5}
-                                    fontWeight={isFoc ? 600 : 500}
-                                    fill={valueColor}
-                                    fillOpacity={valueOpacity}
-                                    style={{ fontFamily: "var(--font-sans)" }}
-                                  >
-                                    {label}
-                                  </text>
+                                  {showFigures && (
+                                    <text
+                                      y={13}
+                                      textAnchor="middle"
+                                      fontSize={9.5}
+                                      fontWeight={isFoc ? 600 : 500}
+                                      fill={valueColor}
+                                      fillOpacity={valueOpacity}
+                                      style={{ fontFamily: "var(--font-sans)" }}
+                                    >
+                                      {label}
+                                    </text>
+                                  )}
                                 </g>
                               );
                             })()}
@@ -782,7 +856,7 @@ export default function PacificScrollyMap({
                               r={ringR}
                               fill="none"
                               stroke={isFoc ? accent : PALETTE.line}
-                              strokeWidth={isFoc ? 1.8 : 1.3}
+                              strokeWidth={0.8}
                               style={{ transition: "stroke 0.4s ease" }}
                             />
 
@@ -791,8 +865,8 @@ export default function PacificScrollyMap({
                                 r={gridDisplayR}
                                 fill={bubbleFill}
                                 fillOpacity={isFoc ? 0.8 : 0.5}
-                                stroke={isFoc ? accent : "none"}
-                                strokeWidth={1.5}
+                                stroke="none"
+                                strokeWidth={0}
                                 style={{
                                   transition:
                                     "r 0.6s cubic-bezier(0.34,1.56,0.64,1), fill-opacity 0.4s ease",
@@ -929,17 +1003,17 @@ export default function PacificScrollyMap({
         }}
       >
         <p className="chart-caption text-left" style={{ paddingBottom: 0 }}>
-          <span className="font-medium">Note: </span>2020 is shown because it recorded disaster impacts in more Pacific Island Countries than any other year in the dataset. Rates can exceed 100,000 per 100,000 population where people were affected by more than one disaster in the same year.
+          Note: 2020 is shown because it recorded disaster impacts in more Pacific Island Countries than any other year in the dataset. Rates can exceed 100,000 per 100,000 population where people were affected by more than one disaster in the same year.
         </p>
         <p className="chart-caption text-left" style={{ paddingBottom: 0, marginTop: isSmall ? 6 : 10 }}>
-          <span className="font-medium">Sources: </span>
+          Sources: {" "}
           <a
             href="https://stats.pacificdata.org/vis?lc=en&df[ds]=ds%3ASPC2&df[id]=DF_SDG_11&df[ag]=SPC&df[vs]=3.0&dq=A.VC_DSR_AFFCT.........&pd=,&to[TIME_PERIOD]=false&lb=bt"
             target="_blank"
             rel="noopener noreferrer"
             className="underline underline-offset-2 hover:text-sky-700"
           >
-            Pacific Community (SPC), Pacific Data Hub
+            Pacific Data Hub. Stat Explorer
           </a>
           {"; "}
           <a
@@ -959,7 +1033,7 @@ export default function PacificScrollyMap({
         <div className="sr-only">
           <table>
             <caption>
-              People directly affected by climate-related disasters in the
+              People directly affected by disasters in the
               Pacific Island Countries, 2020: total counts.
             </caption>
             <thead>

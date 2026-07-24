@@ -550,7 +550,7 @@ export default function ClimateGapOpener() {
                       textTransform: "uppercase",
                       color: kickerColor,
                       margin: 0,
-                      marginBottom: 10,
+                      marginBottom: 12,
                     }}
                   >
                     {BEATS[seg].kicker}
@@ -559,9 +559,10 @@ export default function ClimateGapOpener() {
                 <p
                   style={{
                     fontFamily: "var(--font-sans)",
-                    color: C.ink,
-                    fontSize: isSmall ? "1.15rem" : "1.55rem",
-                    lineHeight: 1.3,
+                    color: "rgb(45, 45, 45)",
+                    fontSize: isSmall ? "1.15rem" : "1.3rem",
+                    lineHeight: 1.75,
+                    letterSpacing: "0.012em",
                     fontWeight: 400,
                     margin: 0,
                   }}
