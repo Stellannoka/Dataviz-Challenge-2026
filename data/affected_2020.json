@@ -1,24 +1,24 @@
 {
   "year": 2020,
-  "anchorEvent": "Cyclone Harold (April 2020) was the dominant event, severely affecting Vanuatu and striking Fiji, Solomon Islands and Tonga.",
+  "anchorEvent": "Cyclone Harold and other disasters",
   "rawCounts": {
-    "source": "Pacific Data Hub (PDH.stat), SPC dataset DF_SDG_11, indicator VC_DSR_AFFCT \u2014 Number of directly affected persons attributed to disasters. Source data: UN Office for Disaster Risk Reduction.",
-    "unit": "people",
+    "source": "Pacific Data Hub (SPC), Pacific Community",
+    "unit": "people directly affected",
     "data": [
-      {
-        "iso": "VUT",
-        "country": "Vanuatu",
-        "affected": 246802
-      },
       {
         "iso": "FJI",
         "country": "Fiji",
         "affected": 235921
       },
       {
-        "iso": "MHL",
-        "country": "Marshall Islands",
-        "affected": 56718
+        "iso": "VUT",
+        "country": "Vanuatu",
+        "affected": 246802
+      },
+      {
+        "iso": "SLB",
+        "country": "Solomon Islands",
+        "affected": 2339
       },
       {
         "iso": "PNG",
@@ -26,9 +26,29 @@
         "affected": 3297
       },
       {
-        "iso": "SLB",
-        "country": "Solomon Islands",
-        "affected": 2339
+        "iso": "TON",
+        "country": "Tonga",
+        "affected": 68
+      },
+      {
+        "iso": "WSM",
+        "country": "Samoa",
+        "affected": 195
+      },
+      {
+        "iso": "KIR",
+        "country": "Kiribati",
+        "affected": 15
+      },
+      {
+        "iso": "FSM",
+        "country": "Micronesia",
+        "affected": 0
+      },
+      {
+        "iso": "MHL",
+        "country": "Marshall Islands",
+        "affected": 56718
       },
       {
         "iso": "TUV",
@@ -41,95 +61,60 @@
         "affected": 1133
       },
       {
-        "iso": "WSM",
-        "country": "Samoa",
-        "affected": 195
-      },
-      {
-        "iso": "TON",
-        "country": "Tonga",
-        "affected": 68
-      },
-      {
-        "iso": "KIR",
-        "country": "Kiribati",
-        "affected": 15
-      },
-      {
-        "iso": "NC",
-        "country": "New Caledonia",
-        "affected": 2
-      },
-      {
-        "iso": "AS",
-        "country": "American Samoa",
-        "affected": 232
-      },
-      {
-        "iso": "CK",
-        "country": "Cook Islands",
-        "affected": 0
-      },
-      {
-        "iso": "FM",
-        "country": "Micronesia (Fed. States)",
-        "affected": 0
-      },
-      {
-        "iso": "GU",
-        "country": "Guam",
-        "affected": 0
-      },
-      {
-        "iso": "MP",
-        "country": "Northern Mariana Islands",
-        "affected": 0
-      },
-      {
-        "iso": "NU",
-        "country": "Niue",
-        "affected": 0
-      },
-      {
-        "iso": "PF",
-        "country": "French Polynesia",
-        "affected": 0
-      },
-      {
         "iso": "PLW",
         "country": "Palau",
-        "affected": 0
-      },
-      {
-        "iso": "TK",
-        "country": "Tokelau",
-        "affected": 0
-      },
-      {
-        "iso": "WF",
-        "country": "Wallis and Futuna",
-        "affected": 0
+        "affected": null
       }
     ]
   },
   "per100k": {
-    "source": "United Nations Statistics Division, SDG indicator 11.5.1 (series VC_DSR_DAFF) \u2014 directly affected persons per 100,000 population.",
-    "unit": "per 100,000 population",
+    "source": "United Nations Statistics Division",
+    "unit": "people affected per 100,000 residents",
     "data": [
       {
-        "iso": "MHL",
-        "country": "Marshall Islands",
-        "per100k": 132810
+        "iso": "FJI",
+        "country": "Fiji",
+        "per100k": 25785
       },
       {
         "iso": "VUT",
         "country": "Vanuatu",
-        "per100k": 82581
+        "per100k": 82582
       },
       {
-        "iso": "FJI",
-        "country": "Fiji",
-        "per100k": 25784
+        "iso": "SLB",
+        "country": "Solomon Islands",
+        "per100k": 314
+      },
+      {
+        "iso": "PNG",
+        "country": "Papua New Guinea",
+        "per100k": 34
+      },
+      {
+        "iso": "TON",
+        "country": "Tonga",
+        "per100k": null
+      },
+      {
+        "iso": "WSM",
+        "country": "Samoa",
+        "per100k": 92
+      },
+      {
+        "iso": "KIR",
+        "country": "Kiribati",
+        "per100k": 12
+      },
+      {
+        "iso": "FSM",
+        "country": "Micronesia",
+        "per100k": 0
+      },
+      {
+        "iso": "MHL",
+        "country": "Marshall Islands",
+        "per100k": 132810
       },
       {
         "iso": "TUV",
@@ -142,85 +127,22 @@
         "per100k": 9731
       },
       {
-        "iso": "SLB",
-        "country": "Solomon Islands",
-        "per100k": 314
-      },
-      {
-        "iso": "WSM",
-        "country": "Samoa",
-        "per100k": 92
-      },
-      {
-        "iso": "PNG",
-        "country": "Papua New Guinea",
-        "per100k": 33
-      },
-      {
-        "iso": "KIR",
-        "country": "Kiribati",
-        "per100k": 12
-      },
-      {
-        "iso": "AS",
-        "country": "American Samoa",
-        "per100k": 0
-      },
-      {
-        "iso": "CK",
-        "country": "Cook Islands",
-        "per100k": 0
-      },
-      {
-        "iso": "FM",
-        "country": "Micronesia (Fed. States)",
-        "per100k": 0
-      },
-      {
-        "iso": "GU",
-        "country": "Guam",
-        "per100k": 0
-      },
-      {
-        "iso": "MP",
-        "country": "Northern Mariana Islands",
-        "per100k": 0
-      },
-      {
-        "iso": "NC",
-        "country": "New Caledonia",
-        "per100k": 0
-      },
-      {
-        "iso": "NU",
-        "country": "Niue",
-        "per100k": 0
-      },
-      {
-        "iso": "PF",
-        "country": "French Polynesia",
-        "per100k": 0
-      },
-      {
         "iso": "PLW",
         "country": "Palau",
-        "per100k": 0
-      },
-      {
-        "iso": "TK",
-        "country": "Tokelau",
-        "per100k": 0
-      },
-      {
-        "iso": "TON",
-        "country": "Tonga",
-        "per100k": 0
-      },
-      {
-        "iso": "WF",
-        "country": "Wallis and Futuna",
-        "per100k": 0
+        "per100k": null
       }
     ]
+  },
+  "headline2020": {
+    "deaths": 94,
+    "affected": 548686,
+    "livelihoods": 399469,
+    "livelihoodsSharePct": 73
+  },
+  "regionalContext": {
+    "window": "2005-2019",
+    "avgDeathsPerYear": 22,
+    "avgAffectedPerYear": 113685,
+    "note": "Regional averages over the years the UN mortality/affected series covers (2005-2019, not continuous)."
   }
 }
