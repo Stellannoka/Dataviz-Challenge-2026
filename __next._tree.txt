@@ -1,3 +1,3 @@
-:HL["/Dataviz-Challenge-2026/_next/static/chunks/14zgymsbdd1bw.css","style"]
+:HL["/Dataviz-Challenge-2026/_next/static/chunks/0biq9a3d-ptfs.css","style"]
 :HC["/",""]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"nvG3cY845_4NZ1Slg8wND"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"3MnZ0r68j7jWPJP3Bit2r"}
