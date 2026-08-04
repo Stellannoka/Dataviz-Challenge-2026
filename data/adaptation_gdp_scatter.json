@@ -2,7 +2,7 @@
   "regionalAvg": 22.5,
   "xLabel": "Nominal GDP, US$ million (log scale)",
   "yLabel": "Adaptation need, % of GDP",
-  "source": "IMF WP/26/83 (Gonguet et al., 2026), Fig 2.7 & 2.8; GDP from IMF WEO Oct 2019.",
+  "source": "IMF WP/26/83 (Gonguet et al., 2026), Fig 2.7 & 2.8; GDP from IMF WEO Oct 2019; income level from World Bank FY26 country income classification (effective July 1, 2025).",
   "note": "X: nominal GDP (WEO Oct 2019, current US$). Y: annual adaptation need as % of GDP as published in the paper (Fig 2.8); not recomputed from GDP. Nauru's need is a random-forest model estimate. needUSDm: annual adaptation need in 2024 USD million from Fig 2.3 (PNG and Fiji confirmed by paper text; others are visual reads from the bar chart — verify against source data).",
   "data": [
     {
@@ -12,7 +12,8 @@
       "gdpUSDm": 220,
       "atoll": true,
       "imputed": false,
-      "needUSDm": 140
+      "needUSDm": 140,
+      "incomeLevel": "Upper-middle income"
     },
     {
       "iso": "KIR",
@@ -21,7 +22,8 @@
       "gdpUSDm": 184,
       "atoll": true,
       "imputed": false,
-      "needUSDm": 120
+      "needUSDm": 120,
+      "incomeLevel": "Lower-middle income"
     },
     {
       "iso": "TUV",
@@ -30,7 +32,8 @@
       "gdpUSDm": 42,
       "atoll": true,
       "imputed": false,
-      "needUSDm": 65
+      "needUSDm": 65,
+      "incomeLevel": "Upper-middle income"
     },
     {
       "iso": "FSM",
@@ -39,7 +42,8 @@
       "gdpUSDm": 381,
       "atoll": false,
       "imputed": false,
-      "needUSDm": 175
+      "needUSDm": 175,
+      "incomeLevel": "Upper-middle income"
     },
     {
       "iso": "NRU",
@@ -48,7 +52,8 @@
       "gdpUSDm": 108,
       "atoll": false,
       "imputed": true,
-      "needUSDm": 10
+      "needUSDm": 10,
+      "incomeLevel": "High income"
     },
     {
       "iso": "SLB",
@@ -57,7 +62,8 @@
       "gdpUSDm": 1440,
       "atoll": false,
       "imputed": false,
-      "needUSDm": 310
+      "needUSDm": 310,
+      "incomeLevel": "Lower-middle income"
     },
     {
       "iso": "TON",
@@ -66,7 +72,8 @@
       "gdpUSDm": 488,
       "atoll": false,
       "imputed": false,
-      "needUSDm": 155
+      "needUSDm": 155,
+      "incomeLevel": "Upper-middle income"
     },
     {
       "iso": "VUT",
@@ -75,7 +82,8 @@
       "gdpUSDm": 951,
       "atoll": false,
       "imputed": false,
-      "needUSDm": 270
+      "needUSDm": 270,
+      "incomeLevel": "Lower-middle income"
     },
     {
       "iso": "WSM",
@@ -84,7 +92,8 @@
       "gdpUSDm": 905,
       "atoll": false,
       "imputed": false,
-      "needUSDm": 190
+      "needUSDm": 190,
+      "incomeLevel": "Upper-middle income"
     },
     {
       "iso": "FJI",
@@ -93,7 +102,8 @@
       "gdpUSDm": 5708,
       "atoll": false,
       "imputed": false,
-      "needUSDm": 857
+      "needUSDm": 857,
+      "incomeLevel": "Upper-middle income"
     },
     {
       "iso": "PLW",
@@ -102,7 +112,8 @@
       "gdpUSDm": 291,
       "atoll": false,
       "imputed": false,
-      "needUSDm": 50
+      "needUSDm": 50,
+      "incomeLevel": "High income"
     },
     {
       "iso": "PNG",
@@ -111,7 +122,8 @@
       "gdpUSDm": 23587,
       "atoll": false,
       "imputed": false,
-      "needUSDm": 868
+      "needUSDm": 868,
+      "incomeLevel": "Lower-middle income"
     }
   ]
 }
