@@ -4,7 +4,7 @@ import GlossaryTerm from "./Glossaryterm";
 export default function Hero() {
   return (
     <header
-      className="pt-0 pb-6 md:pt-0"
+      className="pt-0 pb-6 md:pt-0 md:pb-10"
       style={{
         /* Overlap release: the Hero slides up over the cold open's fading
            final beat instead of arriving after a blank frame. The negative
@@ -24,7 +24,7 @@ export default function Hero() {
             fontWeight: 400,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'var(--primary, #5a8fb0)',
+            color: 'var(--primary, #7a9fd4)',
             textAlign: 'center',
             marginBottom: '0.5rem',
             paddingTop: '2.5rem',
@@ -37,7 +37,7 @@ export default function Hero() {
         </h1>
 
         <p className="section-subtitle" style={{ textAlign: 'center', marginTop: '0.75rem', fontSize: '0.9rem' }}>
-          What climate disasters cost the Pacific Islands, and how the gap between vulnerability and readiness shapes those costs.
+          What climate disasters cost the Pacific Islands countries, and how the gap between vulnerability and readiness shapes those costs.
         </p>
 
         <div className="hero-byline mt-5">
@@ -47,20 +47,20 @@ export default function Hero() {
               href="https://www.linkedin.com/in/stellamaris-nnoka-71aa4a239/"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-sky-700 font-medium"
+              className="underline underline-offset-2 font-medium transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
             >
-              Stellamaris Nnoka
+              Stella Chinyere Nnoka
             </a>
           </p>
-          <p className="section-subtitle" style={{ fontSize: '0.86rem' }}>August 25, 2026</p>
+          <p className="section-subtitle" style={{ fontSize: '0.86rem' }}>August 2026</p>
         </div>
 
         <div className="section-narrative" style={{ marginTop: '3rem' }}>
           <p>
-            Climate change is making <GlossaryTerm term="hazards">hazards</GlossaryTerm> such as floods, droughts, tropical cyclones and sea-level rise more frequent and, in many cases, more intense. As those hazards grow, the cost of disasters depends increasingly on how prepared countries are to adapt and recover.
+            Climate change is making <GlossaryTerm term="hazards">hazards</GlossaryTerm> such as floods, droughts, tropical cyclones and sea-level rise more frequent and, in many cases, more intense. As these hazards place growing pressure on communities and economies, the cost of <GlossaryTerm term="disasters">disasters</GlossaryTerm> depends increasingly on how prepared countries are to adapt and recover.
           </p>
           <p>
-           For many Pacific Island Countries, that preparedness has not kept pace.  For more than two decades, they have remained in the world's high-vulnerability half. Although <GlossaryTerm term="readiness">Readiness</GlossaryTerm> has improved in some countries, none has escaped the region's persistently high climate <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm>. As a result, the gap between vulnerability and readiness has changed remarkably little over time.
+           For many Pacific Island Countries, readiness has improved over time, but not enough to keep pace with the scale of vulnerability they face. For more than two decades, they have remained among the world's most vulnerable to climate change. Even Tuvalu, the region's most ready country, ranks among the world's 20 most vulnerable.
           </p>
         </div>
       </Container>

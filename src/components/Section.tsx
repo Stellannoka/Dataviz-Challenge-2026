@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { Container } from "./Container";
 
 interface SectionProps {
   heading: string;
@@ -21,21 +20,19 @@ export default function Section({
   return (
     <section id={id} className="py-6 md:py-10">
       {(hasHeading || standfirst) && (
-        <Container>
+        <div className="mx-auto w-full px-4" style={{ maxWidth: 640 }}>
           {hasHeading && (
-            <h2
-              className="font-serif text-slate-900"
+            <p
+              className="section-title"
               style={{
-                fontSize: "1.2rem",
-                fontWeight: 600,
-                marginBottom: "0.4rem",
                 width: "100%",
-                maxWidth: "640px",
                 textAlign: "left",
+                overflowWrap: "normal",
+                wordBreak: "normal",
               }}
             >
               {heading}
-            </h2>
+            </p>
           )}
           {standfirst && (
             <p
@@ -53,7 +50,7 @@ export default function Section({
               {standfirst}
             </p>
           )}
-        </Container>
+        </div>
       )}
       <div
         className={hasHeading || standfirst ? "mt-4" : ""}

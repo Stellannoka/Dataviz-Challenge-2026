@@ -1,5 +1,6 @@
 {
   "year": 2020,
+  "source": "Pacific Data Hub (SPC), SDG 11 disaster statistics",
   "reportingCountries": 9,
   "notReporting": ["Tonga", "Palau", "Micronesia (Fed. States)"],
   "totals": { "affected": 548686, "livelihoods": 399469 },

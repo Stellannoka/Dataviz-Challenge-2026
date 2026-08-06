@@ -29,15 +29,15 @@ const C = {
 
 /* Quadrant colors matching the vulnerability scatter plot exactly */
 const QUADRANT_COLORS = {
-  UL: "#e07a7a", // High vulnerability, Low readiness - Red/coral
-  UR: "#7a9fd4", // High vulnerability, High readiness - Blue
+  UL: "#e68e8d", // High vulnerability, Low readiness - Red/coral
+  UR: "#7C94AB", // High vulnerability, High readiness - Blue
   LL: "#d4c5b3", // Low vulnerability, Low readiness - Beige/tan
   LR: "#7bbf9e", // Low vulnerability, High readiness - Green
 };
 
 /* Neutral highlight for beat 1: identifies the Pacific group without
    pre-assigning any quadrant before the splits are introduced. */
-const PACIFIC_HIGHLIGHT = "#e07a7a"; // Changed to match the red used for "Several"
+const PACIFIC_HIGHLIGHT = "#e68e8d"; // Changed to match the red used for "Several"
 
 /* Same framing as the Section 1 scatter, so the told version and the
    interactive version below are spatially consistent. */
@@ -83,6 +83,10 @@ function smooth(t: number): number {
   return c * c * (3 - 2 * c);
 }
 
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
 function getQuadrant(vulnerability: number, readiness: number, vulnSplit: number, readySplit: number): string {
   const highVuln = vulnerability >= vulnSplit;
   const highReady = readiness >= readySplit;
@@ -124,6 +128,7 @@ export default function ClimateGapOpener() {
   }, [ts]);
 
   const isSmall = w > 0 && w < 480;
+  const isMedium = w >= 480 && w < 768;
   const total = BEATS.length;
 
   /* ---- scroll → segment + progress. 100vh per beat - each scroll reveals a new phase */
@@ -219,6 +224,10 @@ export default function ClimateGapOpener() {
     [innerH]
   );
 
+  /* ---- dot radius: matches the Svelte reference's flat 6px node size,
+     with a small step-down on phones so it isn't oversized there. */
+  const dotR = isSmall ? 4 : 6;
+
   /* ---- animation drivers derived from (seg, prog) */
   const appear = seg > 0 ? 1 : smooth(prog);
   const pacific = seg >= 1 ? 1 : 0;
@@ -226,7 +235,74 @@ export default function ClimateGapOpener() {
   const readyOn = seg >= READY_BEAT ? 1 : 0;
   const yearT =
     seg < TIME_BEAT ? 0 : seg === TIME_BEAT ? smooth(prog) : 1;
-  
+
+  /* During the time beat, positions are scrubbed frame-by-frame by scroll,
+     so a CSS position transition would lag and fight the scroll. Everywhere
+     else, a transition lets dots glide when a beat changes their target.
+     Longhand only: mixing the `transition` shorthand with `transitionDelay`
+     in one style object triggers a React reconciliation warning. */
+  const scrubbing = seg === TIME_BEAT;
+
+  /* Beat 0's cluster -> scatter explosion is likewise driven frame-by-frame
+     by `appear` (derived from scroll progress), so it needs the same
+     transition-free treatment as the time-beat scrub. */
+  const revealing = seg === 0;
+
+  /* ---- scatter-and-settle -------------------------------------------------
+     On the frame a phase begins, each dot is kicked to a small seeded offset
+     and then released; the CSS transform transition carries it back to its
+     true position, reading as a quick reshuffle. Fires on first appearance
+     (whole field) and when each reference line arrives (Pacific dots only),
+     never during the scrub beat, and never when the user prefers reduced
+     motion. */
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  /* settlePhase: which beat's settle is currently playing (or null).
+     kick=true for the single frame the dots are displaced, then flipped
+     off so the transition animates them home. */
+  const [kick, setKick] = useState(false);
+  const settledBeatRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (reducedMotion || scrubbing) return;
+    // Trigger only on entry to beats 0, 1 and 2 (appearance + each line).
+    if (seg > READY_BEAT) return;
+    if (settledBeatRef.current === seg) return; // already settled this beat
+    settledBeatRef.current = seg;
+    setKick(true);
+    const id = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setKick(false))
+    );
+    return () => cancelAnimationFrame(id);
+  }, [seg, reducedMotion, scrubbing]);
+
+  /* World dots now animate in via the cluster -> scatter explosion (below)
+     rather than a kick; only the Pacific dots still get the settle-kick
+     flourish when a reference line drops in. */
+  const picKick = kick && seg <= READY_BEAT;
+
+  /* Deterministic per-index offset so the kick is stable across renders. */
+  const kickOffset = useCallback(
+    (i: number, active: boolean): { dx: number; dy: number } => {
+      if (!active) return { dx: 0, dy: 0 };
+      const mag = isSmall ? 7 : 10;
+      const a = Math.sin(i * 12.9898) * 43758.5453;
+      const b = Math.sin(i * 78.233) * 12543.1234;
+      const ang = (a - Math.floor(a)) * Math.PI * 2;
+      const dist = (0.4 + (b - Math.floor(b)) * 0.6) * mag;
+      return { dx: Math.cos(ang) * dist, dy: Math.sin(ang) * dist };
+    },
+    [isSmall]
+  );
+
   // Gradual fade: starts gently in beat 4, completes as section scrolls away
   const fadeOut = seg >= total - 1 ? smooth(prog) : 0;
 
@@ -276,6 +352,32 @@ export default function ClimateGapOpener() {
           d !== null
       );
   }, [ts, trajectories, i0, i1, frac, x, y, margin, innerW, innerH]);
+
+  /* ---- resting cluster: where every dot sits before the first scroll.
+     Packed into a block a few dots wide (taller than it is wide, so it
+     reads as a vertical cluster) at stage centre, instead of each dot
+     starting at its true scatter position. Beat 0's scroll then explodes
+     the cluster outward into the real vulnerability/readiness layout. */
+  const clusterPositions = useMemo(() => {
+    const isos = trajectories.map((t) => t.iso);
+    const n = isos.length;
+    const m = new Map<string, { x: number; y: number }>();
+    if (!w || !h || n === 0) return m;
+    const spacing = dotR * 2.3;
+    const cols = Math.max(4, Math.round(Math.sqrt(n) * 0.65));
+    const rows = Math.ceil(n / cols);
+    const cx = w / 2;
+    const cy = h / 2;
+    isos.forEach((iso, i) => {
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      m.set(iso, {
+        x: cx + (col - (cols - 1) / 2) * spacing,
+        y: cy + (row - (rows - 1) / 2) * spacing,
+      });
+    });
+    return m;
+  }, [trajectories, w, h, dotR]);
 
   const refY = margin.top + y(vulnRef);
   const readyX = margin.left + x(readyRef);
@@ -343,7 +445,7 @@ export default function ClimateGapOpener() {
           height: "100vh", 
           background: C.surface,
           opacity: 1 - fadeOut,
-          transition: "opacity 0.4s ease",
+          transition: "opacity 1s ease",
         }}
         aria-label="Opening story: where the Pacific Islands sit on climate vulnerability and readiness, and how little it changes over two decades"
       >
@@ -375,7 +477,7 @@ export default function ClimateGapOpener() {
                 <text
                   x={margin.left}
                   y={refY - 8}
-                  fontSize={isSmall ? 9.5 : 11}
+                  fontSize={isSmall ? 12 : 14}
                   fill={C.muted}
                   opacity={0.75}
                   style={{
@@ -402,7 +504,7 @@ export default function ClimateGapOpener() {
                 <text
                   x={readyX + 6}
                   y={margin.top + (isSmall ? 10 : 12)}
-                  fontSize={isSmall ? 9.5 : 11}
+                  fontSize={isSmall ? 12 : 14}
                   fill={C.muted}
                   opacity={0.75}
                   style={{
@@ -414,82 +516,123 @@ export default function ClimateGapOpener() {
                 </text>
               </g>
 
-              {/* world dots (grey base for everyone) */}
-              <g style={{ opacity: appear, transition: "opacity 0.2s linear" }}>
-                {positioned.map((d) => (
-                  <circle
-                    key={d.iso}
-                    cx={d.cx}
-                    cy={d.cy}
-                    r={isSmall ? 2.4 : 3.2}
-                    fill={C.faint}
-                    opacity={worldDim}
-                    style={{ transition: "opacity 0.5s ease" }}
-                  />
-                ))}
-              </g>
+             {/* world dots (grey base for everyone) — actual scatter size,
+    kept low-opacity so the colored Pacific dots read against them.
+    Rest in a packed vertical cluster until scrolling starts, then fly
+    out to their true vulnerability/readiness position as beat 0 plays
+    (tracked 1:1 with scroll, like the time-beat scrub, so the motion
+    doesn't lag behind the scrollbar). Pacific dots are part of this
+    field too: they explode in as grey with everyone else, and the
+    colored + labelled versions layer on top and wave in at beat 1. */}
+<g style={{ opacity: appear, transition: "opacity 0.2s linear" }}>
+  {positioned.map((d, i) => {
+    const cluster = clusterPositions.get(d.iso) ?? { x: d.cx, y: d.cy };
+    const curX = lerp(cluster.x, d.cx, appear);
+    const curY = lerp(cluster.y, d.cy, appear);
+    return (
+    <circle
+      key={d.iso}
+      r={dotR}
+      fill={C.faint}
+      opacity={0.2} /* All dots (incl. Pacific) explode in as grey */
+      style={{
+        transform: `translate(${curX}px, ${curY}px)`,
+        transitionProperty: scrubbing || revealing ? "opacity" : "transform, opacity",
+        transitionDuration: scrubbing || revealing ? "0.5s" : "0.7s, 0.5s",
+        transitionTimingFunction:
+          scrubbing || revealing
+            ? "ease"
+            : "cubic-bezier(0.34,1.2,0.64,1), ease",
+        transitionDelay: scrubbing || revealing ? "0ms" : `${Math.min(i * 3, 220)}ms`,
+      }}
+    />
+    );
+  })}
+</g>
 
-              {/* Pacific — beat 1: all red/coral; beat 2+: quadrant colors */}
-              <g style={{ opacity: pacific, transition: "opacity 0.7s ease" }}>
-                {positioned
-                  .filter((d) => d.pic)
-                  .map((d) => {
-                    const quadrant = getQuadrant(d.vulnerability, d.readiness, vulnRef, readyRef);
-                    // Beat 1: neutral highlight identifies the Pacific group
-                    // Beat 2+: differentiate by quadrant once the splits exist
-                    const color = seg >= 2
-                      ? QUADRANT_COLORS[quadrant as keyof typeof QUADRANT_COLORS]
-                      : QUADRANT_COLORS.UL; // Now using #e07a7a red for beat 1
-                    const countryName = countryNames.get(d.iso) || d.iso;
-                    const isNearRight = d.cx > w * 0.7;
-                    const isNearTop = d.cy < h * 0.3;
-                    const labelX = isNearRight ? d.cx - 8 : d.cx + 8;
-                    const labelY = isNearTop ? d.cy + 18 : d.cy - 12;
-                    const textAnchor = isNearRight ? "end" : "start";
-                    
-                    return (
-                      <g key={`p-${d.iso}`}>
-                        <circle
-                          cx={d.cx}
-                          cy={d.cy}
-                          r={isSmall ? 5 : 7}
-                          fill={color}
-                          fillOpacity={0.2}
-                          stroke="none"
-                          style={{ transition: "fill 0.6s ease" }}
-                        />
-                        <circle
-                          cx={d.cx}
-                          cy={d.cy}
-                          r={isSmall ? 3.6 : 4.8}
-                          fill={color}
-                          stroke={C.surface}
-                          strokeWidth={0.9}
-                          opacity={0.95}
-                          style={{ transition: "fill 0.6s ease" }}
-                        />
-                        {/* Country name label */}
-                        <text
-                          x={labelX}
-                          y={labelY}
-                          textAnchor={textAnchor}
-                          dominantBaseline="middle"
-                          fontSize={isSmall ? 7 : 9}
-                          fill={C.ink}
-                          fontWeight={600}
-                          opacity={0.85}
-                          style={{
-                            fontFamily: "var(--font-sans)",
-                            letterSpacing: "0.02em",
-                            pointerEvents: "none",
-                          }}
-                        >
-                          {countryName}
-                        </text>
-                      </g>
-                    );
-                  })}
-              </g>
+              {/* Pacific — beat 1: all red/coral; beat 2+: quadrant colors.
+    The colored dots and their labels reveal as a left-to-right wave
+    (per-dot opacity delay by x-rank) rather than a single group fade. */}
+<g>
+  {(() => {
+    const picDots = positioned.filter((d) => d.pic);
+    /* Rank by x-position rather than raw pixel offset: an evenly spaced
+       step per dot reads as a clean wave, whereas a delay proportional
+       to (possibly clustered) pixel position lets several close-together
+       dots flip almost together and breaks the sweep. The same rank drives
+       both the beat-1 reveal wave and the beat-2 fill-color wave. */
+    const picOrder = [...picDots].sort((a, b) => a.cx - b.cx);
+    const rankByIso = new Map(picOrder.map((d, idx) => [d.iso, idx]));
+    const waveStepMs = 80;
+
+    return picDots.map((d, i) => {
+      const quadrant = getQuadrant(d.vulnerability, d.readiness, vulnRef, readyRef);
+      // Beat 1: neutral highlight identifies the Pacific group
+      // Beat 2+: differentiate by quadrant once the splits exist
+      const color = seg >= 2
+        ? QUADRANT_COLORS[quadrant as keyof typeof QUADRANT_COLORS]
+        : QUADRANT_COLORS.UL; // Now using #e07a7a red for beat 1
+      const countryName = countryNames.get(d.iso) || d.iso;
+      const k = kickOffset(i, picKick);
+      // Left-to-right stagger, collapsed to 0 under reduced-motion so the
+      // group simply fades in together.
+      const waveDelayMs = reducedMotion
+        ? 0
+        : (rankByIso.get(d.iso) ?? i) * waveStepMs;
+      const transformDelayMs = Math.min(i * 12, 200);
+      const noTransform = scrubbing || picKick;
+
+      return (
+        <g
+          key={`p-${d.iso}`}
+          style={{
+            transform: `translate(${d.cx + k.dx}px, ${d.cy + k.dy}px)`,
+            // Reveal each dot (and its label) as the wave reaches it. opacity
+            // stays in the transition list in both branches so the stagger
+            // survives the settle-kick's transform-none frames without
+            // restarting.
+            opacity: pacific ? 1 : 0,
+            transitionProperty: noTransform ? "opacity" : "transform, opacity",
+            transitionDuration: noTransform ? "0.4s" : "0.7s, 0.4s",
+            transitionTimingFunction: noTransform
+              ? "ease"
+              : "cubic-bezier(0.34,1.2,0.64,1), ease",
+            transitionDelay: noTransform
+              ? `${waveDelayMs}ms`
+              : `${transformDelayMs}ms, ${waveDelayMs}ms`,
+          }}
+        >
+          <circle
+            r={dotR}
+            fill={color}
+            stroke="rgba(0, 0, 0, 0.25)" /* Dark border for visibility */
+            strokeWidth={isSmall ? "0.8" : "1"} /* Thin but visible border */
+            opacity={0.95}
+            style={{ transition: `fill 0.5s ease ${waveDelayMs}ms` }}
+          />
+          {/* Country name label — above the dot, same size as the
+              VulnerabilityScatter chart's active country label. */}
+          <text
+            x={0}
+            y={-(dotR + 6)}
+            textAnchor="middle"
+            fontSize={isSmall ? 12 : isMedium ? 13 : 15}
+            fill={C.ink}
+            fontWeight={400}
+            opacity={0.85}
+            style={{
+              fontFamily: "var(--font-sans)",
+              letterSpacing: "0.02em",
+              pointerEvents: "none",
+            }}
+          >
+            {countryName}
+          </text>
+        </g>
+      );
+    });
+  })()}
+</g>
             </svg>
           )}
 
@@ -504,7 +647,7 @@ export default function ClimateGapOpener() {
                 fontFamily: "var(--font-sans)",
                 fontSize: isSmall ? "1.05rem" : "2.2rem",
                 fontWeight: 700,
-                color: C.faint,
+                color: "rgb(45, 45, 45)",
                 letterSpacing: "0.04em",
                 lineHeight: 1,
                 opacity: seg >= TIME_BEAT ? 0.55 : 0,
@@ -563,7 +706,7 @@ export default function ClimateGapOpener() {
                     fontSize: isSmall ? "1.15rem" : "1.3rem",
                     lineHeight: 1.75,
                     letterSpacing: "0.012em",
-                    fontWeight: 400,
+                    fontWeight: 350,
                     margin: 0,
                   }}
                 >

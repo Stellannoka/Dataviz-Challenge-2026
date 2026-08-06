@@ -1,0 +1,63 @@
+{
+  "year": 2020,
+  "hazardScope": "weather-related",
+  "defaultView": "per100k",
+  "switches": [
+    "per100k",
+    "absolute"
+  ],
+  "note": "2020 only. Counts displacements, not people. Weather-related hazards only. Each bar is coloured by the hazard type that drove displacement in that country. Per-100k uses 2020 population.",
+  "absentLine": "Not shown: Marshall Islands, Kiribati, Micronesia, Palau, Nauru had no comparable 2020 displacement record.",
+  "source": "Internal Displacement Monitoring Centre (IDMC), Global Internal Displacement Database; population from United Nations Statistics Division.",
+  "data": [
+    {
+      "iso": "VUT",
+      "country": "Vanuatu",
+      "absolute": 80000,
+      "per100k": 26046.3,
+      "dominantHazard": "cyclone"
+    },
+    {
+      "iso": "FJI",
+      "country": "Fiji",
+      "absolute": 36135,
+      "per100k": 3908.1,
+      "dominantHazard": "cyclone"
+    },
+    {
+      "iso": "TON",
+      "country": "Tonga",
+      "absolute": 2700,
+      "per100k": 2581.3,
+      "dominantHazard": "cyclone"
+    },
+    {
+      "iso": "TUV",
+      "country": "Tuvalu",
+      "absolute": 200,
+      "per100k": 1923.3,
+      "dominantHazard": "cyclone"
+    },
+    {
+      "iso": "SLB",
+      "country": "Solomon Islands",
+      "absolute": 321,
+      "per100k": 46.7,
+      "dominantHazard": "cyclone"
+    },
+    {
+      "iso": "PNG",
+      "country": "Papua New Guinea",
+      "absolute": 3935,
+      "per100k": 40.1,
+      "dominantHazard": "flood"
+    },
+    {
+      "iso": "WSM",
+      "country": "Samoa",
+      "absolute": 55,
+      "per100k": 26.0,
+      "dominantHazard": "flood"
+    }
+  ]
+}

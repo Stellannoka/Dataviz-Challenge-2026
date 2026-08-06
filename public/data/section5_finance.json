@@ -17,7 +17,7 @@
     { "country": "Vanuatu", "iso": "VUT", "coveragePct": 36 },
     { "country": "Kiribati", "iso": "KIR", "coveragePct": 34 },
     { "country": "Samoa", "iso": "WSM", "coveragePct": 25 },
-    { "country": "Micronesia (Fed. States)", "iso": "FSM", "coveragePct": 24 },
+    { "country": "Micronesia", "iso": "FSM", "coveragePct": 24 },
     { "country": "Solomon Islands", "iso": "SLB", "coveragePct": 19 },
     { "country": "Marshall Islands", "iso": "MHL", "coveragePct": 13 },
     { "country": "Fiji", "iso": "FJI", "coveragePct": 11 }
@@ -26,7 +26,7 @@
     { "country": "Marshall Islands", "iso": "MHL", "needPctGdp": 35.7, "atoll": true },
     { "country": "Kiribati", "iso": "KIR", "needPctGdp": 34.3, "atoll": true },
     { "country": "Tuvalu", "iso": "TUV", "needPctGdp": 32.7, "atoll": true },
-    { "country": "Micronesia (Fed. States)", "iso": "FSM", "needPctGdp": 30.1, "atoll": false },
+    { "country": "Micronesia", "iso": "FSM", "needPctGdp": 30.1, "atoll": false },
     { "country": "Nauru", "iso": "NRU", "needPctGdp": 28.3, "atoll": false },
     { "country": "Solomon Islands", "iso": "SLB", "needPctGdp": 27.9, "atoll": false },
     { "country": "Tonga", "iso": "TON", "needPctGdp": 23.6, "atoll": false },

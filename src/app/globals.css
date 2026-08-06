@@ -8,30 +8,52 @@
 }
 
 :root {
-  --caption: #808080;
+  /* TEAL family — reserved for FINANCE (Section 3) */
+  --primary:  #7C94AB;        /* deep teal — project primary */
+  --primary-dark: #22434A;   /* darker shade, derived from --primary */
+  /* Same hue family as --primary but more saturated and darker — --primary's
+     muted slate tone reads too close to grey when used as small text/marks
+     against body copy (e.g. the map's livelihoods-lost bubble + highlight),
+     where it needs to hold its own next to --accent's warm terracotta. */
+  --primary-vivid: #2E6FA3;
 
-  /* BLUE family — reserved for FINANCE (Section 3) */
-  --primary: #5a8fb0;        /* light blue — project primary */
-  --primary-light: #9cc0d8;  /* lighter tint */
-  --primary-dark: #3f6e8c;   /* darker shade */
-
-  /* WARM family — DISASTER IMPACT (Section 2: map + livelihoods).
-     Previously these lived only as inline var() fallbacks inside the map
-     and livelihoods components, so there was no single knob to turn.
-     Defining them here makes warm as controllable as the blue family and
-     lets both Section 2 charts share one source of truth. */
-  --accent: #b45309;         /* warm — disaster impact accent / value text */
-  --accent-bubble: #e0793a;  /* warm fill for circles / bars */
-  --accent-dark: #92400e;    /* deeper warm for focused / emphasis states */
-  --accent-tint: #f6e6d8;    /* pale warm for bar tracks / backgrounds */
+  /* WARM family — DISASTER IMPACT (Section 2: map + displacement chart).
+     Deliberately a different hue AND lightness from --primary so the two
+     sections stay visually distinct (including in grayscale/low-vision
+     contexts), while staying muted enough that neither section reads
+     "louder" than the other. Warm vs. teal also avoids relying on any
+     red-green distinction, which keeps it safe for red-green color
+     blindness, the most common form. */
+  --accent:   #CF8376;         /* muted terracotta — disaster impact accent / value text */
+  --accent-bubble:    #CF8376;  /* fill for circles / bars */
+  --accent-dark: #A9665B;    /* deeper terracotta for focused / emphasis states */
 
   /* RED — reserved for the SHORTFALL / GAP inside finance */
-  --secondary: #dc2626;      /* red for shortfall */
-  --secondary-tint: #fee2e2; /* light red tint */
+  --secondary:  #e07a7a;      /* coral-red for shortfall */
 
-  --neutral: #94a3b8;        /* slate grey for "other" */
   --text-color: rgb(33, 37, 41);
   --text-secondary: rgb(64, 64, 64);
+
+  /* NEUTRAL / MAP palette — shared across chart components (VulnerabilityScatter,
+     ClimateGapOpener, DisasterMapScrolly) for dot ink, gridlines, land fill and
+     surface backgrounds. Declared centrally so every component's var(--name, fallback)
+     resolves to the same value instead of relying on duplicated fallbacks. */
+  --ink: #0f172a;
+  --ink-soft: #1e293b;
+  --muted-soft: #64748b;
+  --faint: #94a3b8;
+  --line: #cbd5e1;
+  --surface: #ffffff;
+  --surface-translucent: rgba(255, 255, 255, 0.85);
+  --card-shadow: rgba(100, 116, 139, 0.14);
+
+  /* Map land + bubble borders (DisasterMapScrolly) */
+  --land: #f6f6f6;
+  --land-stroke: #cfcfcf;
+  --land-focus: #595959;
+  --land-focus-stroke: #3d3d3d;
+  --land-shadow: #8f9aa8;
+  --bubble-border: #666666;
 }
 
 html {
@@ -54,7 +76,7 @@ h1, h2, h3 {
    ============================================================ */
 
 .section-title {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.4rem;
   max-width: 640px;
@@ -77,40 +99,22 @@ h1, h2, h3 {
 
 .section-narrative p {
   display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
+  margin-block-start: 0;       /* zeroed so paragraph gap == padding-bottom exactly */
+  margin-block-end: 0;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   unicode-bidi: isolate;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 350;
   text-align: left;
-  line-height: 1.75rem;        /* Increased for breathing room */
-  letter-spacing: 0.012em;     /* Slightly increased for readability */
-  padding-bottom: 2.2rem;      /* More paragraph separation */
-  color: rgb(45, 45, 45);      /* Crisper than opacity */
+  line-height: 1.75rem;
+  letter-spacing: 0.012em;
+  padding-bottom: 1.75rem;     /* inter-paragraph gap, matches line-height so paragraphs stay distinct */
+  color: rgb(45, 45, 45);
   font-family: var(--font-sans);
 }
 
-.hero-narrative p {
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  unicode-bidi: isolate;
-  font-size: 1rem;
-  font-weight: 400;
-  text-align: left;
-  line-height: 1.75rem;        /* Increased for breathing room */
-  letter-spacing: 0.012em;     /* Slightly increased for readability */
-  padding-bottom: 2.2rem;      /* More paragraph separation */
-  color: rgb(45, 45, 45);      /* Crisper than opacity */
-  font-family: var(--font-sans);
-}
-
-.section-narrative p:last-child,
-.hero-narrative p:last-child {
+.section-narrative p:last-child {
   padding-bottom: 0;
 }
 
@@ -140,16 +144,6 @@ h1, h2, h3 {
   text-align: center;
 }
 
-.hero-subtitle {
-  font-size: 0.86rem;
-  font-weight: 300;
-  color: rgb(64, 64, 64);
-  line-height: 1.15rem;
-  font-family: var(--font-sans);
-  text-align: center;
-  margin-top: 0.75rem;
-}
-
 .hero-byline {
   font-size: 0.86rem;
   font-weight: 300;
@@ -158,36 +152,13 @@ h1, h2, h3 {
   text-align: center;
 }
 
-.hero-byline a {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.hero-byline a:hover {
-  color: var(--primary);
-}
-
-.hero-date {
-  color: rgb(64, 64, 64);
-  opacity: 0.6;
-  font-family: var(--font-sans);
-}
-
-/* ============================================================
-   TYPOGRAPHY — Container width (narrower for better readability)
-   ============================================================ */
-
-.text-container {
-  max-width: 600px;  /* Reduced from 640px for better line length */
-}
-
 /* ============================================================
    RESPONSIVE — Mobile adjustments
    ============================================================ */
 
 @media (max-width: 480px) {
   .section-title {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
 
   .section-subtitle {
@@ -195,21 +166,16 @@ h1, h2, h3 {
     line-height: 1.3rem;
   }
 
-  .section-narrative p,
-  .hero-narrative p {
+  .section-narrative p {
     font-size: 1rem;
+    font-weight: 350;    /* bumped up from desktop's 350 — small text needs a touch more weight to stay legible at this size */
     line-height: 1.6rem;
     letter-spacing: 0.01em;
-    padding-bottom: 1.8rem;
+    padding-bottom: 1.5rem;    /* ~24px, at/above the 1.6rem mobile line-height so paragraphs stay distinct on small screens */
   }
 
   .hero-title {
     font-size: 1.8rem;
-  }
-
-  .hero-subtitle {
-    font-size: 0.86rem;
-    line-height: 1.2rem;
   }
 
   .chart-caption {
@@ -221,19 +187,19 @@ h1, h2, h3 {
 
 @media (min-width: 481px) and (max-width: 768px) {
   .section-title {
-    font-size: 1.3rem;
+    font-size: 0.9rem;
   }
 
   .section-subtitle {
     font-size: 0.82rem;
   }
 
-  .hero-title {
-    font-size: 1.8rem;
+  .section-narrative p {
+    font-weight: 380;    /* between desktop's 350 and the ≤480px breakpoint's 400 */
   }
 
-  .hero-subtitle {
-    font-size: 0.82rem;
+  .hero-title {
+    font-size: 1.8rem;
   }
 
   .chart-caption {

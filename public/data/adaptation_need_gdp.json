@@ -1,0 +1,97 @@
+{
+  "title": "Estimated annual climate-adaptation need, share of GDP",
+  "year": 2024,
+  "unit": "percent of GDP, annualized",
+  "regionalAvg": 22.5,
+  "regionalAvgWithNauruRF": 24.5,
+  "note": "Per-country annual adaptation need as % of GDP. Nauru is a random-forest model estimate (only one underlying study); all others from metadata analysis. Atoll nations flagged.",
+  "source": "IMF Working Paper WP/26/83, Gonguet, Han, Lim, Dao & Nawar (2026), Figure 2.8.",
+  "data": [
+    {
+      "iso": "MHL",
+      "country": "Marshall Islands",
+      "pctGDP": 35.7,
+      "atoll": true,
+      "imputed": false
+    },
+    {
+      "iso": "KIR",
+      "country": "Kiribati",
+      "pctGDP": 34.3,
+      "atoll": true,
+      "imputed": false
+    },
+    {
+      "iso": "TUV",
+      "country": "Tuvalu",
+      "pctGDP": 32.7,
+      "atoll": true,
+      "imputed": false
+    },
+    {
+      "iso": "FSM",
+      "country": "Micronesia",
+      "pctGDP": 30.1,
+      "atoll": false,
+      "imputed": false
+    },
+    {
+      "iso": "NRU",
+      "country": "Nauru",
+      "pctGDP": 28.3,
+      "atoll": true,
+      "imputed": true
+    },
+    {
+      "iso": "SLB",
+      "country": "Solomon Islands",
+      "pctGDP": 27.9,
+      "atoll": false,
+      "imputed": false
+    },
+    {
+      "iso": "TON",
+      "country": "Tonga",
+      "pctGDP": 23.6,
+      "atoll": false,
+      "imputed": false
+    },
+    {
+      "iso": "VUT",
+      "country": "Vanuatu",
+      "pctGDP": 23.0,
+      "atoll": false,
+      "imputed": false
+    },
+    {
+      "iso": "WSM",
+      "country": "Samoa",
+      "pctGDP": 21.3,
+      "atoll": false,
+      "imputed": false
+    },
+    {
+      "iso": "FJI",
+      "country": "Fiji",
+      "pctGDP": 14.7,
+      "atoll": false,
+      "imputed": false
+    },
+    {
+      "iso": "PLW",
+      "country": "Palau",
+      "pctGDP": 14.7,
+      "atoll": true,
+      "imputed": false
+    },
+    {
+      "iso": "PNG",
+      "country": "Papua New Guinea",
+      "pctGDP": 11.5,
+      "atoll": false,
+      "imputed": false
+    }
+  ],
+  "chartTitle": "Adaptation demands a large share of Pacific economies",
+  "chartSubtitle": "Estimated annual adaptation needs average 22.5% of GDP across the region, exceeding 30% in several countries."
+}

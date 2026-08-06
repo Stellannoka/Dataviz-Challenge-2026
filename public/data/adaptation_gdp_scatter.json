@@ -1,0 +1,117 @@
+{
+  "regionalAvg": 22.5,
+  "xLabel": "Nominal GDP, US$ million (log scale)",
+  "yLabel": "Adaptation need, % of GDP",
+  "source": "IMF WP/26/83 (Gonguet et al., 2026), Fig 2.7 & 2.8; GDP from IMF WEO Oct 2019.",
+  "note": "X: nominal GDP (WEO Oct 2019, current US$). Y: annual adaptation need as % of GDP as published in the paper (Fig 2.8); not recomputed from GDP. Nauru's need is a random-forest model estimate. needUSDm: annual adaptation need in 2024 USD million from Fig 2.3 (PNG and Fiji confirmed by paper text; others are visual reads from the bar chart — verify against source data).",
+  "data": [
+    {
+      "iso": "MHL",
+      "country": "Marshall Islands",
+      "pctGDP": 35.7,
+      "gdpUSDm": 220,
+      "atoll": true,
+      "imputed": false,
+      "needUSDm": 140
+    },
+    {
+      "iso": "KIR",
+      "country": "Kiribati",
+      "pctGDP": 34.3,
+      "gdpUSDm": 184,
+      "atoll": true,
+      "imputed": false,
+      "needUSDm": 120
+    },
+    {
+      "iso": "TUV",
+      "country": "Tuvalu",
+      "pctGDP": 32.7,
+      "gdpUSDm": 42,
+      "atoll": true,
+      "imputed": false,
+      "needUSDm": 65
+    },
+    {
+      "iso": "FSM",
+      "country": "Micronesia",
+      "pctGDP": 30.1,
+      "gdpUSDm": 381,
+      "atoll": false,
+      "imputed": false,
+      "needUSDm": 175
+    },
+    {
+      "iso": "NRU",
+      "country": "Nauru",
+      "pctGDP": 28.3,
+      "gdpUSDm": 108,
+      "atoll": false,
+      "imputed": true,
+      "needUSDm": 10
+    },
+    {
+      "iso": "SLB",
+      "country": "Solomon Islands",
+      "pctGDP": 27.9,
+      "gdpUSDm": 1440,
+      "atoll": false,
+      "imputed": false,
+      "needUSDm": 310
+    },
+    {
+      "iso": "TON",
+      "country": "Tonga",
+      "pctGDP": 23.6,
+      "gdpUSDm": 488,
+      "atoll": false,
+      "imputed": false,
+      "needUSDm": 155
+    },
+    {
+      "iso": "VUT",
+      "country": "Vanuatu",
+      "pctGDP": 23.0,
+      "gdpUSDm": 951,
+      "atoll": false,
+      "imputed": false,
+      "needUSDm": 270
+    },
+    {
+      "iso": "WSM",
+      "country": "Samoa",
+      "pctGDP": 21.3,
+      "gdpUSDm": 905,
+      "atoll": false,
+      "imputed": false,
+      "needUSDm": 190
+    },
+    {
+      "iso": "FJI",
+      "country": "Fiji",
+      "pctGDP": 14.7,
+      "gdpUSDm": 5708,
+      "atoll": false,
+      "imputed": false,
+      "needUSDm": 857
+    },
+    {
+      "iso": "PLW",
+      "country": "Palau",
+      "pctGDP": 14.7,
+      "gdpUSDm": 291,
+      "atoll": false,
+      "imputed": false,
+      "needUSDm": 50
+    },
+    {
+      "iso": "PNG",
+      "country": "Papua New Guinea",
+      "pctGDP": 11.5,
+      "gdpUSDm": 23587,
+      "atoll": false,
+      "imputed": false,
+      "needUSDm": 868
+    }
+  ]
+}
