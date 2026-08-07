@@ -1416,7 +1416,7 @@ export default function PacificScrollyMap({
             rel="noopener noreferrer"
             className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
-            Pacific Data Hub (official Dataviz Challenge dataset).
+            Pacific Data Hub.
           </a>{" "}
           Population-adjusted figures (per 100,000 residents) and livelihoods disrupted/destroyed from{" "}
           <a

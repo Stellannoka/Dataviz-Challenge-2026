@@ -44,7 +44,7 @@ const DOT = "var(--primary, #6d8499";
 const DOT_EDGE = "var(--primary-dark, #5f83b8)";
 /* Grey treatment for non-hovered dots while another dot is hovered. */
 const DOT_DIM = "#d7dbe3";
-const DOT_DIM_EDGE = "#b9c0cc";
+const DOT_DIM_EDGE = "var(--surface, #ffffff)";
 
 /* Axis styling, mirrored from the finance chart so the two read as one
    family: tick labels at 0.88rem / 300 / --text-secondary, axis titles
@@ -502,16 +502,19 @@ export default function AdaptationBurden() {
                     transitionDelay: reduced ? "0ms" : `${Math.min(i * 45, 500)}ms`,
                   }}
                 >
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={rDot}
-                    fill={dimmed ? DOT_DIM : DOT}
-                    fillOpacity={0.9}
-                    stroke={dimmed ? DOT_DIM_EDGE : DOT_EDGE}
-                    strokeWidth={1}
-                    style={{ cursor: "pointer", transition: "fill 0.15s, stroke 0.15s" }}
-                  />
+                  <g transform={`translate(${cx},${cy}) rotate(45)`}>
+                    <rect
+                      x={-rDot}
+                      y={-rDot}
+                      width={rDot * 2}
+                      height={rDot * 2}
+                      fill={dimmed ? DOT_DIM : DOT}
+                      fillOpacity={0.9}
+                      stroke={dimmed ? DOT_DIM_EDGE : DOT_EDGE}
+                      strokeWidth={1}
+                      style={{ cursor: "pointer", transition: "fill 0.15s, stroke 0.15s" }}
+                    />
+                  </g>
                   <text
                     x={lx}
                     y={ly}
@@ -583,35 +586,12 @@ export default function AdaptationBurden() {
               {hover.row.country}
             </p>
 
-            {/* Adaptation need: the chart's core metric, called out as the
-                headline stat with a muted eyebrow label above it. */}
+            {/* Adaptation need: the chart's core metric, as a complete
+                sentence with just the figure colored, not badged. */}
             <div style={{ marginTop: 7, paddingTop: 7, borderTop: "1px solid #ecebf3" }}>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "0.64rem",
-                  fontWeight: 600,
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                  color: AXIS_TITLE,
-                }}
-              >
-                Adaptation need
-              </p>
-              <p style={{ margin: "3px 0 0", lineHeight: 1.2, display: "flex", alignItems: "baseline", gap: 6 }}>
-                <span
-                  style={{
-                    fontSize: "1.05rem",
-                    fontWeight: 700,
-                    color: "#ffffff",
-                    background: DOT,
-                    borderRadius: 4,
-                    padding: "2px 8px",
-                  }}
-                >
-                  {hover.row.pctGDP}%
-                </span>
-                <span style={{ fontSize: "0.74rem", fontWeight: 400, color: TICK_TEXT }}>of GDP</span>
+              <p style={{ margin: 0, fontSize: "0.78rem", lineHeight: 1.35, color: TICK_TEXT }}>
+                Estimated annual adaptation need is{" "}
+                <strong style={{ color: DOT, fontWeight: 700 }}>{hover.row.pctGDP}% of GDP</strong>.
               </p>
             </div>
 

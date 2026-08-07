@@ -107,7 +107,7 @@ export default function Home() {
       <Section heading="Climate Financing Needs Remain Largely Unmet">
         <Prose>
           <div className={narrative}>
-            <p> Pacific Island Countries are receiving far less climate finance than they need
+            <p> Pacific Island Countries are receiving far less climate finance than they need.
             </p>
               <p>
               Looking specifically at <GlossaryTerm term="adaptation finance">adaptation finance</GlossaryTerm>, the region received an average of about US$0.9 billion a year between 2021 and 2023, against projected annual <GlossaryTerm term="adaptation needs">adaptation needs</GlossaryTerm> of about US$3.3 billion. At that level of financing, only around 26% of projected annual adaptation needs would be covered. Beyond that regional average, the gap varies considerably from one country to another.
@@ -133,10 +133,10 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-        For Pacific Island Countries, the gap between climate vulnerability and readiness is reinforced by another reality: current adaptation finance covers only a fraction of projected annual needs, while the investment required remains exceptionally large relative to the size of these economies.
+       For Pacific Island Countries, climate vulnerability continues to outpace the resources available to prepare for it. Current adaptation finance covers only a fraction of projected annual needs, while the investment required remains exceptionally large relative to the size of these economies.
             </p>
             <p>
-          Reducing the gap between climate vulnerability and preparedness will require adaptation funding that is closer to the scale of the need, as well as stronger readiness  to convert that investment into long-term resilience, safeguarded livelihoods, and communities better equipped to withstand future disasters.
+        Reducing future climate and disaster impacts on people, communities and economies will require funding for targeted adaptation interventions that strengthen long-term resilience.
             </p>
           </div>
         </Prose>

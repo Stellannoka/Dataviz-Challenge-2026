@@ -530,13 +530,16 @@ export default function ClimateGapOpener() {
     const curX = lerp(cluster.x, d.cx, appear);
     const curY = lerp(cluster.y, d.cy, appear);
     return (
-    <circle
+    <rect
       key={d.iso}
-      r={dotR}
+      x={-dotR}
+      y={-dotR}
+      width={dotR * 2}
+      height={dotR * 2}
       fill={C.faint}
       opacity={0.2} /* All dots (incl. Pacific) explode in as grey */
       style={{
-        transform: `translate(${curX}px, ${curY}px)`,
+        transform: `translate(${curX}px, ${curY}px) rotate(45deg)`,
         transitionProperty: scrubbing || revealing ? "opacity" : "transform, opacity",
         transitionDuration: scrubbing || revealing ? "0.5s" : "0.7s, 0.5s",
         transitionTimingFunction:
@@ -602,14 +605,19 @@ export default function ClimateGapOpener() {
               : `${transformDelayMs}ms, ${waveDelayMs}ms`,
           }}
         >
-          <circle
-            r={dotR}
-            fill={color}
-            stroke="rgba(0, 0, 0, 0.25)" /* Dark border for visibility */
-            strokeWidth={isSmall ? "0.8" : "1"} /* Thin but visible border */
-            opacity={0.95}
-            style={{ transition: `fill 0.5s ease ${waveDelayMs}ms` }}
-          />
+          <g transform="rotate(45)">
+            <rect
+              x={-dotR}
+              y={-dotR}
+              width={dotR * 2}
+              height={dotR * 2}
+              fill={color}
+              stroke="rgba(0, 0, 0, 0.25)" /* Dark border for visibility */
+              strokeWidth={isSmall ? "0.8" : "1"} /* Thin but visible border */
+              opacity={0.95}
+              style={{ transition: `fill 0.5s ease ${waveDelayMs}ms` }}
+            />
+          </g>
           {/* Country name label — above the dot, same size as the
               VulnerabilityScatter chart's active country label. */}
           <text
