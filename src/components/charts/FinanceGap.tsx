@@ -47,7 +47,6 @@ const FULL_COVERAGE_PCT = 100;
 
 const COVERED = "var(--primary, #7a9fd4)";
 const UNCOVERED = "#e4e5e7";
-const GRID_COLOR = "#E7EBEF";
 const REF_LINE = "var(--primary-dark, #5c779f)";
 const LABEL_TEXT = "var(--text-secondary, #9096a1)";
 /* Tick labels sit at the same colour the caption text renders at
@@ -83,7 +82,7 @@ const AXIS_TITLE_FONT_SIZE = "0.72rem";
 const OVERALL_BORDER_WIDTH = 1.5;
 /* How far the Overall PIC outline sits outside the row's content box, so it
    frames the label and the bar without touching either. */
-const OVERALL_BORDER_INSET_Y = 5;
+const OVERALL_BORDER_INSET_Y = 0;
 const OVERALL_BORDER_INSET_X = 6;
 
 /* Tiny visual gap between the covered and uncovered segments of a bar, so
@@ -109,45 +108,41 @@ interface BreakpointTokens {
   LABEL_GAP: number;
   LABEL_COLUMN_MAX_PCT: number;
   SIDE_PADDING: number;
-  GRID_OPACITY: number;
   TICK_STEP_PCT: number;
 }
 
 const TOKENS: Record<Breakpoint, BreakpointTokens> = {
   desktop: {
     BAR_HEIGHT: 22,
-    ROW_GAP: 11,
+    ROW_GAP: 3,
     LABEL_FONT_SIZE: 16,
     REFERENCE_FONT_SIZE: 11,
     LEGEND_FONT_SIZE: "0.78rem",
     LABEL_GAP: 20,
     LABEL_COLUMN_MAX_PCT: 30,
     SIDE_PADDING: 24,
-    GRID_OPACITY: 0.5,
     TICK_STEP_PCT: 20,
   },
   tablet: {
     BAR_HEIGHT: 22,
-    ROW_GAP: 10,
+    ROW_GAP: 3,
     LABEL_FONT_SIZE: 15,
     REFERENCE_FONT_SIZE: 10,
     LEGEND_FONT_SIZE: "0.78rem",
     LABEL_GAP: 14,
     LABEL_COLUMN_MAX_PCT: 45,
     SIDE_PADDING: 20,
-    GRID_OPACITY: 0.5,
     TICK_STEP_PCT: 20,
   },
   phone: {
     BAR_HEIGHT: 21,
-    ROW_GAP: 8,
+    ROW_GAP: 2,
     LABEL_FONT_SIZE: 13.5,
     REFERENCE_FONT_SIZE: 8,
     LEGEND_FONT_SIZE: "0.72rem",
     LABEL_GAP: 8,
     LABEL_COLUMN_MAX_PCT: 60,
     SIDE_PADDING: 10,
-    GRID_OPACITY: 0.5,
     /* Fewer ticks: nine 0.88rem labels would collide on a narrow screen. */
     TICK_STEP_PCT: 40,
   },
@@ -424,7 +419,7 @@ export default function FinanceGap() {
         const base = `Finance disbursed in 2021–2023 exceeded ${country}'s projected annual adaptation need by ${highlight}.`;
         const text =
           country === "Tuvalu"
-            ? `${base} The figure reflects large, lump-sum financing rather than a steady annual flow.`
+            ? `Tuvalu's adaptation finance in 2021–2023 was ${highlight} above its projected annual need. The apparent surplus, however, reflects large, irregular disbursements rather than a steady flow of finance each year.`
             : base;
         return { text, highlight };
       }
@@ -584,27 +579,6 @@ export default function FinanceGap() {
           background: "transparent",
         }}
       >
-        {/* Grid lines, behind the bars. */}
-        <div
-          style={{ gridColumn: 2, gridRow: gridSpanBars, position: "relative", pointerEvents: "none" }}
-          aria-hidden="true"
-        >
-          {ticks.map((tick) => (
-            <div
-              key={`grid-${tick}`}
-              style={{
-                position: "absolute",
-                left: `${pct(tick)}%`,
-                top: 0,
-                bottom: 0,
-                width: 1,
-                backgroundColor: GRID_COLOR,
-                opacity: tokens.GRID_OPACITY,
-              }}
-            />
-          ))}
-        </div>
-
         {/* Rows */}
         {rows.map((r, index) => {
           const isOver = r.coveragePct > FULL_COVERAGE_PCT;

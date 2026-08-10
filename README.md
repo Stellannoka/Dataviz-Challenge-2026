@@ -9,7 +9,7 @@ Entry for the [Pacific Dataviz Challenge 2026](https://pacificdatavizchallenge.o
 For more than two decades, every Pacific Island Country in this story has sat in the world's high-vulnerability half, while readiness to adapt has varied far more. This scrollytelling piece follows the gap between the two through three questions:
 
 1. **Does the gap exist?** A global scatter of ND-GAIN vulnerability against readiness, 2004 to 2023, shows all twelve Pacific Island Countries in the high-vulnerability half in every year, while readiness separates them.
-2. **What does the gap cost?** A scrollytelling map of the people directly affected by climate-related disasters in 2020, in absolute terms and per 100,000 population, followed by a bar chart of internal displacements by dominant hazard, toggling between the same two framings.
+2. **What does the gap cost?** A scrollytelling map of the people directly affected by climate-related disasters in 2020, in absolute terms and per 100,000 population — zooming into a highlighted country breaks that total down into its four Sendai components (injured or ill, dwellings damaged, dwellings destroyed, livelihoods disrupted) — followed by a bar chart of internal displacements per 100,000 residents by dominant hazard.
 3. **Why does it persist?** Projected annual adaptation finance needs compared with the adaptation finance actually disbursed — at recent funding levels, about 26% of projected need would be met — followed by that same need expressed as a share of GDP, showing the smallest economies carrying the largest relative burden.
 
 ## Data sources
@@ -19,6 +19,7 @@ For more than two decades, every Pacific Island Country in this story has sat in
 | Climate vulnerability and readiness scores, 2004 to 2023 | [ND-GAIN Country Index](https://gain.nd.edu/our-work/country-index/), Notre Dame Global Adaptation Initiative |
 | People directly affected by disasters, 2020 | [Pacific Data Hub (SPC)](https://stats.pacificdata.org/), dataset DF_SDG_11, indicator VC_DSR_AFFCT |
 | People directly affected per 100,000 population, 2020 | [UNSD SDG Indicators Database](https://unstats.un.org/sdgs/dataportal), indicator 11.5.1 (VC_DSR_DAFF) |
+| Sendai component breakdown of people affected (injured/ill, dwellings damaged, dwellings destroyed, livelihoods disrupted), 2020 | UNDRR Sendai Framework Monitor (SDG 1.5.1 / 11.5.1), via [Pacific Data Hub (SPC)](https://stats.pacificdata.org/) |
 | Internal displacements by hazard, 2020 | [Internal Displacement Monitoring Centre](https://www.internal-displacement.org/database/displacement-data/); population from [UNSD SDG Indicators Database](https://unstats.un.org/sdgs/dataportal) |
 | Adaptation finance needs and disbursements, and need as a share of GDP | [IMF Working Paper WP/26/83](https://www.imf.org/en/publications/wp/issues/2026/04/23/climate-finance-and-adaptation-needs-in-pacific-island-countries-575342), Gonguet et al. (2026); GDP from [IMF World Economic Outlook](https://www.imf.org/en/Publications/WEO/weo-database/2019/October) (October 2019) |
 
@@ -72,8 +73,8 @@ src/
     ClimateGapOpener.tsx       cold-open scroll animation, world scatter -> Pacific highlight
   components/charts/
     VulnerabilityScatter.tsx   ND-GAIN scatter with quadrants, search and year scrub
-    DisasterMapScrolly.tsx     scrollytelling map, raw counts then per-100k
-    DisplacementChart.tsx      displacements by hazard, per-100k / absolute toggle
+    DisasterMapScrolly.tsx     scrollytelling map, raw counts then per-100k, Sendai-component zoom breakdown
+    DisplacementChart.tsx      displacements per 100,000 residents, by dominant hazard
     FinanceGap.tsx             projected need vs disbursed finance
     AdaptationBurden.tsx       adaptation need as a share of GDP vs economic size
   hooks/          responsive width and scroll helpers

@@ -37,7 +37,7 @@ export default function Hero() {
         </h1>
 
         <p className="section-subtitle" style={{ textAlign: 'center', marginTop: '0.75rem', fontSize: '0.9rem' }}>
-          What climate disasters cost the Pacific Islands countries, and how the gap between vulnerability and readiness shapes those costs.
+          What climate disasters cost Pacific Islands countries, and how the gap between vulnerability and readiness shapes those costs.
         </p>
 
         <div className="hero-byline mt-5">
@@ -57,7 +57,7 @@ export default function Hero() {
 
         <div className="section-narrative" style={{ marginTop: '3rem' }}>
           <p>
-            Climate change is making <GlossaryTerm term="hazards">hazards</GlossaryTerm> such as floods, droughts, tropical cyclones and sea-level rise more frequent and, in many cases, more intense. As these hazards place growing pressure on communities and economies, the cost of <GlossaryTerm term="disasters">disasters</GlossaryTerm> depends increasingly on how prepared countries are to adapt and recover.
+            Climate change is making <GlossaryTerm term="hazards">hazards</GlossaryTerm> such as floods, droughts, tropical cyclones and sea-level rise more frequent and, in many cases, more intense. As these hazards place growing pressure on communities and economies, the consequences <GlossaryTerm term="disasters">disasters</GlossaryTerm> depends in part on a country's capacity to adapt and recover.
           </p>
           <p>
            For many Pacific Island Countries, readiness has improved over time, but not enough to keep pace with the scale of vulnerability they face. For more than two decades, they have remained among the world's most vulnerable to climate change. Even Tuvalu, the region's most ready country, ranks among the world's 20 most vulnerable.

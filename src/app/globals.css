@@ -24,8 +24,8 @@
      "louder" than the other. Warm vs. teal also avoids relying on any
      red-green distinction, which keeps it safe for red-green color
      blindness, the most common form. */
-  --accent:   #CF8376;         /* muted terracotta — disaster impact accent / value text */
-  --accent-bubble:    #CF8376;  /* fill for circles / bars */
+  --accent:   #c76153;         /* coral pink — disaster impact accent / value text */
+  --accent-bubble:    #c76153;  /* fill for circles / bars */
   --accent-dark: #A9665B;    /* deeper terracotta for focused / emphasis states */
 
   /* RED — reserved for the SHORTFALL / GAP inside finance */
@@ -44,7 +44,7 @@
   --faint: #94a3b8;
   --line: #cbd5e1;
   --surface: #ffffff;
-  --surface-translucent: rgba(255, 255, 255, 0.85);
+  --surface-translucent: rgba(255, 255, 255, 0.75);
   --card-shadow: rgba(100, 116, 139, 0.14);
 
   /* Map land + bubble borders (DisasterMapScrolly) */

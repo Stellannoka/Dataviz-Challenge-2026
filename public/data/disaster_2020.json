@@ -1,0 +1,32 @@
+{
+  "year": 2020,
+  "anchorEvent": "Cyclone Harold and other disasters",
+  "sources": {
+    "affected": "Pacific Data Hub (SPC), Pacific Community",
+    "per100k": "United Nations Statistics Division",
+    "components": "UNDRR Sendai Framework Monitor (SDG 1.5.1 / 11.5.1), via Pacific Data Hub"
+  },
+  "componentsNote": "People affected is the sum of its four Sendai components: injured or ill + dwellings damaged + dwellings destroyed + livelihoods disrupted (Sendai indicator B1 = B2 + B3 + B4 + B5).",
+  "livelihoodsNotReporting": ["Tonga", "Palau", "Micronesia (Fed. States)"],
+  "totals": { "affected": 548686, "livelihoods": 399469, "deaths": 94, "livelihoodsSharePct": 73 },
+  "regionalContext": {
+    "window": "2005-2019",
+    "avgDeathsPerYear": 22,
+    "avgAffectedPerYear": 113685,
+    "note": "Regional averages over the years the UN mortality/affected series covers (2005-2019, not continuous)."
+  },
+  "countries": [
+    { "iso": "FJI", "country": "Fiji",             "affected": 235921, "per100k": 25785,  "injured": 1221, "dwellingsDamaged": 37714, "dwellingsDestroyed": 14094, "livelihoods": 182892, "livelihoodShare": 0.775 },
+    { "iso": "VUT", "country": "Vanuatu",          "affected": 246802, "per100k": 82582,  "injured": 122,  "dwellingsDamaged": 86680, "dwellingsDestroyed": 0,     "livelihoods": 160000, "livelihoodShare": 0.648 },
+    { "iso": "SLB", "country": "Solomon Islands",  "affected": 2339,   "per100k": 314,    "injured": 6,    "dwellingsDamaged": 136,   "dwellingsDestroyed": 437,   "livelihoods": 1760,   "livelihoodShare": 0.752 },
+    { "iso": "PNG", "country": "Papua New Guinea", "affected": 3297,   "per100k": 34,     "injured": 3007, "dwellingsDamaged": 20,    "dwellingsDestroyed": 20,    "livelihoods": 250,    "livelihoodShare": 0.076 },
+    { "iso": "TON", "country": "Tonga",            "affected": 68,     "per100k": null,   "injured": null, "dwellingsDamaged": null,  "dwellingsDestroyed": null,  "livelihoods": null,   "livelihoodShare": null },
+    { "iso": "WSM", "country": "Samoa",            "affected": 195,    "per100k": 92,     "injured": 15,   "dwellingsDamaged": 60,    "dwellingsDestroyed": 60,    "livelihoods": 60,     "livelihoodShare": 0.308 },
+    { "iso": "KIR", "country": "Kiribati",         "affected": 15,     "per100k": 12,     "injured": 0,    "dwellingsDamaged": 6,     "dwellingsDestroyed": 6,     "livelihoods": 3,      "livelihoodShare": 0.2 },
+    { "iso": "FSM", "country": "Micronesia",       "affected": 0,      "per100k": 0,      "injured": null, "dwellingsDamaged": null,  "dwellingsDestroyed": null,  "livelihoods": null,   "livelihoodShare": null },
+    { "iso": "MHL", "country": "Marshall Islands", "affected": 56718,  "per100k": 132810, "injured": 3560, "dwellingsDamaged": 0,     "dwellingsDestroyed": 0,     "livelihoods": 53158,  "livelihoodShare": 0.937 },
+    { "iso": "TUV", "country": "Tuvalu",           "affected": 2266,   "per100k": 21795,  "injured": 0,    "dwellingsDamaged": 246,   "dwellingsDestroyed": 1774,  "livelihoods": 246,    "livelihoodShare": 0.109 },
+    { "iso": "NRU", "country": "Nauru",            "affected": 1133,   "per100k": 9731,   "injured": 33,   "dwellingsDamaged": 0,     "dwellingsDestroyed": 0,     "livelihoods": 1100,   "livelihoodShare": 0.971 },
+    { "iso": "PLW", "country": "Palau",            "affected": null,   "per100k": null,   "injured": null, "dwellingsDamaged": null,  "dwellingsDestroyed": null,  "livelihoods": null,   "livelihoodShare": null }
+  ]
+}

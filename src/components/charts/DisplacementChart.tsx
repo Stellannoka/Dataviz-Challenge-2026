@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { asset } from "@/lib/basePath";
 
 /* =====================================================================
    DisplacementChart — a 1:1 port of the approved HTML prototype.
    Simple bars, fixed label column, hazard-coloured fills, square corners
-   (matching FinanceGap's bars), per-100k / absolute toggle with animated
-   reorder.
+   (matching FinanceGap's bars). Per-100k only — no absolute/per-100k
+   toggle.
    ===================================================================== */
 
 type HazardKey = "cyclone" | "flood" | "landslide" | "other";
@@ -21,15 +21,12 @@ interface Row {
 }
 interface DisplacementData {
   year: number;
-  defaultView: "per100k" | "absolute";
   absentLine?: string;
   data: Row[];
 }
 
-type View = "per100k" | "absolute";
-
 const HAZARD_COLOR: Record<HazardKey, string> = {
-  cyclone: "#CF8376" /* matches --accent-bubble, the Section 2 (disaster
+  cyclone: "#c76153" /* matches --accent-bubble, the Section 2 (disaster
     impact) accent used throughout the map */,
   flood: "#7C94AB" /* matches --primary — water reads naturally as the
     project's teal, and it keeps cyclone/flood clearly distinct */,
@@ -43,8 +40,10 @@ const HAZARD_LABEL: Record<HazardKey, string> = {
   other: "Other",
 };
 
-const ROWH = 42;
-const BAR_H = 22;
+/* Row height kept tight for easy comparison; bars a bit thicker than
+   FinanceGap's BAR_HEIGHT (22) for more visual weight. */
+const ROWH = 31;
+const BAR_H = 25;
 const LEGEND_SWATCH_RADIUS = 2;
 /* Matches FinanceGap's bars. */
 const BAR_RADIUS = 1.5;
@@ -54,7 +53,6 @@ const fmt = (n: number) => Math.round(n).toLocaleString();
 
 export default function DisplacementChart() {
   const [data, setData] = useState<DisplacementData | null>(null);
-  const [view, setView] = useState<View>("per100k");
   const [barW, setBarW] = useState(0);
   const [isPhone, setIsPhone] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
@@ -62,10 +60,7 @@ export default function DisplacementChart() {
   useEffect(() => {
     fetch(asset("/data/displacement_2020.json"))
       .then((r) => r.json())
-      .then((d: DisplacementData) => {
-        setData(d);
-        if (d.defaultView) setView(d.defaultView);
-      })
+      .then((d: DisplacementData) => setData(d))
       .catch((err) => console.error("Displacement load failed:", err));
   }, []);
 
@@ -86,10 +81,7 @@ export default function DisplacementChart() {
     return () => ro.disconnect();
   }, [data]);
 
-  const valueOf = useCallback(
-    (r: Row) => (view === "per100k" ? r.per100k : r.absolute),
-    [view]
-  );
+  const valueOf = (r: Row) => r.per100k;
 
   if (!data) {
     return (
@@ -106,18 +98,11 @@ export default function DisplacementChart() {
   const rank = new Map(ordered.map((r, i) => [r.iso, i]));
   const max = Math.max(...rows.map(valueOf)) * 1.04;
   const pct = (v: number) => (v / max) * 100;
-  const steps = isPhone ? 2 : 4;
-  const ticks = Array.from({ length: steps + 1 }, (_, i) => (max / steps) * i);
-  const tickLabel = (v: number) =>
-    v >= 1000 ? `${Math.round(v / 1000)}k` : `${Math.round(v)}`;
   const hazardsPresent = (
     ["cyclone", "flood", "landslide", "other"] as HazardKey[]
   ).filter((h) => rows.some((r) => r.dominantHazard === h));
 
-  const axisTitle =
-    view === "per100k"
-      ? `Displacements per 100,000 residents, ${data.year}`
-      : `Total displacements, ${data.year}`;
+  const axisTitle = `Displacements per 100,000 residents, ${data.year}`;
 
   return (
     <figure className="w-full" style={{ margin: 0, background: "transparent" }}>
@@ -150,7 +135,7 @@ export default function DisplacementChart() {
             marginBottom: 18,
           }}
         >
-       Displacements triggered by weather-related disasters per 100,000 residents, 2020
+       Displacements triggered by weather-related disasters per 100,000 people, 2020
         </p>
       </div>
 
@@ -198,66 +183,6 @@ export default function DisplacementChart() {
           ))}
         </div>
 
-        {/* Toggle — right side of the chart */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: 12,
-            marginBottom: 14,
-            flexWrap: "wrap",
-          }}
-        >
-          <ToggleLabel
-            active={view === "per100k"}
-            top="Per 100,000 people"
-            bottom="[ relative ]"
-            onClick={() => setView("per100k")}
-          />
-          <button
-            type="button"
-            role="switch"
-            aria-checked={view === "absolute"}
-            aria-label="Toggle between per 100,000 residents and total displacements"
-            onClick={() =>
-              setView(view === "absolute" ? "per100k" : "absolute")
-            }
-            style={{
-              position: "relative",
-              width: 44,
-              height: 24,
-              borderRadius: 999,
-              border: "none",
-              background: "#d8d2cb",
-              cursor: "pointer",
-              flexShrink: 0,
-              padding: 0,
-            }}
-          >
-            <span
-              style={{
-                position: "absolute",
-                top: 3,
-                left: 3,
-                width: 18,
-                height: 18,
-                borderRadius: "50%",
-                background: "#fff",
-                boxShadow: "0 1px 3px rgba(0,0,0,0.25)",
-                transform:
-                  view === "absolute" ? "translateX(20px)" : "translateX(0)",
-                transition: "transform 0.25s ease",
-              }}
-            />
-          </button>
-          <ToggleLabel
-            active={view === "absolute"}
-            top="Total displaced"
-            bottom="[ absolute ]"
-            onClick={() => setView("absolute")}
-          />
-        </div>
         {/* rows */}
         <div style={{ position: "relative", height: rows.length * ROWH }}>
           {rows.map((r, idx) => {
@@ -289,6 +214,7 @@ export default function DisplacementChart() {
                     style={{
                       whiteSpace: "nowrap",
                       fontSize: isPhone ? "0.8rem" : "0.9rem",
+                      fontWeight: r.country === "Vanuatu" ? 700 : 400,
                       color: "#404040",
                       lineHeight: 1.2,
                     }}
@@ -303,22 +229,6 @@ export default function DisplacementChart() {
                   aria-label={`${r.country}: ${fmt(v)}`}
                   style={{ position: "relative", height: BAR_H, width: "100%" }}
                 >
-                  {/* gridlines */}
-                  {ticks.map((t, i) => (
-                    <div
-                      key={i}
-                      aria-hidden="true"
-                      style={{
-                        position: "absolute",
-                        left: `${pct(t)}%`,
-                        top: -(ROWH - BAR_H) / 2,
-                        height: ROWH,
-                        width: 1,
-                        background: "#e9e9f1",
-                        opacity: 0.5,
-                      }}
-                    />
-                  ))}
                   {/* fill */}
                   <div
                     style={{
@@ -329,6 +239,8 @@ export default function DisplacementChart() {
                       width: `${Math.max(ep, 0.4)}%`,
                       background: HAZARD_COLOR[r.dominantHazard],
                       borderRadius: BAR_RADIUS,
+                      boxSizing: "border-box",
+                      border: "1px solid rgba(0, 0, 0, 0.12)",
                       transition: `width ${ANIM}`,
                     }}
                   />
@@ -356,62 +268,6 @@ export default function DisplacementChart() {
               </div>
             );
           })}
-        </div>
-
-        {/* bottom axis: ticks then title */}
-        <div
-          style={{
-            position: "relative",
-            height: 26,
-            marginTop: 4,
-            marginLeft: LABELW + 20,
-          }}
-          aria-hidden="true"
-        >
-          {ticks.map((t, i) => (
-            <div
-              key={i}
-              style={{
-                position: "absolute",
-                left: `${pct(t)}%`,
-                top: 0,
-                transform: "translateX(-50%)",
-                textAlign: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: 1,
-                  height: 5,
-                  background: "#9096a1",
-                  opacity: 0.6,
-                  margin: "0 auto 3px",
-                }}
-              />
-              <div
-                style={{
-                  fontSize: "0.88rem",
-                  fontWeight: 300,
-                  color: "#404040",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {tickLabel(t)}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div
-          style={{
-            fontSize: "0.72rem",
-            fontWeight: 300,
-            color: "#707070",
-            marginTop: 2,
-            marginLeft: LABELW + 20,
-          }}
-          aria-hidden="true"
-        >
-          {axisTitle}
         </div>
 
       </div>
@@ -480,43 +336,5 @@ export default function DisplacementChart() {
         </table>
       </div>
     </figure>
-  );
-}
-
-function ToggleLabel({
-  active,
-  top,
-  bottom,
-  onClick,
-}: {
-  active: boolean;
-  top: string;
-  bottom: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 2,
-        border: "none",
-        background: "transparent",
-        cursor: "pointer",
-        padding: 0,
-        fontFamily: "var(--font-sans)",
-        color: active ? "#404040" : "#9096a1",
-        lineHeight: 1.2,
-      }}
-    >
-      <span style={{ fontWeight: active ? 600 : 400, fontSize: "0.76rem" }}>
-        {top}
-      </span>
-      <span style={{ fontStyle: "italic", fontSize: "0.68rem" }}>{bottom}</span>
-    </button>
   );
 }

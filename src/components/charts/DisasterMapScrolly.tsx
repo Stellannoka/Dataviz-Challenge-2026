@@ -40,6 +40,39 @@ interface LivelihoodsData {
   data: LivelihoodsRow[];
 }
 
+/* Unified single-file schema (public/data/disaster_2020.json). Everything
+   the map needs per country now lives in one row; the raw/per-100k/
+   livelihoods lookups below are all derived from it. */
+interface UnifiedRow {
+  iso: string;
+  country: string;
+  affected: number | null;
+  per100k: number | null;
+  injured: number | null;
+  dwellingsDamaged: number | null;
+  dwellingsDestroyed: number | null;
+  livelihoods: number | null;
+  livelihoodShare: number | null;
+}
+interface UnifiedData {
+  year: number;
+  anchorEvent: string;
+  sources: { affected: string; per100k: string; components: string };
+  countries: UnifiedRow[];
+}
+/* The four Sendai components of "people affected" (B1 = B2+B3+B4+B5),
+   used for the split-on-zoom in the raw phase. */
+interface CountryComponents {
+  iso: string;
+  country: string;
+  affected: number | null;
+  injured: number | null;
+  dwellingsDamaged: number | null;
+  dwellingsDestroyed: number | null;
+  livelihoods: number | null;
+  livelihoodShare: number | null;
+}
+
 interface GeoFeature {
   type: "Feature";
   properties: { iso: string; name: string };
@@ -60,9 +93,9 @@ interface GeoData {
    bubble below, which deliberately breaks from the warm family so it reads
    as a distinct measure nested inside the (warm) affected bubble. */
 const PALETTE = {
-  raw: { accent: "var(--accent, #de8e8e)", bubble: "var(--accent-bubble, #de8e8e)" },
-  per: { accent: "var(--accent-dark, #de8e8e)", bubble: "var(--accent-bubble, #de8e8e)" },
-  /* Nested "livelihoods lost" bubble, raw phase only. */
+  raw: { accent: "var(--accent, #c76153)", bubble: "var(--accent-bubble, #c76153)" },
+  per: { accent: "var(--accent-dark, #A9665B)", bubble: "var(--accent-bubble, #c76153)" },
+  /* Livelihoods hue — kept for the body-copy highlight colour. */
   livelihoods: "var(--primary-vivid, #2E6FA3)",
   ink: "var(--ink, #0f172a)",
   inkSoft: "var(--ink-soft, #1e293b)",
@@ -70,7 +103,7 @@ const PALETTE = {
   faint: "var(--faint, #94a3b8)",
   line: "var(--line, #cbd5e1)",
   surface: "var(--surface, #ffffff)",
-  surfaceTranslucent: "var(--surface-translucent, rgba(255, 255, 255, 0.85))",
+  surfaceTranslucent: "var(--surface-translucent, rgba(255, 255, 255, 0.75))",
   cardShadow: "var(--card-shadow, rgba(100, 116, 139, 0.14))",
   land: "var(--land, #f6f6f6)",
   landStroke: "var(--land-stroke, #cfcfcf)",
@@ -83,7 +116,12 @@ const PALETTE = {
   bubbleBorder: "var(--bubble-border, #666666)",
 } as const;
 
-/* ----------------------------------------------- explicit bubble anchors */
+/* ----------------------------------------------- explicit bubble anchors
+   The 12 Pacific Island Countries only — matches COORDS_PER100K exactly, so
+   the raw phase's fitExtent doesn't have to stretch out to fit the more
+   far-flung non-PIC territories (American Samoa, Cook Islands, Guam, etc.)
+   that used to be plotted here too. Dropping them lets the projection zoom
+   in tighter on the 12 that actually carry data in both phases. */
 const COORDS_RAW: Record<string, { lon: number; lat: number }> = {
   FJI: { lon: 178.0, lat: -17.8 },
   VUT: { lon: 167.0, lat: -16.5 },
@@ -97,15 +135,6 @@ const COORDS_RAW: Record<string, { lon: number; lat: number }> = {
   TUV: { lon: 179.2, lat: -8.5 },
   NRU: { lon: 166.9, lat: -0.5 },
   PNG: { lon: 144.3, lat: -6.0 },
-  AS: { lon: -170.1, lat: -14.3 },
-  CK: { lon: -159.8, lat: -21.2 },
-  GU: { lon: 144.8, lat: 13.4 },
-  MP: { lon: 145.8, lat: 15.2 },
-  NC: { lon: 165.9, lat: -21.5 },
-  NU: { lon: -169.9, lat: -19.1 },
-  PF: { lon: -149.6, lat: -17.5 },
-  TK: { lon: -171.8, lat: -9.2 },
-  WF: { lon: -176.2, lat: -14.3 }
 };
 
 const COORDS_PER100K: Record<string, { lon: number; lat: number }> = {
@@ -143,35 +172,35 @@ const STEPS: Step[] = [
     kind: "intro",
     focus: [],
     title: "Intro",
-    body: "In 2020, disasters directly affected more than half a million people across the Pacific Islands and left about 94 dead. For nearly three-quarters of those affected, the disaster also disrupted the livelihoods they depend on.",
+    body: "In 2020, disasters directly affected 548,686 people across the Pacific Islands. This includes people who were injured or fell ill, whose dwellings were damaged, whose dwellings were destroyed, or whose livelihoods were disrupted or destroyed.",
   },
   {
     phase: "raw",
     kind: "highlight",
     focus: ["VUT"],
     title: "Vanuatu",
-    body: "Vanuatu recorded the largest number of people directly affected in 2020, with 246,802 people impacted by disasters. Of these, 160,000 (65%) also lost the livelihoods on which they depended, showing how widely the impacts extended beyond the immediate event.",
+    body: "In Vanuatu, 160,000 people had their livelihoods disrupted or destroyed, 86,680 had damaged dwellings, and 122 were injured or fell ill; together accounting for 246,802 people directly affected by disasters.",
   },
   {
     phase: "raw",
     kind: "highlight",
     focus: ["FJI"],
     title: "Fiji",
-    body: "Fiji followed closely behind, with 235,921 people directly affected. Together, Fiji and Vanuatu accounted for nearly 88% of everyone directly affected across the Pacific Island Countries that year. In Fiji, 182,892 people (78%) also lost the livelihoods on which they depended.",
+    body: "Fiji followed closely behind, with 235,921 people directly affected. Together, Fiji and Vanuatu accounted for nearly 88% of everyone directly affected across the Pacific Island Countries that year.",
   },
   {
     phase: "raw",
     kind: "highlight",
     focus: ["MHL"],
     title: "Marshall Islands",
-    body: "The Marshall Islands recorded far fewer people directly affected than Fiji or Vanuatu. Judged by total numbers alone, it appears to have experienced a much smaller disaster. Yet of those it did reach (56,718 people), almost none were spared: 53,158 people, more than nine in ten, lost the livelihood they depend on.",
+    body: "The Marshall Islands recorded far fewer people directly affected than Fiji or Vanuatu. Judged by total numbers alone, it appears to have experienced a much smaller disaster. Yet of those it did reach — 56,718 people — the impact was substantial for a country of its size.",
   },
   {
     phase: "raw",
     kind: "setup",
     focus: ["VUT", "FJI"],
     title: "",
-    body: "But absolute numbers reveal where the greatest numbers of people were affected. They do not, however, show how widespread those impacts were within each country. Looking at people affected relative to population reveals a different picture.",
+    body: "The scale of the impact becomes clearer when the number of people affected is considered against each country's population.",
   },
 
   /* ---------------- PHASE 2 — PER 100,000 (2020) ---------------- */
@@ -347,7 +376,7 @@ interface PacificScrollyMapProps {
 }
 
 export default function PacificScrollyMap({
-  title = "People directly affected by weather-related disasters in Pacific Island Countries, 2020",
+  title = "More than half a million people across Pacific Island Countries were directly affected by disaters in 2020",
 }: PacificScrollyMapProps = {}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -355,7 +384,7 @@ export default function PacificScrollyMap({
   const [height, setHeight] = useState(0);
   const [geo, setGeo] = useState<GeoData | null>(null);
   const [yearData, setYearData] = useState<YearData | null>(null);
-  const [livelihoodsData, setLivelihoodsData] = useState<LivelihoodsData | null>(null);
+  const [components, setComponents] = useState<CountryComponents[] | null>(null);
 
   const [segIndex, setSegIndex] = useState(0);
   const [segProgress, setSegProgress] = useState(0);
@@ -370,13 +399,44 @@ export default function PacificScrollyMap({
   useEffect(() => {
     Promise.all([
       fetch(asset("/data/pacific_countries.json")).then((r) => r.json()),
-      fetch(asset("/data/affected_2020.json")).then((r) => r.json()),
-      fetch(asset("/data/livelihoods_2020.json")).then((r) => r.json()),
+      fetch(asset("/data/disaster_2020.json")).then((r) => r.json()),
     ])
-      .then(([g, y, l]) => {
+      .then(([g, u]: [GeoData, UnifiedData]) => {
         setGeo(g);
-        setYearData(y);
-        setLivelihoodsData(l);
+        setYearData({
+          year: u.year,
+          anchorEvent: u.anchorEvent,
+          rawCounts: {
+            source: u.sources.affected,
+            unit: "people directly affected",
+            data: u.countries.map((c) => ({
+              iso: c.iso,
+              country: c.country,
+              affected: c.affected ?? undefined,
+            })),
+          },
+          per100k: {
+            source: u.sources.per100k,
+            unit: "people affected per 100,000 residents",
+            data: u.countries.map((c) => ({
+              iso: c.iso,
+              country: c.country,
+              per100k: c.per100k ?? undefined,
+            })),
+          },
+        });
+        setComponents(
+          u.countries.map((c) => ({
+            iso: c.iso,
+            country: c.country,
+            affected: c.affected,
+            injured: c.injured,
+            dwellingsDamaged: c.dwellingsDamaged,
+            dwellingsDestroyed: c.dwellingsDestroyed,
+            livelihoods: c.livelihoods,
+            livelihoodShare: c.livelihoodShare,
+          }))
+        );
       })
       .catch((err) => console.error("Map load failed:", err));
   }, []);
@@ -457,6 +517,12 @@ export default function PacificScrollyMap({
      treatment instead of dropping back to the muted style. */
   const isPerReveal = inPer && stepKind === "reveal";
 
+  /* On the raw phase's closing "setup" step (the bridge just before the
+     flip to per-100k), every bubble holds the highlight treatment too —
+     a full-map reveal of every country's name and figure right before
+     the map transforms, rather than staying dimmed except VUT/FJI. */
+  const isRawSetupReveal = !inPer && stepKind === "setup";
+
   /* ---- GRADUAL TRANSITION: gridT completes BEFORE the flip step reaches the top */
   const gridT = useMemo(() => {
     // Before the flip step: no grid (0)
@@ -487,11 +553,11 @@ export default function PacificScrollyMap({
     return m;
   }, [yearData]);
 
-  const livelihoodsByIso = useMemo(() => {
-    const m = new Map<string, LivelihoodsRow>();
-    livelihoodsData?.data.forEach((r) => m.set(r.iso, r));
+  const componentsByIso = useMemo(() => {
+    const m = new Map<string, CountryComponents>();
+    components?.forEach((r) => m.set(r.iso, r));
     return m;
-  }, [livelihoodsData]);
+  }, [components]);
 
   // Use different COORDS based on phase
   const coords = inPer ? COORDS_PER100K : COORDS_RAW;
@@ -519,12 +585,17 @@ export default function PacificScrollyMap({
       ? (isSmall ? 0.1 : isMedium ? 0.08 : 0.06)
       : (isSmall ? 0.05 : isMedium ? 0.04 : 0.03);
     const pad = Math.min(width, height) * padFrac;
+    /* Raw phase only: the southernmost point (Tonga) sits close to the
+       fitted extent's bottom edge, and its country-name + figure callout
+       renders below the bubble — extra bottom clearance keeps that label
+       from clipping against the stage edge instead of just the bubble. */
+    const bottomPad = inPer ? pad : pad + (isSmall ? 40 : 55);
 
     const proj = geoEquirectangular().rotate([-172, 0]);
     proj.fitExtent(
       [
         [pad, pad],
-        [width - pad, height - pad],
+        [width - pad, height - bottomPad],
       ],
       fitPoints
     );
@@ -697,7 +768,7 @@ export default function PacificScrollyMap({
      phase-aware (raw counts vs. per-100k). */
   const scaleNote = inPer
     ? "Filled circles are scaled to people directly affected per 100,000 residents. Outer rings are fixed for comparison."
-    : "Circles are scaled to the number of people directly affected; the nested blue circle is the share who also lost their livelihood.";
+    : "Circles are scaled to the number of people directly affected.";
 
   const travelTop = useMemo(() => {
     if (!height) return 0;
@@ -746,20 +817,11 @@ export default function PacificScrollyMap({
   const bodyHighlights = useMemo((): { match: string; color: string }[] => {
     switch (segIndex) {
       case 1: // Vanuatu
-        return [
-          { match: "246,802 people impacted", color: bubbleFill },
-          { match: "160,000 (65%) also lost the livelihoods", color: PALETTE.livelihoods },
-        ];
+        return [{ match: "246,802 people", color: bubbleFill }];
       case 2: // Fiji
-        return [
-          { match: "235,921 people directly affected", color: bubbleFill },
-          { match: "182,892 people (78%) also lost the livelihoods", color: PALETTE.livelihoods },
-        ];
+        return [{ match: "235,921 people directly affected", color: bubbleFill }];
       case 3: // Marshall Islands
-        return [
-          { match: "(56,718 people)", color: bubbleFill },
-          { match: "53,158 people, more than nine in ten, lost the livelihood", color: PALETTE.livelihoods },
-        ];
+        return [{ match: "— 56,718 people —", color: bubbleFill }];
       default:
         return [];
     }
@@ -887,57 +949,9 @@ export default function PacificScrollyMap({
             <p className="section-title" style={{ fontSize: "0.9rem", fontWeight: 500 }}>
               {title}
             </p>
-            {/* Raw phase: legend only, no textual cue. Per-100k phase: the
-                scale-note textual cue only, no legend (livelihoods doesn't
-                exist as a bubble there, and a single-swatch legend for just
-                "people affected per 100,000" is redundant with the note). */}
-            {inPer && (
-              <p className="section-subtitle" style={{ marginTop: isSmall ? 10 : 14 }}>
-                {scaleNote}
-              </p>
-            )}
-
-            {!inPer && (
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  gap: "6px 16px",
-                  marginTop: isSmall ? 10 : 14,
-                  fontSize: "0.72rem",
-                  color: "#707070",
-                  fontFamily: "var(--font-sans)",
-                }}
-              >
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      background: bubbleFill,
-                      display: "inline-block",
-                    }}
-                  />
-                  People affected
-                </span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      background: PALETTE.livelihoods,
-                      display: "inline-block",
-                    }}
-                  />
-                  Lost their livelihood
-                </span>
-              </div>
-            )}
+            <p className="section-subtitle" style={{ marginTop: isSmall ? 10 : 14 }}>
+              {scaleNote}
+            </p>
           </div>
 
           {/* Map stage */}
@@ -1010,7 +1024,7 @@ export default function PacificScrollyMap({
                   {/* Bubbles */}
                   {camPositioned.map(({ iso, x, y }) => {
                     const r = radiusFor(iso);
-                    const isFoc = isPerReveal || focusISOs.includes(iso);
+                    const isFoc = isPerReveal || isRawSetupReveal || focusISOs.includes(iso);
                     const baseR = isSmall ? 3.5 : 5;
                     // Bigger fixed radius for "no data" dots — there's no
                     // value to scale by, and the tiny baseR circle leaves no
@@ -1038,43 +1052,15 @@ export default function PacificScrollyMap({
                     const gridName = nameFor(iso);
                     const gridDim = anyFocus && !isFoc ? 0.4 : 1;
 
-                    /* Livelihoods lost: a second bubble clustered next to the
-                       affected circle (offset, not concentric) so both stay
-                       visible as distinct overlapping circles — like a small
-                       Dorling cluster — rather than one hiding inside the
-                       other. Scaled on the same rScaleRaw domain so its
-                       radius is always <= the affected bubble's (livelihoods
-                       lost can never exceed people affected). Phase-agnostic
-                       2020 figure, not tied to raw vs. per-100k. */
-                    const livelihoodsValue = livelihoodsByIso.get(iso)?.livelihoods ?? 0;
-                    const hasLivelihoods = livelihoodsValue > 0;
-                    const livelihoodsR = hasLivelihoods
-                      ? Math.max(rScaleRaw ? rScaleRaw(livelihoodsValue) : 0, 2)
-                      : 0;
-                    // Push the smaller circle's centre out from the affected
-                    // circle's centre so the two partially overlap rather
-                    // than sitting concentric.
-                    const clusterOffset = displayR * 0.55;
-                    const livelihoodsCx = clusterOffset * Math.cos(Math.PI / 4);
-                    const livelihoodsCy = clusterOffset * Math.sin(Math.PI / 4);
+                    /* ---- On zoom into a single country, show its name above
+                       the (single, unsplit) affected bubble. */
+                    const showCallout = (zoomActive && focusISOs[0] === iso) || isRawSetupReveal;
 
-                    /* Per-bubble hover/click state: whichever of the two the
-                       reader is engaging with comes to the front and gets
-                       the bold border; the other recedes (dimmer fill,
-                       thinner border) rather than the two competing equally. */
                     const isAffectedHovered = bubbleHover?.iso === iso && bubbleHover.kind === "affected";
-                    const isLivelihoodsHovered = bubbleHover?.iso === iso && bubbleHover.kind === "livelihoods";
                     const affectedInteractive = !inPer && !noData;
-                    const livelihoodsInteractive = !inPer && hasLivelihoods;
 
                     const affectedHighlight = fmtInt(value);
                     const affectedContent = `${affectedHighlight} people directly affected`;
-                    const livelihoodsShare = livelihoodsByIso.get(iso)?.livelihoodShare;
-                    const livelihoodsHighlight = fmtInt(livelihoodsValue);
-                    const livelihoodsContent =
-                      livelihoodsShare != null
-                        ? `${livelihoodsHighlight} lost their livelihood (${Math.round(livelihoodsShare * 100)}% of those affected)`
-                        : `${livelihoodsHighlight} lost their livelihood`;
 
                     const affectedCircleEl = (
                       <>
@@ -1083,8 +1069,7 @@ export default function PacificScrollyMap({
                           r={displayR}
                           fill={hasValue ? bubbleFill : confirmedZero ? PALETTE.mutedSoft : "none"}
                           fillOpacity={
-                            (hasValue ? (isFoc ? 0.5 : anyFocus ? 0.25 : 0.4) : confirmedZero ? 0.35 : 0) *
-                            (isLivelihoodsHovered ? 0.55 : 1)
+                            hasValue ? (isFoc ? 0.65 : anyFocus ? 0.35 : 0.55) : confirmedZero ? 0.45 : 0
                           }
                           stroke={PALETTE.bubbleBorder}
                           strokeOpacity={isFoc || isAffectedHovered ? 1 : 0.55}
@@ -1128,64 +1113,73 @@ export default function PacificScrollyMap({
                       </>
                     );
 
-                    /* "Livelihoods lost" bubble — offset next to the affected
-                       circle (not concentric) and translucent, so the two
-                       read as overlapping circles that blend where they
-                       overlap, like a small two-circle cluster. Same border
-                       colour as the affected circle so the pair reads as one
-                       family of bubbles. */
-                    const livelihoodsCircleEl = hasLivelihoods ? (
-                      <circle
-                        key="livelihoods"
-                        cx={livelihoodsCx}
-                        cy={livelihoodsCy}
-                        r={livelihoodsR}
-                        fill={PALETTE.livelihoods}
-                        fillOpacity={(isFoc ? 0.55 : anyFocus ? 0.25 : 0.45) * (isAffectedHovered ? 0.55 : 1)}
-                        stroke={PALETTE.bubbleBorder}
-                        strokeOpacity={isFoc || isLivelihoodsHovered ? 1 : 0.55}
-                        strokeWidth={isFoc || isLivelihoodsHovered ? 1.2 : 0.75}
-                        style={{
-                          cursor: livelihoodsInteractive ? "pointer" : "default",
-                          transition:
-                            "cx 0.6s cubic-bezier(0.34,1.56,0.64,1), cy 0.6s cubic-bezier(0.34,1.56,0.64,1), r 0.6s cubic-bezier(0.34,1.56,0.64,1), fill-opacity 0.4s ease",
-                        }}
-                        onMouseEnter={(e) =>
-                          livelihoodsInteractive &&
-                          handleBubbleInteraction(
-                            e,
-                            iso,
-                            "livelihoods",
-                            livelihoodsContent,
-                            livelihoodsHighlight,
-                            PALETTE.livelihoods
-                          )
-                        }
-                        onMouseLeave={() => handleBubbleLeave(iso, "livelihoods")}
-                        onTouchStart={(e) =>
-                          livelihoodsInteractive &&
-                          handleBubbleInteraction(
-                            e,
-                            iso,
-                            "livelihoods",
-                            livelihoodsContent,
-                            livelihoodsHighlight,
-                            PALETTE.livelihoods
-                          )
-                        }
-                        onClick={(e) =>
-                          livelihoodsInteractive &&
-                          handleBubbleInteraction(
-                            e,
-                            iso,
-                            "livelihoods",
-                            livelihoodsContent,
-                            livelihoodsHighlight,
-                            PALETTE.livelihoods
-                          )
-                        }
-                      />
-                    ) : null;
+                    /* On-zoom callout: the country name above the bubble, the
+                       overall affected figure below it in the bubble's own
+                       colour. Fades in with the fly-to zoom; the affected
+                       bubble itself is unchanged (single circle).
+
+                       On the raw-phase "setup" step, every bubble shows this
+                       at once (full-map reveal just before the flip), so it
+                       switches to a compact layout — name and figure both
+                       stacked directly under the bubble, at map-scale type —
+                       instead of the spacious above/below layout tuned for a
+                       single zoomed-in bubble with room to spare. */
+                    const nameY = isRawSetupReveal
+                      ? displayR + (isSmall ? 13 : 16)
+                      : -displayR - (isSmall ? 12 : 15);
+                    const figureY = isRawSetupReveal
+                      ? nameY + (isSmall ? 12 : 14)
+                      : displayR + (isSmall ? 16 : 20);
+                    const nameFontSize = isRawSetupReveal ? (isSmall ? 11 : 13) : isSmall ? 14 : 17;
+                    const figureFontSize = isRawSetupReveal ? (isSmall ? 9 : 11) : isSmall ? 12 : 14;
+                    /* Country name always shows — even for "no data" or
+                       confirmed-zero countries — so a full reveal doesn't
+                       silently skip anyone. The figure line adapts: the
+                       real number when there is one, "0 people affected"
+                       for a confirmed zero, and a muted "no data" note
+                       otherwise. */
+                    const calloutEl = (
+                      <g
+                        key="callout"
+                        style={{ opacity: showCallout ? 1 : 0, transition: "opacity 0.45s ease" }}
+                        pointerEvents="none"
+                      >
+                        <text
+                          x={0}
+                          y={nameY}
+                          textAnchor="middle"
+                          fontSize={nameFontSize}
+                          fontWeight={400}
+                          fill={PALETTE.ink}
+                          style={{ fontFamily: "var(--font-sans)" }}
+                        >
+                          {nameFor(iso)}
+                        </text>
+                        <text
+                          x={0}
+                          y={figureY}
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          fontSize={figureFontSize}
+                          style={{ fontFamily: "var(--font-sans)" }}
+                        >
+                          {noData ? (
+                            <tspan fill={PALETTE.faint} fontStyle="italic">
+                              no data
+                            </tspan>
+                          ) : (
+                            <>
+                              <tspan fontWeight={700} fill={bubbleFill}>
+                                {fmtInt(value)}
+                              </tspan>
+                              <tspan fill={PALETTE.mutedSoft} fontWeight={400}>
+                                {"  people affected"}
+                              </tspan>
+                            </>
+                          )}
+                        </text>
+                      </g>
+                    );
 
                     return (
                       <g
@@ -1196,21 +1190,8 @@ export default function PacificScrollyMap({
                         {/* ================= MAP-STYLE LAYER ================= */}
                         {(!inPer || gridT < 1) && (
                           <g style={{ opacity: mapOpacity }}>
-                            {/* Whichever bubble is the current focus of
-                                interaction paints last (on top); by default
-                                (nothing hovered) livelihoods sits on top of
-                                affected, matching the resting cluster look. */}
-                            {isAffectedHovered && livelihoodsCircleEl ? (
-                              <>
-                                {livelihoodsCircleEl}
-                                {affectedCircleEl}
-                              </>
-                            ) : (
-                              <>
-                                {affectedCircleEl}
-                                {livelihoodsCircleEl}
-                              </>
-                            )}
+                            {affectedCircleEl}
+                            {calloutEl}
                           </g>
                         )}
 
@@ -1241,7 +1222,7 @@ export default function PacificScrollyMap({
                               <circle
                                 r={gridDisplayR}
                                 fill={bubbleFill}
-                                fillOpacity={isFoc ? 0.55 : 0.3}
+                                fillOpacity={isFoc ? 0.7 : 0.45}
                                 stroke="none"
                                 strokeWidth={0}
                                 style={{
@@ -1416,16 +1397,16 @@ export default function PacificScrollyMap({
             rel="noopener noreferrer"
             className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
-            Pacific Data Hub.
-          </a>{" "}
-          Population-adjusted figures (per 100,000 residents) and livelihoods disrupted/destroyed from{" "}
+            Pacific Data Hub
+          </a>
+          , with additional data from{" "}
           <a
-            href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_SDG_11&df[ag]=SPC&dq=A.G%2BN.EN_LND_SLUM%2BVC_DSR_MISS%2BVC_DSR_AFFCT%2BVC_DSR_MORT%2BVC_DSR_MTMP%2BVC_DSR_MMHN%2BVC_DSR_DAFF%2BVC_DSR_IJILN%2BVC_DSR_PDAN%2BVC_DSR_PDYN%2BVC_DSR_PDLN%2BVC_DSR_GDPLS%2BVC_DSR_LSGP%2BVC_DSR_AGLH%2BVC_DSR_HOLH%2BVC_DSR_CILN%2BVC_DSR_CHLN%2BVC_DSR_DDPA%2BEN_REF_WASCOL............&pd=2020,2020&to[TIME_PERIOD]=false"
+            href="https://unstats.un.org/sdgs/dataportal"
             target="_blank"
             rel="noopener noreferrer"
             className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
-            Pacific Data Hub SDG 11 Disaster Statistics
+            United Nations Statistics Division (UNSD)
           </a>
           .
         </p>
@@ -1452,9 +1433,10 @@ export default function PacificScrollyMap({
                   <td>{c.country}</td>
                   <td>{fmtInt(c.affected ?? 0)}</td>
                   <td>
-                    {livelihoodsByIso.get(c.iso)?.livelihoods != null
-                      ? fmtInt(livelihoodsByIso.get(c.iso)!.livelihoods)
-                      : "not reported"}
+                    {(() => {
+                      const v = componentsByIso.get(c.iso)?.livelihoods;
+                      return v != null ? fmtInt(v) : "not reported";
+                    })()}
                   </td>
                 </tr>
               ))}

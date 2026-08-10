@@ -67,7 +67,8 @@ const BEATS: Beat[] = [
   },
   {
     kicker: "Two decades pass",
-    message: "The world shifts, but the Pacific Islands' position changes remarkably little.",
+    message:
+      "Readiness shifts, but vulnerability holds. Every Pacific Island Country remained above the global vulnerability median in every year.",
   },
   {
     kicker: "The gap holds",
@@ -236,6 +237,12 @@ export default function ClimateGapOpener() {
   const yearT =
     seg < TIME_BEAT ? 0 : seg === TIME_BEAT ? smooth(prog) : 1;
 
+  /* Trail visibility: fades in as the years begin to scrub, and holds at full
+     once we pass the time beat so the accumulated shape stays on screen for
+     the "gap holds" beat. */
+  const trailOn =
+    seg < TIME_BEAT ? 0 : seg === TIME_BEAT ? smooth(prog) : 1;
+
   /* During the time beat, positions are scrubbed frame-by-frame by scroll,
      so a CSS position transition would lag and fight the scroll. Everywhere
      else, a transition lets dots glide when a beat changes their target.
@@ -353,6 +360,33 @@ export default function ClimateGapOpener() {
       );
   }, [ts, trajectories, i0, i1, frac, x, y, margin, innerW, innerH]);
 
+  /* ---- persistence trails: each Pacific country's path from 2004 up to the
+     currently-scrubbed year. Rendered faintly behind the dots so the eye
+     accumulates the shape: the tracks wander left and right (readiness moves)
+     but never drop below the vulnerability median line (vulnerability holds). */
+  const picTrails = useMemo(() => {
+    if (!ts || innerW === 0 || innerH === 0) return [];
+    const upTo = i0; // last fully-passed year index
+    return trajectories
+      .filter((t) => t.pic)
+      .map((t) => {
+        const pts: { x: number; y: number }[] = [];
+        for (let yi = 0; yi <= upTo; yi++) {
+          const p = t.pts[yi];
+          if (p) pts.push({ x: margin.left + x(p.r), y: margin.top + y(p.v) });
+        }
+        // interpolated head at the current scrub position
+        const a = t.pts[i0] ?? t.pts[i1];
+        const b = t.pts[i1] ?? t.pts[i0];
+        if (a && b) {
+          const v = a.v + (b.v - a.v) * frac;
+          const r = a.r + (b.r - a.r) * frac;
+          pts.push({ x: margin.left + x(r), y: margin.top + y(v) });
+        }
+        return { iso: t.iso, pts };
+      });
+  }, [ts, trajectories, i0, i1, frac, x, y, margin, innerW, innerH]);
+
   /* ---- resting cluster: where every dot sits before the first scroll.
      Packed into a block a few dots wide (taller than it is wide, so it
      reads as a vertical cluster) at stage centre, instead of each dot
@@ -394,15 +428,7 @@ export default function ClimateGapOpener() {
       return (
         <>
           {parts[0]}
-          <span
-            style={{
-              backgroundColor: QUADRANT_COLORS.UL, // Using #e07a7a red
-              color: "#ffffff",
-              padding: "2px 8px",
-              borderRadius: "4px",
-              fontWeight: 600,
-            }}
-          >
+          <span style={{ color: QUADRANT_COLORS.UL, fontWeight: 600 }}>
             vulnerable
           </span>
           {parts[1]}
@@ -414,15 +440,7 @@ export default function ClimateGapOpener() {
       return (
         <>
           {parts[0]}
-          <span
-            style={{
-              backgroundColor: QUADRANT_COLORS.UL, // Using #e07a7a red
-              color: "#ffffff",
-              padding: "2px 8px",
-              borderRadius: "4px",
-              fontWeight: 600,
-            }}
-          >
+          <span style={{ color: QUADRANT_COLORS.UL, fontWeight: 600 }}>
             Several
           </span>
           {parts[1]}
@@ -462,7 +480,9 @@ export default function ClimateGapOpener() {
                 inset: 0,
               }}
             >
-              {/* horizontal "more vulnerable" reference line */}
+              {/* horizontal "more vulnerable" reference line — draws in
+                  left-to-right (scaleX from its left edge) rather than
+                  just fading in place. */}
               <g style={{ opacity: lineOn, transition: "opacity 0.6s ease" }}>
                 <line
                   x1={margin.left}
@@ -473,6 +493,12 @@ export default function ClimateGapOpener() {
                   strokeWidth={1}
                   strokeDasharray="3 5"
                   opacity={0.4}
+                  style={{
+                    transformBox: "view-box",
+                    transformOrigin: `${margin.left}px ${refY}px`,
+                    transform: `scaleX(${lineOn})`,
+                    transition: "transform 0.7s cubic-bezier(0.4,0,0.2,1)",
+                  }}
                 />
                 <text
                   x={margin.left}
@@ -489,7 +515,8 @@ export default function ClimateGapOpener() {
                 </text>
               </g>
 
-              {/* vertical readiness line - appears at beat 2 */}
+              {/* vertical readiness line - appears at beat 2, drawing in
+                  top-to-bottom (scaleY from its top edge). */}
               <g style={{ opacity: readyOn, transition: "opacity 0.6s ease" }}>
                 <line
                   x1={readyX}
@@ -500,6 +527,12 @@ export default function ClimateGapOpener() {
                   strokeWidth={1}
                   strokeDasharray="3 5"
                   opacity={0.4}
+                  style={{
+                    transformBox: "view-box",
+                    transformOrigin: `${readyX}px ${margin.top}px`,
+                    transform: `scaleY(${readyOn})`,
+                    transition: "transform 0.7s cubic-bezier(0.4,0,0.2,1)",
+                  }}
                 />
                 <text
                   x={readyX + 6}
@@ -514,6 +547,30 @@ export default function ClimateGapOpener() {
                 >
                   more ready to adapt →
                 </text>
+              </g>
+
+              {/* persistence trails — each Pacific country's 2004→now path,
+                  faint and behind the dots. They drift horizontally but stay
+                  pinned above the vulnerability median line. */}
+              <g style={{ opacity: trailOn, transition: "opacity 0.4s ease" }}>
+                {picTrails.map((t) => {
+                  if (t.pts.length < 2) return null;
+                  const d = t.pts
+                    .map((p, i) => (i ? "L" : "M") + p.x.toFixed(1) + "," + p.y.toFixed(1))
+                    .join("");
+                  return (
+                    <path
+                      key={`trail-${t.iso}`}
+                      d={d}
+                      fill="none"
+                      stroke={QUADRANT_COLORS.UL}
+                      strokeWidth={1.25}
+                      strokeOpacity={0.32}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  );
+                })}
               </g>
 
              {/* world dots (grey base for everyone) — actual scatter size,
@@ -641,6 +698,40 @@ export default function ClimateGapOpener() {
     });
   })()}
 </g>
+
+              {/* Tuvalu anchor — on the "gap holds" beat, single out the
+                  region's most-ready country to make the point that readiness
+                  does not buy you out of vulnerability. */}
+              {seg >= 4 && (() => {
+                const tuv = positioned.find((d) => d.iso === "TUV");
+                if (!tuv) return null;
+                return (
+                  <g
+                    style={{ opacity: 1, transition: "opacity 0.5s ease" }}
+                    pointerEvents="none"
+                  >
+                    <circle
+                      cx={tuv.cx}
+                      cy={tuv.cy}
+                      r={dotR * 2.6}
+                      fill="none"
+                      stroke={C.ink}
+                      strokeOpacity={0.45}
+                      strokeWidth={1}
+                    />
+                    <text
+                      x={tuv.cx}
+                      y={tuv.cy + dotR * 2.6 + (isSmall ? 13 : 16)}
+                      textAnchor="middle"
+                      fontSize={isSmall ? 11 : 13}
+                      fill={C.muted}
+                      style={{ fontFamily: "var(--font-sans)" }}
+                    >
+                      Even the most ready still ranks 15th most vulnerable of 187
+                    </text>
+                  </g>
+                );
+              })()}
             </svg>
           )}
 
@@ -666,14 +757,16 @@ export default function ClimateGapOpener() {
             </div>
           )}
 
-          {/* message — lower third, crossfades per beat */}
+          {/* message — lower third, crossfades per beat. Pulled down closer
+              to the bottom edge (was 96/120) so the block clears the dot
+              cluster above it instead of nearly touching it. */}
           {ready && (
             <div
               style={{
                 position: "absolute",
                 left: 0,
                 right: 0,
-                bottom: isSmall ? 96 : 120,
+                bottom: isSmall ? 58 : 72,
                 display: "flex",
                 justifyContent: "center",
                 paddingLeft: 24,
@@ -684,7 +777,7 @@ export default function ClimateGapOpener() {
               <div
                 key={seg}
                 style={{
-                  maxWidth: 560,
+                  maxWidth: 660,
                   textAlign: "center",
                   animation: "coldopen-fade 0.6s ease both",
                   pointerEvents: "auto",

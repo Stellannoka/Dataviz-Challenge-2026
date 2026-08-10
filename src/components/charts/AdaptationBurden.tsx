@@ -40,8 +40,8 @@ interface BurdenData {
 
 /* Single dot colour: the piece's muted blue. */
 const DOT = "var(--primary, #6d8499";
-/* Thin edge on the dots. */
-const DOT_EDGE = "var(--primary-dark, #5f83b8)";
+/* Thin edge on the dots, default state. */
+const DOT_EDGE = "var(--surface, #ffffff)";
 /* Grey treatment for non-hovered dots while another dot is hovered. */
 const DOT_DIM = "#d7dbe3";
 const DOT_DIM_EDGE = "var(--surface, #ffffff)";
@@ -288,7 +288,7 @@ export default function AdaptationBurden() {
             fontFamily: "var(--font-serif)",
           }}
         >
-         Annual adaptation needs place a disproportionate burden on the Pacific's smaller economies.
+         Annual adaptation needs are large relative to the size of the economies.
         </p>
         <p className="section-subtitle" style={{ marginBottom: 18 }}>
           Annual adaptation need as a share of GDP, against economic size.
@@ -502,19 +502,16 @@ export default function AdaptationBurden() {
                     transitionDelay: reduced ? "0ms" : `${Math.min(i * 45, 500)}ms`,
                   }}
                 >
-                  <g transform={`translate(${cx},${cy}) rotate(45)`}>
-                    <rect
-                      x={-rDot}
-                      y={-rDot}
-                      width={rDot * 2}
-                      height={rDot * 2}
-                      fill={dimmed ? DOT_DIM : DOT}
-                      fillOpacity={0.9}
-                      stroke={dimmed ? DOT_DIM_EDGE : DOT_EDGE}
-                      strokeWidth={1}
-                      style={{ cursor: "pointer", transition: "fill 0.15s, stroke 0.15s" }}
-                    />
-                  </g>
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={rDot}
+                    fill={dimmed ? DOT_DIM : DOT}
+                    fillOpacity={0.9}
+                    stroke={dimmed ? DOT_DIM_EDGE : DOT_EDGE}
+                    strokeWidth={1}
+                    style={{ cursor: "pointer", transition: "fill 0.15s, stroke 0.15s" }}
+                  />
                   <text
                     x={lx}
                     y={ly}
