@@ -5,7 +5,7 @@ import { Prose } from "@/components/Prose";
 import { ChartBand } from "@/components/Container";
 import VulnerabilityScatter from "@/components/charts/VulnerabilityScatter";
 import DisasterMapScrolly from "@/components/charts/DisasterMapScrolly";
-import DisplacementChart from "@/components/charts/DisplacementChart";
+import WarmingStripes from "@/components/charts/WarmingStripes";
 import FinanceGap from "@/components/charts/FinanceGap";
 import AdaptationBurden from "@/components/charts/AdaptationBurden";
 import GlossaryTerm from "@/components/Glossaryterm";
@@ -39,7 +39,7 @@ export default function Home() {
       In the ND-GAIN framework, vulnerability reflects a country's exposure, sensitivity and capacity to adapt to climate hazards, while readiness reflects how well it can turn investment into effective <GlossaryTerm term="adaptation">adaptation</GlossaryTerm>. 
             </p>
             <p>
-          Across the Pacific, vulnerability stays consistently high, while readiness varies between countries. But readiness does not lower the underlying exposure and sensitivity that keep vulnerability high, so even the more ready countries remain highly exposed and face large adaptation needs. The consequences of that become most visible when disasters strike.
+          While readiness has improved in some Pacific Island Countries, it has not been enough to offset their vulnerability. So even the more ready countries remain highly exposed and face large adaptation needs. The consequences of that become most visible when disasters strike.
             </p>
           </div>
         </Prose>
@@ -54,7 +54,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-    Weather-related disasters affect more than physical infrastructure. They threaten lives, disrupt livelihoods, and leave lasting consequences long after the immediate hazard has passed. The data from 2020 shows some of the the human impact of these disasters across the Pacific Island Countries.
+  Climate change is already affecting ecosystems, infrastructure, lives and livelihoods across the Pacific Island Countries. But these impacts are not felt evenly: their scale varies considerably from one country to the next, especially once differences in population are taken into account.
             </p>
           </div>
         </Prose>
@@ -66,18 +66,21 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-        In the same year, weather-related disasters led to 123,346 displacements across the region, but the burden was highly uneven. In Vanuatu, more than 26,000 displacements were recorded for every 100,000 residents, by far the highest figure in the region, driven largely by tropical cyclones.
+      In 2020, weather-related disasters triggered 123,346 internal displacements across the region, with Vanuatu recording more than 26,000 displacements per 100,000 people; by far the highest rate in the region, driven largely by tropical cyclones.
+            </p>
+             <p>
+     But these impacts are unfolding against a changing climate. Sea surface temperatures across the South-West Pacific have risen substantially, with parts of the region warming at around three times the global average since 1980. 
             </p>
             
           </div>
         </Prose>
 
-        <DisplacementChart />
-        
+        <WarmingStripes />
+
         <Prose>
           <div className={narrative}>
             <p>
-      Behind these figures are people whose lives were disrupted, homes damaged and livelihoods affected. As climate change makes weather-related hazards more intense, the disruption they cause is likely to become more severe.
+      Warmer oceans are already contributing to more frequent and intense marine heatwaves, putting further pressure on the ecosystems and livelihoods that Pacific Island communities depend on. What is already difficult to manage could become harder as these changes continue. For Pacific Island Countries, the challenge is not only recovering from the disasters they face today, but preparing for a climate that is likely to place greater pressure on people, livelihoods and the ecosystems they depend on.
             </p>
             
           </div>
