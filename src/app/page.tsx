@@ -69,7 +69,7 @@ export default function Home() {
       The scale of these impacts is not surprising given the region’s high exposure and sensitivity to climate change. 
             </p>
              <p>
-   Yet the risks are expected to intensify. Projections show that sea level will continue to rise across the region through the century, with the scale of change depending on location and future emissions.
+   Yet the risks will intensify as the climate warms. Rising ocean temperatures and melting ice will drive further sea level rise across the region. Projections show that the rise will continue through the century, with the scale of change depending on location and future emissions.
             </p>
             
           </div>
