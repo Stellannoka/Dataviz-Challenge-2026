@@ -73,6 +73,24 @@ interface CountryComponents {
   livelihoodShare: number | null;
 }
 
+/* Displacement per-100k (public/data/displacement_2020.json) — a separate
+   dataset from disaster_2020.json, reusing the same per-100k Dorling grid
+   once the map has already flipped into that layout. Countries absent from
+   this file (MHL, KIR, FSM, PLW, NRU) simply have no lookup entry, which
+   the existing "no data" handling already covers. */
+interface DisplacementRow {
+  iso: string;
+  country: string;
+  absolute: number;
+  per100k: number;
+  dominantHazard: string;
+}
+interface DisplacementData {
+  year: number;
+  source: string;
+  data: DisplacementRow[];
+}
+
 interface GeoFeature {
   type: "Feature";
   properties: { iso: string; name: string };
@@ -154,14 +172,17 @@ const COORDS_PER100K: Record<string, { lon: number; lat: number }> = {
 
 /* ===================================================================== */
 type RawStep =
-  | { phase: "raw"; kind: "intro"; focus: string[]; title: string; body: string }
-  | { phase: "raw"; kind: "highlight"; focus: string[]; title: string; body: string }
-  | { phase: "raw"; kind: "setup"; focus: string[]; title: string; body: string };
+  | { phase: "raw"; kind: "intro"; focus: string[]; title: string; body: string; metric?: "displacement" }
+  | { phase: "raw"; kind: "highlight"; focus: string[]; title: string; body: string; metric?: "displacement" }
+  | { phase: "raw"; kind: "setup"; focus: string[]; title: string; body: string; metric?: "displacement" };
 
+/* `metric: "displacement"` marks the steps where the per-100k grid switches
+   from "people directly affected" to displacement data — same phase, same
+   Dorling layout, different data source and header text. */
 type PerStep =
-  | { phase: "per"; kind: "flip"; focus: string[]; title: string; body: string }
-  | { phase: "per"; kind: "highlight"; focus: string[]; title: string; body: string }
-  | { phase: "per"; kind: "reveal"; focus: string[]; title: string; body: string };
+  | { phase: "per"; kind: "flip"; focus: string[]; title: string; body: string; metric?: "displacement" }
+  | { phase: "per"; kind: "highlight"; focus: string[]; title: string; body: string; metric?: "displacement" }
+  | { phase: "per"; kind: "reveal"; focus: string[]; title: string; body: string; metric?: "displacement" };
 
 type Step = RawStep | PerStep;
 
@@ -230,7 +251,25 @@ const STEPS: Step[] = [
     kind: "reveal",
     focus: [],
     title: "",
-    body: "The scale of these impacts is not surprising in these countries that combine high exposure and sensitivity to climate change. Adding to this, the region has also recorded large numbers of internal displacements in recent decades, chiefly triggered by weather-related disasters.",
+    body: "Beyond those directly affected, people across the region are also among those most at risk of displacement from disasters.",
+  },
+
+  /* ---------------- PHASE 3 — DISPLACEMENT PER 100,000 (2020) ---------------- */
+  {
+    phase: "per",
+    kind: "flip",
+    metric: "displacement",
+    focus: [],
+    title: "",
+    body: "The same population-adjusted view now shows displacements triggered by these disasters in 2020.",
+  },
+  {
+    phase: "per",
+    kind: "highlight",
+    metric: "displacement",
+    focus: ["VUT"],
+    title: "",
+    body: "Weather-related disasters triggered 123,346 displacements across the region, with Vanuatu recording more than 26,000 — by far the highest figure in the region, driven largely by tropical cyclones.",
   },
 ];
 
@@ -242,7 +281,7 @@ function lerp(a: number, b: number, t: number): number {
 
 /* ---------------------------------------------------------------- helpers */
 function fmtInt(n: number): string {
-  return n.toLocaleString();
+  return Math.round(n).toLocaleString();
 }
 
 /* Build an SVG path by projecting each vertex directly and connecting them —
@@ -385,6 +424,7 @@ export default function PacificScrollyMap({
   const [geo, setGeo] = useState<GeoData | null>(null);
   const [yearData, setYearData] = useState<YearData | null>(null);
   const [components, setComponents] = useState<CountryComponents[] | null>(null);
+  const [displacementData, setDisplacementData] = useState<DisplacementData | null>(null);
 
   const [segIndex, setSegIndex] = useState(0);
   const [segProgress, setSegProgress] = useState(0);
@@ -400,9 +440,11 @@ export default function PacificScrollyMap({
     Promise.all([
       fetch(asset("/data/pacific_countries.json")).then((r) => r.json()),
       fetch(asset("/data/disaster_2020.json")).then((r) => r.json()),
+      fetch(asset("/data/displacement_2020.json")).then((r) => r.json()),
     ])
-      .then(([g, u]: [GeoData, UnifiedData]) => {
+      .then(([g, u, d]: [GeoData, UnifiedData, DisplacementData]) => {
         setGeo(g);
+        setDisplacementData(d);
         setYearData({
           year: u.year,
           anchorEvent: u.anchorEvent,
@@ -509,6 +551,7 @@ export default function PacificScrollyMap({
   const step = STEPS[segIndex];
   const inPer = step?.phase === "per";
   const stepKind = step?.kind;
+  const showDisplacement = step?.metric === "displacement";
 
   const focusISOs: string[] = useMemo(() => step?.focus ?? [], [step]);
   const anyFocus = focusISOs.length > 0;
@@ -522,6 +565,13 @@ export default function PacificScrollyMap({
      a full-map reveal of every country's name and figure right before
      the map transforms, rather than staying dimmed except VUT/FJI. */
   const isRawSetupReveal = !inPer && stepKind === "setup";
+
+  /* On the final step (the displacement highlight), every country reveals
+     in place once the reader has scrolled far enough through it — no
+     extra STEPS entry needed, just a progress threshold within this
+     last segment, mirroring the two reveals above. */
+  const isLastStep = segIndex === STEPS.length - 1;
+  const isFinalReveal = isLastStep && showDisplacement && stepKind === "highlight" && segProgress > 0.5;
 
   /* ---- GRADUAL TRANSITION: gridT completes BEFORE the flip step reaches the top */
   const gridT = useMemo(() => {
@@ -558,6 +608,12 @@ export default function PacificScrollyMap({
     components?.forEach((r) => m.set(r.iso, r));
     return m;
   }, [components]);
+
+  const displacementByIso = useMemo(() => {
+    const m = new Map<string, DisplacementRow>();
+    displacementData?.data.forEach((r) => m.set(r.iso, r));
+    return m;
+  }, [displacementData]);
 
   // Use different COORDS based on phase
   const coords = inPer ? COORDS_PER100K : COORDS_RAW;
@@ -616,6 +672,13 @@ export default function PacificScrollyMap({
     const maxR = isSmall ? 18 : isMedium ? 26 : 34;
     return scaleSqrt().domain([0, mx]).range([0, maxR]);
   }, [yearData, isSmall, isMedium]);
+
+  const rScaleDisp = useMemo(() => {
+    if (!displacementData) return null;
+    const mx = Math.max(...displacementData.data.map((c) => c.per100k ?? 0));
+    const maxR = isSmall ? 18 : isMedium ? 26 : 34;
+    return scaleSqrt().domain([0, mx]).range([0, maxR]);
+  }, [displacementData, isSmall, isMedium]);
 
   const haveData =
     width > 0 && height > 0 && geo && yearData && projection;
@@ -712,6 +775,11 @@ export default function PacificScrollyMap({
   /* ---- radius helpers */
   const radiusFor = useCallback(
     (iso: string): number => {
+      if (showDisplacement) {
+        if (!rScaleDisp) return 0;
+        const v = displacementByIso.get(iso)?.per100k ?? 0;
+        return rScaleDisp(v);
+      }
       if (inPer) {
         if (!rScalePer) return 0;
         const v = perByIso.get(iso)?.per100k ?? 0;
@@ -721,7 +789,7 @@ export default function PacificScrollyMap({
       const v = rawByIso.get(iso)?.affected ?? 0;
       return rScaleRaw(v);
     },
-    [inPer, rScalePer, rScaleRaw, perByIso, rawByIso]
+    [showDisplacement, inPer, rScaleDisp, rScalePer, rScaleRaw, displacementByIso, perByIso, rawByIso]
   );
 
   /* ---- FLY-TO ZOOM. Phase 1 only — phase 2's fly-to zoom didn't read well
@@ -765,10 +833,19 @@ export default function PacificScrollyMap({
 
   /* Scaling annotation: pinned under the title as the subtitle, so the
      encoding is explained while the circles are on screen. Text is
-     phase-aware (raw counts vs. per-100k). */
-  const scaleNote = inPer
+     phase-aware (raw counts vs. per-100k vs. displacement). Doubles as the
+     displacement chart's own subtitle once the metric flips. */
+  const scaleNote = showDisplacement
+    ? "Displacements triggered by weather-related disasters per 100,000 people, 2020"
+    : inPer
     ? "Filled circles are scaled to people directly affected per 100,000 residents. Outer rings are fixed for comparison."
     : "Circles are scaled to the number of people directly affected.";
+
+  /* Title mirrors DisplacementChart's own headline once the map's metric
+     flips to displacement — the map now stands in for that chart. */
+  const displayTitle = showDisplacement
+    ? "Displacements varied widely between countries, even after accounting for population size."
+    : title;
 
   const travelTop = useMemo(() => {
     if (!height) return 0;
@@ -822,6 +899,8 @@ export default function PacificScrollyMap({
         return [{ match: "235,921 people directly affected", color: bubbleFill }];
       case 3: // Marshall Islands
         return [{ match: "— 56,718 people —", color: bubbleFill }];
+      case 10: // Vanuatu, displacement
+        return [{ match: "more than 26,000", color: bubbleFill }];
       default:
         return [];
     }
@@ -947,11 +1026,49 @@ export default function PacificScrollyMap({
             }}
           >
             <p className="section-title" style={{ fontSize: "0.9rem", fontWeight: 500 }}>
-              {title}
+              {displayTitle}
             </p>
-            <p className="section-subtitle" style={{ marginTop: isSmall ? 10 : 14 }}>
-              {scaleNote}
-            </p>
+            {showDisplacement ? (
+              <div
+                className="section-subtitle"
+                style={{
+                  marginTop: isSmall ? 10 : 14,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                }}
+              >
+                <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                  <span
+                    style={{
+                      width: 9,
+                      height: 9,
+                      borderRadius: "50%",
+                      background: bubbleFill,
+                      display: "inline-block",
+                    }}
+                  />
+                  Cyclone
+                </span>
+                <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                  <span
+                    style={{
+                      width: 9,
+                      height: 9,
+                      borderRadius: "50%",
+                      background: "var(--primary-vivid, #2E6FA3)",
+                      display: "inline-block",
+                    }}
+                  />
+                  Flood
+                </span>
+                <span className="sr-only">{scaleNote}</span>
+              </div>
+            ) : (
+              <p className="section-subtitle" style={{ marginTop: isSmall ? 10 : 14 }}>
+                {scaleNote}
+              </p>
+            )}
           </div>
 
           {/* Map stage */}
@@ -1024,7 +1141,7 @@ export default function PacificScrollyMap({
                   {/* Bubbles */}
                   {camPositioned.map(({ iso, x, y }) => {
                     const r = radiusFor(iso);
-                    const isFoc = isPerReveal || isRawSetupReveal || focusISOs.includes(iso);
+                    const isFoc = isPerReveal || isRawSetupReveal || isFinalReveal || focusISOs.includes(iso);
                     const baseR = isSmall ? 3.5 : 5;
                     // Bigger fixed radius for "no data" dots — there's no
                     // value to scale by, and the tiny baseR circle leaves no
@@ -1043,7 +1160,9 @@ export default function PacificScrollyMap({
                     const displayR = Math.max(r, hasValue ? baseR : noDataR);
                     const mapOpacity = inPer ? 1 - gridT : 1;
 
-                    const per100kRaw = perByIso.get(iso)?.per100k;
+                    const per100kRaw = showDisplacement
+                      ? displacementByIso.get(iso)?.per100k
+                      : perByIso.get(iso)?.per100k;
                     const gridNoData = per100kRaw == null;
                     const gridPositive = per100kRaw != null && per100kRaw > 0;
                     const gridConfirmedZero = per100kRaw === 0;
@@ -1051,6 +1170,12 @@ export default function PacificScrollyMap({
                     const gridDisplayR = Math.max(gridR, baseR * 0.7);
                     const gridName = nameFor(iso);
                     const gridDim = anyFocus && !isFoc ? 0.4 : 1;
+
+                    /* Displacement phase only: flood-driven displacement
+                       gets the project's blue instead of the warm bubble
+                       colour, so the dominant hazard reads at a glance. */
+                    const isFlood = showDisplacement && displacementByIso.get(iso)?.dominantHazard === "flood";
+                    const gridFill = isFlood ? "var(--primary-vivid, #2E6FA3)" : bubbleFill;
 
                     /* ---- On zoom into a single country, show its name above
                        the (single, unsplit) affected bubble. */
@@ -1213,7 +1338,7 @@ export default function PacificScrollyMap({
                             <circle
                               r={ringR}
                               fill="none"
-                              stroke={isFoc ? accent : PALETTE.line}
+                              stroke={isFoc ? (isFlood ? "var(--primary-vivid, #2E6FA3)" : accent) : PALETTE.line}
                               strokeWidth={0.8}
                               style={{ transition: "stroke 0.4s ease" }}
                             />
@@ -1221,7 +1346,7 @@ export default function PacificScrollyMap({
                             {gridPositive && (
                               <circle
                                 r={gridDisplayR}
-                                fill={bubbleFill}
+                                fill={gridFill}
                                 fillOpacity={isFoc ? 0.7 : 0.45}
                                 stroke="none"
                                 strokeWidth={0}
@@ -1253,7 +1378,7 @@ export default function PacificScrollyMap({
                                 gridNoData
                                   ? PALETTE.faint
                                   : isFoc
-                                  ? bubbleFill
+                                  ? gridFill
                                   : PALETTE.mutedSoft
                               }
                               style={{ fontFamily: "var(--font-sans)" }}
@@ -1408,7 +1533,16 @@ export default function PacificScrollyMap({
           >
             United Nations Statistics Division (UNSD)
           </a>
-          .
+          , and displacement figures from the{" "}
+          <a
+            href="https://www.internal-displacement.org/database/displacement-data"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+          >
+            Internal Displacement Monitoring Centre (IDMC)
+          </a>
+         
         </p>
       </div>
 
@@ -1462,6 +1596,28 @@ export default function PacificScrollyMap({
               ))}
             </tbody>
           </table>
+          {displacementData && (
+            <table>
+              <caption>
+                Displacements triggered by weather-related disasters per 100,000
+                people, 2020.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Country</th>
+                  <th scope="col">Displacements per 100,000 (2020)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displacementData.data.map((c) => (
+                  <tr key={`a11y-disp-${c.iso}`}>
+                    <td>{c.country}</td>
+                    <td>{fmtInt(c.per100k)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       )}
     </figure>

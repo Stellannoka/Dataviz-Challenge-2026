@@ -51,7 +51,8 @@ const DOT_DIM_EDGE = "var(--surface, #ffffff)";
    at 0.72rem / 300 / #707070, gridlines #e9e9f1 at 0.5 opacity, tick
    rules #9096a1 at 0.6 opacity. */
 const GRID = "#e9e9f1";
-const GRID_OPACITY = 0.5;
+const GRID_OPACITY = 0.6;
+const GRID_STROKE_WIDTH = 0.6;
 const TICK_RULE = "#4d5561";
 const TICK_RULE_OPACITY = 0.5;
 const TICK_TEXT = "#404040"; // var(--text-secondary)
@@ -320,7 +321,7 @@ export default function AdaptationBurden() {
                     x2={m.l + iw}
                     y2={Y(t)}
                     stroke={GRID}
-                    strokeWidth={1}
+                    strokeWidth={GRID_STROKE_WIDTH}
                     opacity={GRID_OPACITY}
                   />
                 )}
@@ -349,7 +350,7 @@ export default function AdaptationBurden() {
                   x2={X(t)}
                   y2={m.t + ih}
                   stroke={GRID}
-                  strokeWidth={1}
+                  strokeWidth={GRID_STROKE_WIDTH}
                   opacity={GRID_OPACITY}
                 />
                 <line

@@ -5,7 +5,7 @@ import { Prose } from "@/components/Prose";
 import { ChartBand } from "@/components/Container";
 import VulnerabilityScatter from "@/components/charts/VulnerabilityScatter";
 import DisasterMapScrolly from "@/components/charts/DisasterMapScrolly";
-import WarmingStripes from "@/components/charts/WarmingStripes";
+import Sealevelprojection from "@/components/charts/Sealevelprojection";
 import FinanceGap from "@/components/charts/FinanceGap";
 import AdaptationBurden from "@/components/charts/AdaptationBurden";
 import GlossaryTerm from "@/components/Glossaryterm";
@@ -66,21 +66,24 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-      In 2020, weather-related disasters triggered 123,346 internal displacements across the region, with Vanuatu recording more than 26,000 displacements per 100,000 people; by far the highest rate in the region, driven largely by tropical cyclones.
+      The scale of these impacts is not surprising given the region’s high exposure and sensitivity to climate change. 
             </p>
              <p>
-     But these impacts are unfolding against a changing climate. Sea surface temperatures across the South-West Pacific have risen substantially, with parts of the region warming at around three times the global average since 1980. 
+   Yet the risks are expected to intensify. Projections show that sea level will continue to rise across the region through the century, with the scale of change depending on location and future emissions.
             </p>
             
           </div>
         </Prose>
 
-        <WarmingStripes />
+        <Sealevelprojection />
 
         <Prose>
           <div className={narrative}>
             <p>
-      Warmer oceans are already contributing to more frequent and intense marine heatwaves, putting further pressure on the ecosystems and livelihoods that Pacific Island communities depend on. What is already difficult to manage could become harder as these changes continue. For Pacific Island Countries, the challenge is not only recovering from the disasters they face today, but preparing for a climate that is likely to place greater pressure on people, livelihoods and the ecosystems they depend on.
+      More than half of the Pacific Islands’ population lives within 500 metres of the coastline, where homes, infrastructure and livelihoods are closely tied to the sea. As sea levels rise, coastal flooding and storm surges can reach further inland, while erosion and saltwater intrusion threaten land and freshwater supplies.
+            </p>
+             <p>
+     For communities already exposed to tropical cyclones and floods, these pressures could make displacement more frequent and recovery more difficult. The effects would extend to fishing, farming and other livelihoods that depend on the land and sea, placing further strain on communities already facing repeated climate-related shocks.
             </p>
             
           </div>
