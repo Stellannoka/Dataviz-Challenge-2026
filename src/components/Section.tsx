@@ -18,7 +18,7 @@ export default function Section({
   const hasHeading = heading.trim().length > 0;
 
   return (
-    <section id={id} className="py-6 md:py-10">
+    <section id={id} className="py-4 md:py-7">
       {(hasHeading || standfirst) && (
         <div className="mx-auto w-full px-4" style={{ maxWidth: 640 }}>
           {hasHeading && (

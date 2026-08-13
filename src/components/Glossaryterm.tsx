@@ -18,7 +18,7 @@ const definitions: Record<string, string> = {
   'paris agreement':
     "The Paris Agreement is the 2015 international climate treaty adopted under the United Nations Framework Convention on Climate Change. Under its Article 9, developed countries committed to provide financial resources to assist developing countries with both mitigation and adaptation.",
   'climate action':
-    "Climate action refers to efforts to address climate change, covering both cutting greenhouse-gas emissions (mitigation) and coping with its impacts (adaptation).",
+    "Climate action refers to internal and external efforts to address climate change, covering both cutting greenhouse-gas emissions (mitigation) and coping with its impacts (adaptation).",
   'climate finance':
     "Climate finance refers to international funding directed toward helping countries reduce emissions and adapt to climate impacts. Under the Paris Agreement, developed countries committed to provide such finance to developing countries.",
   'adaptation finance':

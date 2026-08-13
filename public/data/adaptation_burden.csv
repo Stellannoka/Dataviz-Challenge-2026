@@ -1,0 +1,13 @@
+iso,country,gdp_usd_million,adaptation_need_pct_gdp,adaptation_need_usd_million,atoll,model_imputed
+MHL,Marshall Islands,220,35.7,140,True,False
+KIR,Kiribati,184,34.3,120,True,False
+TUV,Tuvalu,42,32.7,65,True,False
+FSM,Micronesia,381,30.1,175,False,False
+NRU,Nauru,108,28.3,10,False,True
+SLB,Solomon Islands,1440,27.9,310,False,False
+TON,Tonga,488,23.6,155,False,False
+VUT,Vanuatu,951,23.0,270,False,False
+WSM,Samoa,905,21.3,190,False,False
+FJI,Fiji,5708,14.7,857,False,False
+PLW,Palau,291,14.7,50,False,False
+PNG,Papua New Guinea,23587,11.5,868,False,False

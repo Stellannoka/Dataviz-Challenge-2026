@@ -47,18 +47,10 @@ export default function Home() {
 
       {/* SECTION 2 — the map - WIDE */}
       <Section
-        heading="The Human Impacts of Weather-Related Disasters"
+        heading=""
         id="section-map"
         wide={true}
       >
-        <Prose>
-          <div className={narrative}>
-            <p>
-  Climate change is already affecting ecosystems, infrastructure, lives and livelihoods across the Pacific Island Countries. But these impacts are not felt evenly: their scale varies considerably from one country to the next, especially once differences in population are taken into account.
-            </p>
-          </div>
-        </Prose>
-
         <DisasterMapScrolly />
         
         <div style={{ marginTop: "3rem" }} />
@@ -80,10 +72,18 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-      More than half of the Pacific Islands’ population lives within 500 metres of the coastline, where homes, infrastructure and livelihoods are closely tied to the sea. As sea levels rise, coastal flooding and storm surges can reach further inland, while erosion and saltwater intrusion threaten land and freshwater supplies.
+      <a
+        href="https://public.wmo.int/news/media-centre/ocean-heat-and-sea-level-rise-threaten-communities-south-west-pacific"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+      >
+        More than half of the Pacific Islands’ population lives within 500 metres of the coast
+      </a>
+      , placing communities, infrastructure and livelihoods within reach of the sea. As sea level rises, the coastal hazards they already face could become more severe, putting greater pressure on lives and livelihoods.
             </p>
              <p>
-     For communities already exposed to tropical cyclones and floods, these pressures could make displacement more frequent and recovery more difficult. The effects would extend to fishing, farming and other livelihoods that depend on the land and sea, placing further strain on communities already facing repeated climate-related shocks.
+    Sea level rise is projected to reach about 50 cm by 2100 under lower emissions and 85 cm under higher emissions. How far it rises will be shaped by choices made beyond the Pacific Islands, but the consequences will fall on communities already exposed to climate hazards.
             </p>
             
           </div>
@@ -95,7 +95,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-            Pacific Island Countries cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also leave less room to absorb disruption and recover when disasters strike.
+            Pacific Island Countries cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when disasters strike.
             </p>
              
             <p>
@@ -103,7 +103,7 @@ export default function Home() {
 
             </p>
             <p>
-             But these are investments that many Pacific Island Countries have limited room to make alone. Their economies are small, their revenue are bases narrow, and the sums involved are large. This is where international <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in, through the <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to countries on the front line of climate change.
+             But Pacific Island Countries have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in, through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to countries on the front line of climate change.
             </p>
           </div>
         </Prose>
@@ -113,11 +113,8 @@ export default function Home() {
       <Section heading="Climate Financing Needs Remain Largely Unmet">
         <Prose>
           <div className={narrative}>
-            <p> Pacific Island Countries are receiving only a fraction of the climate finance they need.
-            </p>
               <p>
-              Looking specifically at <GlossaryTerm term="adaptation finance">adaptation finance</GlossaryTerm>, Pacific Island Countries received an average of about US$0.9 billion a year between 2021 and 2023, against projected annual <GlossaryTerm term="adaptation needs">adaptation needs</GlossaryTerm> of about US$3.3 billion. At that level of financing, only around 26% of projected annual adaptation needs would be covered. Beyond that regional average, the gap varies considerably from one country to another.
-
+              Between 2021 and 2023, Pacific Island Countries received an average of about US$0.9 billion a year in <GlossaryTerm term="adaptation finance">adaptation finance</GlossaryTerm>, against projected annual needs of about US$3.3 billion. At this level, current finance flow would cover only around 26% of projected needs. The size of the gap also varies considerably across countries.
             </p>
           </div>
         </Prose>
@@ -129,7 +126,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-            The gap is large in dollar terms, but far greater relative to the size of these economies. For Kiribati, one of the region's smallest economies, meeting its adaptation needs would cost about a third of everything the country produces in a year; a scale of investment difficult to meet from domestic resources alone.
+           The gap is large in dollar terms, but even larger relative to the size of these economies. For Kiribati, one of the region’s smallest economies, meeting its adaptation needs would require investment equivalent to about a third of everything the country produces in a year; a scale difficult to meet from domestic resources alone.
             </p>
           </div>
         </Prose>
@@ -146,7 +143,7 @@ export default function Home() {
         The cost of that gap is already being felt in the impacts of disasters on people, communities and economies.
             </p>
             <p>
-      Yet the improvement in readiness in some countries shows that progress is possible. The task now is to sustain and extend it through continued investment in resilience that helps these countries prepare for hazards they cannot prevent and limit the disruption they cause.
+      Yet the improvement in readiness in some countries shows that progress is possible. The task now is to sustain and extend it through continued investment in resilience that helps these countries to better prepare for hazards they cannot prevent and limit the disruption they cause.
             </p>
           </div>
         </Prose>

@@ -25,21 +25,6 @@ interface YearData {
   per100k: MeasureBlock;
 }
 
-interface LivelihoodsRow {
-  iso: string;
-  country: string;
-  affected: number;
-  livelihoods: number;
-  livelihoodShare: number;
-}
-interface LivelihoodsData {
-  year: number;
-  reportingCountries: number;
-  notReporting: string[];
-  totals: { affected: number; livelihoods: number };
-  data: LivelihoodsRow[];
-}
-
 /* Unified single-file schema (public/data/disaster_2020.json). Everything
    the map needs per country now lives in one row; the raw/per-100k/
    livelihoods lookups below are all derived from it. */
@@ -193,7 +178,7 @@ const STEPS: Step[] = [
     kind: "intro",
     focus: [],
     title: "Intro",
-    body: " The most immediate of these impacts arrive as weather-related disasters, and their toll is measured in people. In 2020, they directly affected 548,686 people across the region; this includes those who were injured or fell ill, those whose homes were damaged or destroyed, and those whose livelihoods were disrupted or destroyed.",
+    body: "This includes people who were injured or fell ill, whose homes were damaged or destroyed, or whose livelihoods were disrupted or destroyed.",
   },
   {
     phase: "raw",
@@ -1021,11 +1006,11 @@ export default function PacificScrollyMap({
               marginRight: "auto",
               paddingLeft: 16,
               paddingRight: 16,
-              paddingTop: `calc(env(safe-area-inset-top, 0px) + ${isSmall ? 36 : 28}px)`,
+              paddingTop: `calc(env(safe-area-inset-top, 0px) + ${isSmall ? 16 : 12}px)`,
               paddingBottom: isSmall ? 8 : 14,
             }}
           >
-            <p className="section-title" style={{ fontSize: "0.9rem", fontWeight: 500 }}>
+            <p className="section-title">
               {displayTitle}
             </p>
             {showDisplacement ? (

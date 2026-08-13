@@ -47,7 +47,6 @@ export default function SeaLevelProjection() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredPlace, setHoveredPlace] = useState<string | null>(null);
   const [hoveredScenario, setHoveredScenario] = useState<string | null>(null);
-  const [nameHovered, setNameHovered] = useState(false);
   const [hoverYear, setHoverYear] = useState<number | null>(null);
   const [w, setW] = useState(640);
 
@@ -178,7 +177,6 @@ export default function SeaLevelProjection() {
       ref={selRef}
       onMouseEnter={() => { clearCloseTimer(); setMenuOpen(true); }}
       onMouseLeave={() => {
-        setNameHovered(false);
         clearCloseTimer();
         closeTimerRef.current = window.setTimeout(() => setMenuOpen(false), 200);
       }}
@@ -190,22 +188,19 @@ export default function SeaLevelProjection() {
       <button
         type="button"
         onClick={() => setMenuOpen((o) => !o)}
-        onMouseEnter={() => setNameHovered(true)}
-        onMouseLeave={() => setNameHovered(false)}
         aria-haspopup="listbox"
         aria-expanded={menuOpen}
+        className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
         style={{
           font: "inherit",
           fontSize: "inherit",
           fontWeight: "inherit",
           lineHeight: "inherit",
           fontFamily: "inherit",
-          color: nameHovered ? "#ffffff" : "inherit",
-          background: nameHovered ? "var(--primary, #6d8499)" : "transparent",
+          color: "inherit",
+          background: "transparent",
           border: "none",
-          borderBottom: "2px solid currentColor",
-          borderRadius: 0,
-          padding: "1px 6px 0",
+          padding: "1px 6px",
           margin: 0,
           cursor: "pointer",
           whiteSpace: "nowrap",
@@ -213,7 +208,6 @@ export default function SeaLevelProjection() {
           alignItems: "center",
           gap: "5px",
           verticalAlign: "baseline",
-          transition: "background-color 150ms ease, color 150ms ease",
         }}
       >
         {place}
@@ -372,9 +366,10 @@ export default function SeaLevelProjection() {
       <div ref={wrapRef} style={{ position: "relative", fontFamily: "var(--font-sans)" }}>
         <svg
           ref={svgRef}
-          width={w}
+          width="100%"
           height={H}
           viewBox={`0 0 ${w} ${H}`}
+          preserveAspectRatio="none"
           role="img"
           aria-label={`Projected sea level rise for ${place} under ${scenario.toLowerCase()} emissions, 2020 to 2100.`}
           style={{ display: "block", cursor: "crosshair", overflow: "visible" }}
