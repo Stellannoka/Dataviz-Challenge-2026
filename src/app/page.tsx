@@ -36,10 +36,10 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-      In the ND-GAIN framework, vulnerability reflects a country's exposure, sensitivity and capacity to adapt to climate hazards, while readiness reflects how well it can turn investment into effective <GlossaryTerm term="adaptation">adaptation</GlossaryTerm>. 
+      In the ND-GAIN framework, vulnerability reflects a country's exposure, sensitivity and capacity to adapt to climate <GlossaryTerm term="hazards">hazards</GlossaryTerm>. Readiness measures the economic, social and governance conditions that determine how effectively a country can turn investment into <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> action..
             </p>
             <p>
-          While readiness has improved in some Pacific Island Countries, it has not been enough to offset their vulnerability. So even the more ready countries remain highly exposed and face large adaptation needs. The consequences of that become most visible when disasters strike.
+        The greater a country’s vulnerability, the greater the need for adaptation investment, while readiness shapes how effectively that investment can translate into adaptation action. For Pacific Island Countries, vulnerability remains exceptionally high, making the need for adaptation substantial even where readiness has improved. The consequences of that vulnerability become most visible when <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike.
             </p>
           </div>
         </Prose>
@@ -61,7 +61,7 @@ export default function Home() {
       The scale of these impacts is not surprising given the region’s high exposure and sensitivity to climate change. 
             </p>
              <p>
-   Yet the risks will intensify as the climate warms. Rising ocean temperatures and melting ice will drive further sea level rise across the region. Projections show that the rise will continue through the century, with the scale of change depending on location and future emissions.
+   Yet the risks will intensify as the climate warms. Rising ocean temperatures and melting ice will drive further sea level rise across the region. Projections show that the rise will continue through the century, with the scale of change depending on future emissions.
             </p>
             
           </div>
@@ -80,7 +80,7 @@ export default function Home() {
       >
         Over half of the Pacific Islands’ population lives within 500 metres of the coast
       </a>
-      , placing communities, infrastructure and livelihoods within reach of the sea, ll of which are under growing threat as climate change intensifies. Projections show that sea level could reach about 50 cm by 2100 under lower emissions and 85 cm under higher emissions.
+      , placing communities, infrastructure and livelihoods within reach of the sea, of which are under growing threat as climate change intensifies. Projections show that sea level could reach about 50 cm by 2100 under lower emissions and 85 cm under higher emissions.
             </p>
              <p>
    How far it rises will be shaped by choices made beyond the Pacific Islands, but the consequences will fall on these vulnerable communities, and the hazards they already face could become more severe, putting greater pressure on lives and livelihoods.

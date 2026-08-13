@@ -68,7 +68,7 @@ const BEATS: Beat[] = [
   {
     kicker: "Two decades pass",
     message:
-      "Readiness shifts, but vulnerability holds. Every Pacific Island Country remained above the global vulnerability median in every year.",
+      "Readiness shifts, but vulnerability holds. Across the region, countries remained above the global vulnerability median in every year.",
   },
   {
     kicker: "The gap holds",
@@ -757,16 +757,16 @@ export default function ClimateGapOpener() {
             </div>
           )}
 
-          {/* message — lower third, crossfades per beat. Pulled down closer
-              to the bottom edge (was 96/120) so the block clears the dot
-              cluster above it instead of nearly touching it. */}
+          {/* message — lower third, crossfades per beat. Sits low enough to
+              clear the dot cluster above it, but with enough bottom offset
+              to leave a gap above the scroll cue rather than touching it. */}
           {ready && (
             <div
               style={{
                 position: "absolute",
                 left: 0,
                 right: 0,
-                bottom: isSmall ? 58 : 72,
+                bottom: isSmall ? 82 : 100,
                 display: "flex",
                 justifyContent: "center",
                 paddingLeft: 24,

@@ -57,10 +57,10 @@ export default function Hero() {
 
         <div className="section-narrative" style={{ marginTop: '3rem' }}>
           <p>
-            Climate change is making <GlossaryTerm term="hazards">hazards</GlossaryTerm> such as floods, droughts, tropical cyclones and sea-level rise more frequent and, in many cases, more intense. As these hazards place growing pressure on communities and economies, the consequences of <GlossaryTerm term="disasters">disasters</GlossaryTerm> depends in part on a country's capacity to adapt and recover.
+            Climate change is increasing the frequency and severity of extreme weather events, putting lives and livelihoods at greater risk around the world. But not every country faces the same level of climate risk, nor do they have the same capacity to prepare for and protect themselves from its impacts.
           </p>
           <p>
-           For many Pacific Island Countries, readiness has improved over time, but not enough to keep pace with the scale of vulnerability they face. For more than two decades, they have remained among the world's most vulnerable to climate change. Even Tuvalu, the region's most ready country, ranks among the world's 20 most vulnerable.
+        Pacific Island Countries are among those facing some of the greatest climate risks, yet have limited capacity to adapt. Although their readiness to turn investment into effective <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> has improved across the region, they still rank among the world’s most vulnerable countries. Even Tuvalu, the region’s most ready country, ranks among the world’s 20 most vulnerable.
           </p>
         </div>
       </Container>

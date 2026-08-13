@@ -254,7 +254,7 @@ const STEPS: Step[] = [
     metric: "displacement",
     focus: ["VUT"],
     title: "",
-    body: "Weather-related disasters triggered 123,346 displacements across the region, with Vanuatu recording more than 26,000 — by far the highest figure in the region, driven largely by tropical cyclones.",
+    body: "Weather-related disasters triggered 123,346 displacements across the region, with Vanuatu recording more than 26,000 per 100,000 people, by far the highest rate in the region, driven largely by tropical cyclones.",
   },
 ];
 
