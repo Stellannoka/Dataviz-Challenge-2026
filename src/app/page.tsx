@@ -78,12 +78,12 @@ export default function Home() {
         rel="noopener noreferrer"
         className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
       >
-        More than half of the Pacific Islands’ population lives within 500 metres of the coast
+        Over half of the Pacific Islands’ population lives within 500 metres of the coast
       </a>
-      , placing communities, infrastructure and livelihoods within reach of the sea. As sea level rises, the coastal hazards they already face could become more severe, putting greater pressure on lives and livelihoods.
+      , placing communities, infrastructure and livelihoods within reach of the sea, ll of which are under growing threat as climate change intensifies. Projections show that sea level could reach about 50 cm by 2100 under lower emissions and 85 cm under higher emissions.
             </p>
              <p>
-    Sea level rise is projected to reach about 50 cm by 2100 under lower emissions and 85 cm under higher emissions. How far it rises will be shaped by choices made beyond the Pacific Islands, but the consequences will fall on communities already exposed to climate hazards.
+   How far it rises will be shaped by choices made beyond the Pacific Islands, but the consequences will fall on these vulnerable communities, and the hazards they already face could become more severe, putting greater pressure on lives and livelihoods.
             </p>
             
           </div>

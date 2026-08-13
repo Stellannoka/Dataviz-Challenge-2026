@@ -38,6 +38,21 @@ const DEFAULT_PLACE = REGIONAL; // honest default: the regional line
 const DEFAULT_SCENARIO = "Higher";
 const CALLOUT_YEARS = [2020, 2040, 2060, 2080, 2100];
 
+/* Reader-friendly label for each pathway ("Middle" -> "Intermediate", to
+   match IPCC terminology), and the underlying SSP scenario each maps to,
+   revealed on hover so the technical detail is available without cluttering
+   the headline-level pathway names. */
+const SCENARIO_LABELS: Record<string, string> = {
+  Lower: "Lower",
+  Middle: "Intermediate",
+  Higher: "Higher",
+};
+const SSP_LABELS: Record<string, string> = {
+  Lower: "SSP1-2.6",
+  Middle: "SSP2-4.5",
+  Higher: "SSP5-8.5",
+};
+
 const fmt = (v: number) => (v >= 0 ? "+" : "") + Math.round(v) + " cm";
 
 export default function SeaLevelProjection() {
@@ -105,12 +120,12 @@ export default function SeaLevelProjection() {
   const y1 = years[N - 1];
   const color = data.colors[scenario];
 
-  const H = w < 480 ? 320 : 370;
-  const mL = 46;
+  const H = w < 480 ? 336 : 386;
+  const mL = 50;
   const mR = 56;
-  const mT = 34;
-  const mB = 40;
-  const yMax = 130;
+  const mT = 44;
+  const mB = 56;
+  const yMax = 110;
 
   /* Domain starts a bit before the first tick (2020), so the first x-axis
      label sits with a gap to the right of the y-axis instead of flush
@@ -145,7 +160,7 @@ export default function SeaLevelProjection() {
     setHoverYear(yr);
   };
 
-  const gridV = [0, 30, 60, 90, 120];
+  const gridV = [0, 25, 50, 75, 100];
   const xTicks = [2020, 2040, 2060, 2080, 2100];
   const places = [REGIONAL, ...Object.keys(data.countries).sort()];
 
@@ -309,11 +324,11 @@ export default function SeaLevelProjection() {
               fontSize: "0.86rem",
               fontWeight: 350,
               color: "var(--text-color)",
-              marginBottom: 6,
+              marginBottom: "1rem",
               fontFamily: "var(--font-sans)",
             }}
           >
-            Emissions pathway
+            Emissions scenario
           </div>
           <div style={{ display: "inline-flex", gap: 28, fontFamily: "var(--font-sans)" }}>
             {data.order.map((s) => {
@@ -326,11 +341,14 @@ export default function SeaLevelProjection() {
                   onClick={() => setScenario(s)}
                   onMouseEnter={() => setHoveredScenario(s)}
                   onMouseLeave={() => setHoveredScenario(null)}
+                  onFocus={() => setHoveredScenario(s)}
+                  onBlur={() => setHoveredScenario(null)}
+                  aria-label={`${SCENARIO_LABELS[s] ?? s} emissions, ${SSP_LABELS[s] ?? s}`}
                   style={{
                     position: "relative",
                     background: "transparent",
                     border: "none",
-                    padding: "0 0 8px",
+                    padding: "0 0 3px",
                     cursor: "pointer",
                     fontSize: on ? "0.9rem" : "0.78rem",
                     fontWeight: on || hovered ? 700 : 300,
@@ -338,16 +356,39 @@ export default function SeaLevelProjection() {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {s} emissions
+                  {hovered && (
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        bottom: "100%",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        marginBottom: 6,
+                        padding: "2px 7px",
+                        background: "rgba(32, 36, 46, 0.72)",
+                        color: "#ffffff",
+                        fontSize: "0.66rem",
+                        fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+                        fontWeight: 500,
+                        borderRadius: 4,
+                        whiteSpace: "nowrap",
+                        pointerEvents: "none",
+                        zIndex: 5,
+                      }}
+                    >
+                      {SSP_LABELS[s] ?? s}
+                    </span>
+                  )}
+                  {SCENARIO_LABELS[s] ?? s} emissions
                   {on && (
                     <span
                       aria-hidden="true"
                       style={{
                         position: "absolute",
-                        left: "50%",
+                        left: 0,
+                        right: 0,
                         bottom: 0,
-                        transform: "translateX(-50%)",
-                        width: 22,
                         height: 2,
                         borderRadius: 1,
                         background: data.colors[s],
@@ -386,7 +427,7 @@ export default function SeaLevelProjection() {
                 fill="#404040"
                 style={{ fontFamily: "var(--font-sans)", fontSize: "0.88rem", fontWeight: 300 }}
               >
-                {v > 0 ? "+" : ""}{v}
+                {v}
               </text>
             </g>
           ))}
@@ -402,6 +443,27 @@ export default function SeaLevelProjection() {
               {t}
             </text>
           ))}
+
+          {/* axis titles */}
+          <text
+            x={mL + (w - mL - mR) / 2}
+            y={H - 8}
+            textAnchor="middle"
+            fill="#707070"
+            style={{ fontFamily: "var(--font-sans)", fontSize: "0.72rem", fontWeight: 300 }}
+          >
+            Year →
+          </text>
+          <text
+            x={14}
+            y={(mT + (H - mB)) / 2}
+            textAnchor="middle"
+            transform={`rotate(-90, 14, ${(mT + (H - mB)) / 2})`}
+            fill="#707070"
+            style={{ fontFamily: "var(--font-sans)", fontSize: "0.72rem", fontWeight: 300 }}
+          >
+            Change in sea level (cm)
+          </text>
 
           {/* faint other pathways — context only, just a 2100 dot */}
           {others.map((s, oi) => {
@@ -490,9 +552,7 @@ export default function SeaLevelProjection() {
       {/* caption */}
       <figcaption className="chart-caption text-left" style={{ maxWidth: 640, margin: "18px auto 0", paddingLeft: 16, paddingRight: 16 }}>
         <p style={{ margin: "8px 0 8px" }}>
-          Note: The line shows the median projected sea level rise for the selected country. The shaded band shows
-          the likely range of projections, from the 17th to 83rd percentile, showing the uncertainty around the
-          projection.
+          Note: Shared Socioeconomic Pathways (SSPs) represent different future greenhouse gas emissions levels: SSP1-2.6 (low), SSP2-4.5 (intermediate) and SSP5-8.5 (high). Shaded areas show the 17th–83rd percentile projection range.
         </p>
         <p style={{ margin: "0 0 16px" }}>
           Source:{" "}
@@ -502,7 +562,7 @@ export default function SeaLevelProjection() {
             rel="noopener noreferrer"
             className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
-            IPCC AR6 Working Group I, via the NASA sea level projection tool
+            IPCC AR6 Working Group I, via the NASA Sea Level Projection Tool
           </a>
           .
         </p>

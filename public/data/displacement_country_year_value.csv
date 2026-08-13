@@ -1,0 +1,84 @@
+﻿country,iso,year,weather_related_displacements,all_hazard_displacements,dominant_hazard,weather_related_per_100k
+Kiribati,KIR,2008,85,85,Flood,81.6
+Marshall Islands,MHL,2008,600,600,Flood,1153.2
+Papua New Guinea,PNG,2008,75000,75000,Flood,1044.1
+Fiji,FJI,2009,13200,13200,Flood,1455.0
+Papua New Guinea,PNG,2009,1000,1000,Landslide/Wet mass movement,13.5
+Samoa,WSM,2009,0,5300,,
+Fiji,FJI,2010,18000,18000,Storm,1977.1
+Solomon Islands,SLB,2010,5000,7800,Storm,938.1
+Vanuatu,VUT,2011,400,400,Storm,164.3
+Fiji,FJI,2012,27000,27000,Flood,2951.1
+Palau,PLW,2012,150,150,Storm,844.4
+Papua New Guinea,PNG,2012,75000,75000,Flood,928.1
+Samoa,WSM,2012,7700,7700,Storm,3918.6
+Solomon Islands,SLB,2012,1047,1047,Storm,182.5
+Tonga,TON,2012,400,400,Storm,372.2
+Vanuatu,VUT,2012,700,700,Storm,281.3
+Palau,PLW,2013,1500,1500,Storm,8499.5
+Papua New Guinea,PNG,2013,46,46,Flood,0.6
+Solomon Islands,SLB,2013,0,3500,,
+Tonga,TON,2013,17,17,Flood,15.9
+Vanuatu,VUT,2013,69,69,Landslide/Wet mass movement,27.1
+Fiji,FJI,2014,800,800,Storm,87.2
+Marshall Islands,MHL,2014,1200,1200,Flood,2409.8
+Papua New Guinea,PNG,2014,18900,20780,Flood,221.7
+Samoa,WSM,2014,86,86,Flood,43.0
+Solomon Islands,SLB,2014,9000,9000,Flood,1458.9
+Tonga,TON,2014,5300,5300,Storm,4971.4
+Vanuatu,VUT,2014,350,350,Flood,134.5
+Kiribati,KIR,2015,2500,2500,Typhoon/Hurricane/Cyclone,2140.1
+Micronesia,FSM,2015,6800,6800,Typhoon/Hurricane/Cyclone,6254.8
+Samoa,WSM,2015,960,960,Typhoon/Hurricane/Cyclone,475.8
+Solomon Islands,SLB,2015,1000,1000,Typhoon/Hurricane/Cyclone,156.4
+Tuvalu,TUV,2015,5400,5400,Typhoon/Hurricane/Cyclone,49256.6
+Vanuatu,VUT,2015,65000,65000,Typhoon/Hurricane/Cyclone,24426.8
+Fiji,FJI,2016,76100,76100,Typhoon/Hurricane/Cyclone,8279.2
+Papua New Guinea,PNG,2016,1610,1610,Flood,18.0
+Samoa,WSM,2016,63,63,Typhoon/Hurricane/Cyclone,31.0
+Solomon Islands,SLB,2016,0,1300,,
+Tonga,TON,2016,3000,3000,Typhoon/Hurricane/Cyclone,2843.0
+Fiji,FJI,2017,350,380,Flood,38.1
+Papua New Guinea,PNG,2017,500,1390,Flood,5.4
+Solomon Islands,SLB,2017,580,580,Flood,84.6
+Vanuatu,VUT,2017,3390,14390,Typhoon/Hurricane/Cyclone,1217.2
+Fiji,FJI,2018,10000,10000,Typhoon/Hurricane/Cyclone,1090.3
+Papua New Guinea,PNG,2018,0,60740,,
+Samoa,WSM,2018,330,330,Typhoon/Hurricane/Cyclone,159.0
+Solomon Islands,SLB,2018,1055,1055,Flood,148.8
+Tonga,TON,2018,5700,5700,Typhoon/Hurricane/Cyclone,5399.4
+Vanuatu,VUT,2018,670,12591,Landslide/Wet mass movement,234.9
+Fiji,FJI,2019,5582,5582,Storm,610.1
+Marshall Islands,MHL,2019,200,200,Flood,454.5
+Papua New Guinea,PNG,2019,7724,31264,Flood,80.4
+Solomon Islands,SLB,2019,31,31,Storm,4.3
+Vanuatu,VUT,2019,1000,1000,Typhoon/Hurricane/Cyclone,342.5
+Fiji,FJI,2020,36135,36135,Typhoon/Hurricane/Cyclone,3949.3
+Papua New Guinea,PNG,2020,3935,3935,Flood,40.1
+Samoa,WSM,2020,55,55,Flood,26.0
+Solomon Islands,SLB,2020,321,321,Storm,43.1
+Tonga,TON,2020,2700,2700,Storm,2554.3
+Tuvalu,TUV,2020,200,200,Typhoon/Hurricane/Cyclone,1923.3
+Vanuatu,VUT,2020,80000,80008,Storm,26768.6
+Fiji,FJI,2021,14019,14019,Typhoon/Hurricane/Cyclone,1529.3
+Palau,PLW,2021,2460,2460,Typhoon/Hurricane/Cyclone,13833.4
+Papua New Guinea,PNG,2021,1455,1455,Rogue Wave,14.5
+Solomon Islands,SLB,2021,0,5,,
+Fiji,FJI,2022,4744,4744,Typhoon/Hurricane/Cyclone,516.0
+Marshall Islands,MHL,2022,28,28,Flood,69.9
+Papua New Guinea,PNG,2022,4587,9687,Flood,45.0
+Samoa,WSM,2022,14,14,Flood,6.5
+Solomon Islands,SLB,2022,0,11,,
+Tonga,TON,2022,0,2400,,
+Vanuatu,VUT,2022,382,382,Typhoon/Hurricane/Cyclone,122.0
+Fiji,FJI,2023,6750,6750,Typhoon/Hurricane/Cyclone,730.4
+Micronesia,FSM,2023,5,5,Typhoon/Hurricane/Cyclone,4.4
+Papua New Guinea,PNG,2023,0,13510,,
+Samoa,WSM,2023,14,14,Flood,6.5
+Solomon Islands,SLB,2023,640,640,Typhoon/Hurricane/Cyclone,80.0
+Vanuatu,VUT,2023,67900,68762,Typhoon/Hurricane/Cyclone,21191.7
+Fiji,FJI,2024,763,763,Flood,82.2
+Marshall Islands,MHL,2024,315,315,Drought,838.9
+Papua New Guinea,PNG,2024,28690,31090,Flood,271.3
+Tonga,TON,2024,29,40,Flood,27.8
+Vanuatu,VUT,2024,0,3100,,
