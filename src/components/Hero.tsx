@@ -57,10 +57,11 @@ export default function Hero() {
 
         <div className="section-narrative" style={{ marginTop: '3rem' }}>
           <p>
-            Climate change is increasing the frequency and severity of extreme weather events, putting lives and livelihoods at greater risk around the world. But not every country faces the same level of climate risk, nor do they have the same capacity to prepare for and protect themselves from its impacts.
+           Climate change is increasing the frequency and severity of extreme weather events globally. However, countries do not experience the same level of risk, nor do they have the same capacity to cope with and adapt to its impacts.
           </p>
           <p>
-        Pacific Island Countries are among those facing some of the greatest climate risks, yet have limited capacity to adapt. Although their readiness to turn investment into effective <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> has improved across the region, they still rank among the world’s most vulnerable countries. Even Tuvalu, the region’s most ready country, ranks among the world’s 20 most vulnerable.
+       
+Pacific Island nations are among the countries facing the greatest climate risks, yet have limited adaptive capacities. Although <GlossaryTerm term="readiness">readiness</GlossaryTerm> has improved across the region, they still rank among the world’s most vulnerable countries. Even Tuvalu, the region’s most ready country, ranks among the world’s 15 most vulnerable.
           </p>
         </div>
       </Container>

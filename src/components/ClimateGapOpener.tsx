@@ -55,15 +55,15 @@ const BEATS: Beat[] = [
   {
     kicker: "Every country in the world",
     message:
-      "Placed by how vulnerable it is to a changing climate, and how ready it is to adapt.",
+      "Placed by how vulnerable it is to a changing climate, and how ready it is to turn investment into adaptation action.",
   },
   {
     kicker: "The Pacific Islands",
-    message: "A small group, and among the most vulnerable to a changing climate.",
+    message: "A small group, and among the most vulnerable to climate change.",
   },
   {
     kicker: "Yet not the most ready",
-    message: "Several sit far from the readiness needed to meet that risk.",
+    message: "Several sit far from the readiness needed to turn investment into adaptation action.",
   },
   {
     kicker: "Two decades pass",
@@ -71,8 +71,8 @@ const BEATS: Beat[] = [
       "Readiness shifts, but vulnerability holds. Across the region, countries remained above the global vulnerability median in every year.",
   },
   {
-    kicker: "The gap holds",
-    message: "And a gap this persistent carries a cost.",
+    kicker: "The Vulnerability Holds",
+    message: "And that persistence has a cost.",
   },
 ];
 const LINE_BEAT = 1; // "more exposed" reference line appears (beat 1: Pacific highlighted)

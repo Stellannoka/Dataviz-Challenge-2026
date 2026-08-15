@@ -513,10 +513,10 @@ export default function FinanceGap() {
             fontFamily: "var(--font-serif)",
           }}
         >
-        Current finance flows cover only a fraction of projected annual adaptation needs across Pacific Island Countries
+      Current finance flows cover only 26% of projected annual adaptation needs
         </p>
         <p className="section-subtitle" style={{ marginBottom: 8 }}>
-          Average annual adaptation finance disbursed in 2021–2023 as a share of projected annual adaptation need
+          Average annual adaptation finance disbursed in 2021–2023 as a share of projected annual adaptation need (2024 prices).
         </p>
         <p
           style={{
@@ -925,10 +925,6 @@ export default function FinanceGap() {
           marginBottom: "1rem",
         }}
       >
-        <p style={{ margin: 0 }}>
-          Note: Coverage is the ratio of estimated annual adaptation finance disbursed (2021–2023 average) to
-          projected annual adaptation need (2024 prices), by country.
-        </p>
         <p style={{ margin: 0, marginTop: breakpoint === "phone" ? "6px" : "10px" }}>
           Sources:{" "}
           <a

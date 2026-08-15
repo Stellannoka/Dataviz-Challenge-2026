@@ -4,9 +4,9 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 const definitions: Record<string, string> = {
   vulnerability:
-    "Vulnerability measures a country's exposure, sensitivity and adaptive capacity to climate-related hazards.",
+    "In the ND-GAIN framework, vulnerability reflects a country's exposure and sensitivity to climate hazards, as well as its capacity to adapt to their effects.",
   readiness:
-    "Readiness measures a country's ability to translate investments into effective adaptation through economic, governance and social capacity.",
+    "In the ND-GAIN framework, readiness measures the economic, social and governance conditions that determine how effectively a country can turn investment into adaptation action.",
   adaptation:
     "Adaptation is the process of adjusting policies, systems and infrastructure to reduce harm from climate impacts and build long-term resilience.",
   hazards:

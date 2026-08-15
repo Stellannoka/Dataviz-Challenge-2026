@@ -178,7 +178,7 @@ const STEPS: Step[] = [
     kind: "intro",
     focus: [],
     title: "Intro",
-    body: "This includes people who were injured or fell ill, whose homes were damaged or destroyed, or whose livelihoods were disrupted or destroyed.",
+    body: "Floods, tropical cyclones and storm surges are among the climate-related hazards threatening Pacific Island nations. In 2020, 548,686 people across the region were directly affected by these extreme weather events. This includes people who were injured or fell ill, whose homes were damaged or destroyed, or whose livelihoods were disrupted or destroyed.",
   },
   {
     phase: "raw",
@@ -1006,11 +1006,11 @@ export default function PacificScrollyMap({
               marginRight: "auto",
               paddingLeft: 16,
               paddingRight: 16,
-              paddingTop: `calc(env(safe-area-inset-top, 0px) + ${isSmall ? 16 : 12}px)`,
+              paddingTop: `calc(env(safe-area-inset-top, 0px) + ${isSmall ? 8 : 6}px)`,
               paddingBottom: isSmall ? 8 : 14,
             }}
           >
-            <p className="section-title">
+            <p className="section-subtitle" style={{ fontWeight: 350 }}>
               {displayTitle}
             </p>
             {showDisplacement ? (
@@ -1021,6 +1021,8 @@ export default function PacificScrollyMap({
                   display: "flex",
                   alignItems: "center",
                   gap: 16,
+                  fontSize: "0.74rem",
+                  fontWeight: 250,
                 }}
               >
                 <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
@@ -1050,7 +1052,10 @@ export default function PacificScrollyMap({
                 <span className="sr-only">{scaleNote}</span>
               </div>
             ) : (
-              <p className="section-subtitle" style={{ marginTop: isSmall ? 10 : 14 }}>
+              <p
+                className="section-subtitle"
+                style={{ marginTop: isSmall ? 10 : 14, fontSize: "0.74rem", fontWeight: 250 }}
+              >
                 {scaleNote}
               </p>
             )}

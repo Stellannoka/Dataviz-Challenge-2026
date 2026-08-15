@@ -25,7 +25,7 @@ export default function Home() {
       >
         <Prose>
           <p className="section-subtitle">
-         Pacific Island Countries remain among the world's most vulnerable to climate change, while their capacity to translate investment into adaptation varies.
+         Pacific Island nations remain among the world's most vulnerable to climate change, while their capacity to translate investment into adaptation varies.
           </p>
         </Prose>
         
@@ -36,10 +36,11 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-      In the ND-GAIN framework, vulnerability reflects a country's exposure, sensitivity and capacity to adapt to climate <GlossaryTerm term="hazards">hazards</GlossaryTerm>. Readiness measures the economic, social and governance conditions that determine how effectively a country can turn investment into <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> action..
+     
+        The greater the <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm> of a country, the greater the need for <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> and the urgency to act. For Pacific Island nations, the combination of elevated climate risk and limited capacity to cope and adapt poses significant challenges, even where readiness has improved.
             </p>
             <p>
-        The greater a country’s vulnerability, the greater the need for adaptation investment, while readiness shapes how effectively that investment can translate into adaptation action. For Pacific Island Countries, vulnerability remains exceptionally high, making the need for adaptation substantial even where readiness has improved. The consequences of that vulnerability become most visible when <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike.
+       With such limited adaptive capacity, the impacts of  <GlossaryTerm term="hazards"> climate-related hazards</GlossaryTerm> can extend well beyond the immediate event, disrupting livelihoods, displacing people from their homes and leaving communities to recover long after. 
             </p>
           </div>
         </Prose>
@@ -47,7 +48,7 @@ export default function Home() {
 
       {/* SECTION 2 — the map - WIDE */}
       <Section
-        heading=""
+        heading="The Human Impacts of Climate-Related Hazards"
         id="section-map"
         wide={true}
       >
@@ -58,10 +59,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-      The scale of these impacts is not surprising given the region’s high exposure and sensitivity to climate change. 
-            </p>
-             <p>
-   Yet the risks will intensify as the climate warms. Rising ocean temperatures and melting ice will drive further sea level rise across the region. Projections show that the rise will continue through the century, with the scale of change depending on future emissions.
+      The magnitude of these impacts indicates the high exposure and sensitivity of the Pacific Island nations to climate hazards. Those risks are likely to grow as climate change drives continued sea-level rise.
             </p>
             
           </div>
@@ -80,10 +78,10 @@ export default function Home() {
       >
         Over half of the Pacific Islands’ population lives within 500 metres of the coast
       </a>
-      , placing communities, infrastructure and livelihoods within reach of the sea, of which are under growing threat as climate change intensifies. Projections show that sea level could reach about 50 cm by 2100 under lower emissions and 85 cm under higher emissions.
+      , placing communities, infrastructure and livelihoods within reach of a rising sea.
             </p>
              <p>
-   How far it rises will be shaped by choices made beyond the Pacific Islands, but the consequences will fall on these vulnerable communities, and the hazards they already face could become more severe, putting greater pressure on lives and livelihoods.
+   With sea level projected to rise by about 85 cm by 2100 under a high-emissions scenario, coastal flooding, storm surges and other similar climate-related hazards could intensify. These changes could further worsen the impacts on people and livelihoods across the region.
             </p>
             
           </div>
@@ -91,30 +89,30 @@ export default function Home() {
       </Section>
 
       {/* BRIDGE */}
-      <Section heading="Hazards cannot be chosen. Their impacts can be reduced.">
+      <Section heading="Climate Hazards cannot be chosen. Their impacts can be reduced.">
         <Prose>
           <div className={narrative}>
             <p>
-            Pacific Island Countries cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when disasters strike.
+            Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when <GlossaryTerm term="disaters"> disasters</GlossaryTerm> strike.
             </p>
              
             <p>
-            What they can change is how prepared they are for what comes next, and that requires infrastructure that can withstand shocks, early warning systems that give people time to act, and stronger institutions capable of responding effectively.
+           What they can change is how well they prepare for what comes next, and that requires infrastructure that can withstand shocks, early warning systems that give people time to act, and stronger institutions capable of responding effectively.
 
             </p>
             <p>
-             But Pacific Island Countries have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in, through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to countries on the front line of climate change.
+             But these nations have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in: through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to climate-vulnerable countries on the front line of climate change.
             </p>
           </div>
         </Prose>
       </Section>
 
       {/* SECTION 3 — the finance gap */}
-      <Section heading="Climate Financing Needs Remain Largely Unmet">
+      <Section heading="Pacific Island Nations Aren’t Getting the Climate Finance They Need">
         <Prose>
           <div className={narrative}>
               <p>
-              Between 2021 and 2023, Pacific Island Countries received an average of about US$0.9 billion a year in <GlossaryTerm term="adaptation finance">adaptation finance</GlossaryTerm>, against projected annual needs of about US$3.3 billion. At this level, current finance flow would cover only around 26% of projected needs. The size of the gap also varies considerably across countries.
+              Between 2021 and 2023, Pacific Island Countries received an average of about US$0.9 billion a year in <GlossaryTerm term="adaptation finance">adaptation finance</GlossaryTerm>, against projected annual needs of about US$3.3 billion. At this level, current finance flow would cover only around 26% of projected needs, leaving most of the required investment unmet. The size of the gap also varies considerably across countries.
             </p>
           </div>
         </Prose>
@@ -136,14 +134,13 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-       The challenge for Pacific Island Countries is not only the scale of climate vulnerability they face, but the limited resources available to prepare for it, with adaptation needs representing a substantial share of what their small economies produce each year.
-
+       The challenge for Pacific Island Countries is not only the scale of the climate risks they face, but also the limited resources available to to prepare for and reduce their impacts.
             </p>
              <p>
         The cost of that gap is already being felt in the impacts of disasters on people, communities and economies.
             </p>
             <p>
-      Yet the improvement in readiness in some countries shows that progress is possible. The task now is to sustain and extend it through continued investment in resilience that helps these countries to better prepare for hazards they cannot prevent and limit the disruption they cause.
+      Yet the improvement in readiness in some countries shows that progress is possible. The task now is to match that progress with investment at the scale their vulnerability demands, so that stronger conditions for adaptation can translate into greater protection from hazards they cannot prevent.
             </p>
           </div>
         </Prose>
