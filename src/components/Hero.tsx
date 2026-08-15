@@ -37,7 +37,7 @@ export default function Hero() {
         </h1>
 
         <p className="section-subtitle" style={{ textAlign: 'center', marginTop: '0.75rem', fontSize: '0.9rem' }}>
-          What climate disasters cost Pacific Islands countries, and how the gap between vulnerability and readiness shapes those costs.
+          What climate-related hazards cost Pacific Island nations, and how the gap between vulnerability and readiness shapes those impacts.
         </p>
 
         <div className="hero-byline mt-5">

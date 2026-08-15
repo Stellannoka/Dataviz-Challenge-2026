@@ -93,7 +93,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-            Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when <GlossaryTerm term="disaters"> disasters</GlossaryTerm> strike.
+            Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when <GlossaryTerm term="disasters"> disasters</GlossaryTerm> strike.
             </p>
              
             <p>

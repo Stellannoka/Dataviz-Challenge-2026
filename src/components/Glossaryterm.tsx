@@ -13,18 +13,12 @@ const definitions: Record<string, string> = {
     "Climate-related hazards are extreme weather events and slow-onset changes, such as cyclones, floods, droughts and sea-level rise, driven or intensified by climate change.",
   disasters:
     "Disasters occur when climate-related hazards overwhelm a community's ability to cope, resulting in widespread damage, displacement or loss of life.",
-  gdp:
-    "Gross Domestic Product is the total value of goods and services produced by a country in a given year, used as a measure of economic size.",
-  'paris agreement':
-    "The Paris Agreement is the 2015 international climate treaty adopted under the United Nations Framework Convention on Climate Change. Under its Article 9, developed countries committed to provide financial resources to assist developing countries with both mitigation and adaptation.",
   'climate action':
     "Climate action refers to internal and external efforts to address climate change, covering both cutting greenhouse-gas emissions (mitigation) and coping with its impacts (adaptation).",
   'climate finance':
     "Climate finance refers to international funding directed toward helping countries reduce emissions and adapt to climate impacts. Under the Paris Agreement, developed countries committed to provide such finance to developing countries.",
   'adaptation finance':
     "Adaptation finance is the portion of climate finance aimed specifically at adapting to climate impacts, such as building resilience and reducing harm, rather than at cutting emissions.",
-  'adaptation needs':
-    "Adaptation needs are the estimated costs of the actions required for a country to adjust to current and projected climate impacts, such as building resilient infrastructure, protecting water and food supplies, and strengthening early warning systems.",
   'industrialised countries':
     "Industrialised countries are wealthy, developed economies that industrialised early and are historically the world's largest cumulative carbon emitters, such as the United States, Australia and France.",
 };
