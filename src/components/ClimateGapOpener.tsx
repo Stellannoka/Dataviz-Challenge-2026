@@ -719,16 +719,18 @@ export default function ClimateGapOpener() {
                       strokeOpacity={0.45}
                       strokeWidth={1}
                     />
-                    <text
-                      x={tuv.cx}
-                      y={tuv.cy + dotR * 2.6 + (isSmall ? 13 : 16)}
-                      textAnchor="middle"
-                      fontSize={isSmall ? 11 : 13}
-                      fill={C.muted}
-                      style={{ fontFamily: "var(--font-sans)" }}
-                    >
-                      Even the most ready still ranks 15th most vulnerable of 187
-                    </text>
+                    {!isSmall && (
+                      <text
+                        x={tuv.cx}
+                        y={tuv.cy + dotR * 2.6 + 16}
+                        textAnchor="middle"
+                        fontSize={13}
+                        fill={C.muted}
+                        style={{ fontFamily: "var(--font-sans)" }}
+                      >
+                        Even the most ready still ranks 15th most vulnerable of 187
+                      </text>
+                    )}
                   </g>
                 );
               })()}

@@ -61,7 +61,7 @@ export default function Hero() {
           </p>
           <p>
        
-Pacific Island nations are among the countries facing the greatest climate risks, yet have limited adaptive capacities. Although <GlossaryTerm term="readiness">readiness</GlossaryTerm> has improved across the region, they still rank among the world’s most vulnerable countries. Even Tuvalu, the region’s most ready country, ranks among the world’s 15 most vulnerable.
+Pacific Island nations are among the countries facing the greatest climate risks, yet have limited adaptive capacity. Although <GlossaryTerm term="readiness">readiness</GlossaryTerm> has improved across the region,has improved across much of the region, they still rank among the world's most vulnerable countries. Even Tuvalu, the region's most ready country, is the 15th most vulnerable in the world.
           </p>
         </div>
       </Container>

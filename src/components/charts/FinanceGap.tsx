@@ -853,7 +853,7 @@ export default function FinanceGap() {
       {hover && (
         <div
           ref={tooltipRef}
-          className="pointer-events-none fixed z-50 rounded-lg border border-slate-200 bg-white/95 p-3 shadow-xl backdrop-blur-sm transition-opacity duration-75"
+          className="pointer-events-none fixed z-50 bg-white/80 p-3 shadow-xl backdrop-blur-sm transition-opacity duration-75"
           style={{
             left: tooltipPosition ? tooltipPosition.left : hover.x,
             top: tooltipPosition ? tooltipPosition.top : hover.y,

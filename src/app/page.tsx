@@ -40,7 +40,7 @@ export default function Home() {
         The greater the <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm> of a country, the greater the need for <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> and the urgency to act. For Pacific Island nations, the combination of elevated climate risk and limited capacity to cope and adapt poses significant challenges, even where readiness has improved.
             </p>
             <p>
-       With such limited adaptive capacity, the impacts of  <GlossaryTerm term="hazards"> climate-related hazards</GlossaryTerm> can extend well beyond the immediate event, disrupting livelihoods, displacing people from their homes and leaving communities to recover long after. 
+       With such limited adaptive capacity, the impacts of <GlossaryTerm term="hazards">climate-related hazards</GlossaryTerm> can extend well beyond the immediate event, disrupting livelihoods, displacing people from their homes and leaving communities to recover long after.
             </p>
           </div>
         </Prose>
@@ -48,7 +48,7 @@ export default function Home() {
 
       {/* SECTION 2 — the map - WIDE */}
       <Section
-        heading="The Human Impacts of Climate-Related Hazards"
+        heading="The Human Impacts of Climate-Related Disasters"
         id="section-map"
         wide={true}
       >
@@ -93,7 +93,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-            Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when <GlossaryTerm term="disasters"> disasters</GlossaryTerm> strike.
+            Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike.
             </p>
              
             <p>
@@ -134,7 +134,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-       The challenge for Pacific Island Countries is not only the scale of the climate risks they face, but also the limited resources available to to prepare for and reduce their impacts.
+       The challenge for Pacific Island Countries is not only the scale of the climate risks they face, but also the limited resources available to prepare for and reduce their impacts.
             </p>
              <p>
         The cost of that gap is already being felt in the impacts of disasters on people, communities and economies.

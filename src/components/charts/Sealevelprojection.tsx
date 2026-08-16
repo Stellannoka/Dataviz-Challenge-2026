@@ -247,6 +247,7 @@ export default function SeaLevelProjection() {
       {menuOpen && (
         <ul
           role="listbox"
+          className="shadow-lg"
           style={{
             position: "absolute",
             top: "100%",
@@ -256,10 +257,7 @@ export default function SeaLevelProjection() {
             listStyle: "none",
             padding: "4px 0",
             minWidth: 260,
-            background: "#fff",
-            border: "1px solid #e2e2dc",
-            borderRadius: 8,
-            boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
+            background: "rgba(255, 255, 255, 0.80)",
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
           }}
@@ -504,10 +502,12 @@ export default function SeaLevelProjection() {
           )}
         </svg>
 
-        {/* dynamic milestone callouts */}
+        {/* dynamic milestone callouts — hidden for whichever year is being
+            hovered, so the hover tooltip can show that same figure with
+            more detail instead of the two overlapping. */}
         {CALLOUT_YEARS.map((yr) => {
           const i = years.indexOf(yr);
-          if (i < 0) return null;
+          if (i < 0 || hoverYear === yr) return null;
           const px = X(yr);
           const py = Y(sel.p50[i]);
           return (
@@ -533,15 +533,46 @@ export default function SeaLevelProjection() {
           );
         })}
 
-        {/* hover value, shown near the point on the selected line */}
-        {hoverYear != null && !CALLOUT_YEARS.includes(hoverYear) && (() => {
+        {/* hover tooltip: year + median + likely range, anchored to the
+            hovered point on the selected line. Replaces the plain milestone
+            figure while it's showing, so nothing overlaps. */}
+        {hoverYear != null && (() => {
           const hi = years.indexOf(hoverYear);
           const hpx = X(hoverYear);
           const hpy = Y(sel.p50[hi]);
           return (
-            <div style={{ position: "absolute", left: hpx, top: hpy - 22, transform: "translateX(-50%)", pointerEvents: "none", textAlign: "center" }}>
-              <div style={{ color, fontWeight: 700, fontSize: "0.78rem", whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}>
+            <div
+              style={{
+                position: "absolute",
+                left: hpx,
+                top: hpy,
+                transform: "translate(-50%, -100%) translateY(-10px)",
+                pointerEvents: "none",
+                textAlign: "center",
+                background: "rgba(255, 255, 255, 0.80)",
+                padding: "6px 10px",
+                boxShadow: "0 4px 14px rgba(15, 23, 42, 0.16)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <div
+                style={{
+                  color: "#20242e",
+                  fontWeight: 700,
+                  fontSize: "0.74rem",
+                  fontVariantNumeric: "tabular-nums",
+                  paddingBottom: 4,
+                  marginBottom: 4,
+                  borderBottom: "1px solid #e5e5e5",
+                }}
+              >
+                {hoverYear}
+              </div>
+              <div style={{ color, fontWeight: 700, fontSize: "0.82rem", fontVariantNumeric: "tabular-nums" }}>
                 {fmt(sel.p50[hi])}
+              </div>
+              <div style={{ color: "#9096a1", fontSize: "0.66rem", fontVariantNumeric: "tabular-nums" }}>
+                likely range: {Math.round(sel.p17[hi])} - {Math.round(sel.p83[hi])} cm
               </div>
             </div>
           );

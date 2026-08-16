@@ -562,7 +562,7 @@ export default function AdaptationBurden() {
         >
           <div
             ref={tipRef}
-            className="relative rounded-lg bg-white/95 p-3 shadow-xl backdrop-blur-sm"
+            className="relative bg-white/80 p-3 shadow-xl backdrop-blur-sm"
             style={{
               zIndex: 1,
               maxWidth: "min(300px, 80vw)",
