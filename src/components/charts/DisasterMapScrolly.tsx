@@ -1398,7 +1398,7 @@ export default function PacificScrollyMap({
             {bubbleHover && !inPer && (
               <div
                 ref={tooltipRef}
-                className="pointer-events-none fixed z-50 rounded-lg bg-white/80 px-3 py-2 shadow-xl backdrop-blur-sm transition-opacity duration-75"
+                className="pointer-events-none fixed z-50 rounded-lg bg-white/85 px-3 py-2 shadow-xl transition-opacity duration-75"
                 style={{
                   left: tooltipPosition ? tooltipPosition.left : bubbleHover.dotX,
                   top: tooltipPosition ? tooltipPosition.top : bubbleHover.dotY,

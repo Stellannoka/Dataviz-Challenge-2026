@@ -257,7 +257,7 @@ export default function SeaLevelProjection() {
             listStyle: "none",
             padding: "4px 0",
             minWidth: 260,
-            background: "rgba(255, 255, 255, 0.80)",
+            background: "rgba(255, 255, 255, 0.85)",
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
           }}
@@ -549,7 +549,7 @@ export default function SeaLevelProjection() {
                 transform: "translate(-50%, -100%) translateY(-10px)",
                 pointerEvents: "none",
                 textAlign: "center",
-                background: "rgba(255, 255, 255, 0.80)",
+                background: "rgba(255, 255, 255, 0.85)",
                 padding: "6px 10px",
                 boxShadow: "0 4px 14px rgba(15, 23, 42, 0.16)",
                 whiteSpace: "nowrap",

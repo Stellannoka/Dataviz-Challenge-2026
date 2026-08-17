@@ -36,8 +36,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-     
-        The greater the <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm> of a country, the greater the need for <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> and the urgency to act. For Pacific Island nations, the combination of elevated climate risk and limited capacity to cope and adapt poses significant challenges, even where readiness has improved.
+              The greater the <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm> of a country, the greater the need for <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> and the urgency to act. For Pacific Island nations, the combination of elevated climate risk and limited capacity to cope and adapt poses significant challenges, even where readiness has improved.
             </p>
             <p>
        With such limited adaptive capacity, the impacts of <GlossaryTerm term="hazards">climate-related hazards</GlossaryTerm> can extend well beyond the immediate event, disrupting livelihoods, displacing people from their homes and leaving communities to recover long after.
@@ -59,9 +58,12 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-      The magnitude of these impacts indicates the high exposure and sensitivity of the Pacific Island nations to climate hazards. Those risks are likely to grow as climate change drives continued sea-level rise.
+              The scale of these impacts reflects how exposed and sensitive the region is to climate disasters.
             </p>
-            
+            <p>
+              The risks are expected to worsen, particularly for the atoll and other low-lying nations like Tuvalu, Kiribati and the Marshall Islands, as continued global warming drives sea-level rise.
+            </p>
+
           </div>
         </Prose>
 
@@ -93,15 +95,13 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-            Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike.
-            </p>
-             
-            <p>
-           What they can change is how well they prepare for what comes next, and that requires infrastructure that can withstand shocks, early warning systems that give people time to act, and stronger institutions capable of responding effectively.
-
+              Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu simply raise its islands above rising seas. Their small size and geographic isolation also limit their ability to absorb disruption and recover when <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike.
             </p>
             <p>
-             But these nations have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in: through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to climate-vulnerable countries on the front line of climate change.
+              What they can change is how well they prepare for what comes next, and that requires infrastructure that can withstand shocks, early warning systems that give people time to act, and stronger institutions capable of responding effectively.
+            </p>
+            <p>
+              But these nations have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in: through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to climate-vulnerable countries on the front line of climate change.
             </p>
           </div>
         </Prose>
@@ -111,7 +111,7 @@ export default function Home() {
       <Section heading="Pacific Island Nations Aren’t Getting the Climate Finance They Need">
         <Prose>
           <div className={narrative}>
-              <p>
+            <p>
               Between 2021 and 2023, Pacific Island Countries received an average of about US$0.9 billion a year in <GlossaryTerm term="adaptation finance">adaptation finance</GlossaryTerm>, against projected annual needs of about US$3.3 billion. At this level, current finance flow would cover only around 26% of projected needs, leaving most of the required investment unmet. The size of the gap also varies considerably across countries.
             </p>
           </div>
@@ -124,7 +124,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-           The gap is large in dollar terms, but even larger relative to the size of these economies. For Kiribati, one of the region’s smallest economies, meeting its adaptation needs would require investment equivalent to about a third of everything the country produces in a year; a scale difficult to meet from domestic resources alone.
+              The gap is large in dollar terms, but even larger relative to the size of these economies. For <span style={{ color: "var(--secondary, #e07a7a)", fontWeight: 700 }}>atoll nations</span> such as Kiribati, one of the region’s smallest economies, meeting its adaptation needs would require investment equivalent to about a third of everything the country produces in a year; a scale difficult to meet from domestic resources alone.
             </p>
           </div>
         </Prose>
@@ -134,18 +134,17 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-       The challenge for Pacific Island Countries is not only the scale of the climate risks they face, but also the limited resources available to prepare for and reduce their impacts.
-            </p>
-             <p>
-        The cost of that gap is already being felt in the impacts of disasters on people, communities and economies.
+              The challenge for Pacific Island Countries is not only the scale of the climate risks they face, but also the limited resources available to prepare for and reduce their impacts.
             </p>
             <p>
-      Yet the improvement in readiness in some countries shows that progress is possible. The task now is to match that progress with investment at the scale their vulnerability demands, so that stronger conditions for adaptation can translate into greater protection from hazards they cannot prevent.
+              The cost of that gap is already being felt in the impacts of disasters on people, communities and economies.
+            </p>
+            <p>
+             Yet the improvement in readiness in some countries shows that progress is possible. The task now is to match that progress with the needed finance and investment at the scale their vulnerability demands, so that stronger conditions for adaptation can translate into greater protection from hazards they cannot prevent.
             </p>
           </div>
         </Prose>
       </Section>
-
 
     {/* METHODOLOGY */}
 <div className="max-w-[640px] mx-auto px-4" style={{ marginBottom: "4rem" }}>

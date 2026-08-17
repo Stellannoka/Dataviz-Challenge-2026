@@ -16,8 +16,9 @@ import { CONTAINER_WIDTH } from "@/components/Container";
    The two axes are separate published inputs, NOT a quotient. The
    paper's % uses a different denominator, so we never recompute it.
 
-   One dot colour throughout; the message rests on position, not
-   category. Nauru's need is a random-forest model estimate (marked *).
+   One dot colour throughout, except atoll nations (KIR, MHL, TUV) in red;
+   the message otherwise rests on position, not category. Nauru's need is
+   a random-forest model estimate (marked *).
    ===================================================================== */
 
 interface Row {
@@ -39,12 +40,15 @@ interface BurdenData {
 }
 
 /* Single dot colour: the piece's muted blue. */
-const DOT = "var(--primary, #6d8499";
-/* Thin edge on the dots, default state. */
-const DOT_EDGE = "var(--surface, #ffffff)";
+const DOT = "var(--primary, #6d8499)";
 /* Grey treatment for non-hovered dots while another dot is hovered. */
 const DOT_DIM = "#d7dbe3";
-const DOT_DIM_EDGE = "var(--surface, #ffffff)";
+/* Atoll nations — almost entirely low-lying coral atolls, the countries
+   most existentially exposed to sea-level rise — get the project's red
+   instead of the chart's usual single blue, so they read apart from the
+   rest without breaking the "position, not category" rule for everyone else. */
+const ATOLL_ISOS = new Set(["KIR", "MHL", "TUV"]);
+const DOT_ATOLL = "var(--secondary, #e07a7a)";
 
 /* Axis styling, mirrored from the finance chart so the two read as one
    family: tick labels at 0.88rem / 300 / --text-secondary, axis titles
@@ -438,13 +442,14 @@ export default function AdaptationBurden() {
               Adaptation need, % of GDP
             </text>
 
-            {/* dots + labels (single colour) */}
+            {/* dots + labels (atoll nations in red, everyone else blue) */}
             {(() => {
               const hoveredIso = hover?.row.iso ?? null;
               return d.data.map((r, i) => {
               const cx = X(r.gdpUSDm);
               const cy = Y(r.pctGDP);
               const dimmed = hoveredIso !== null && hoveredIso !== r.iso;
+              const isHovered = hoveredIso === r.iso;
 
               const labelText = r.country + (r.imputed ? " *" : "");
 
@@ -507,11 +512,11 @@ export default function AdaptationBurden() {
                     cx={cx}
                     cy={cy}
                     r={rDot}
-                    fill={dimmed ? DOT_DIM : DOT}
-                    fillOpacity={0.9}
-                    stroke={dimmed ? DOT_DIM_EDGE : DOT_EDGE}
-                    strokeWidth={1}
-                    style={{ cursor: "pointer", transition: "fill 0.15s, stroke 0.15s" }}
+                    fill={dimmed ? DOT_DIM : ATOLL_ISOS.has(r.iso) ? DOT_ATOLL : DOT}
+                    fillOpacity={0.12}
+                    stroke={dimmed ? DOT_DIM : ATOLL_ISOS.has(r.iso) ? DOT_ATOLL : DOT}
+                    strokeWidth={isHovered ? 3 : 2}
+                    style={{ cursor: "pointer", transition: "fill 0.15s, stroke 0.15s, stroke-width 0.15s" }}
                   />
                   <text
                     x={lx}
@@ -522,7 +527,7 @@ export default function AdaptationBurden() {
                     fill={TICK_TEXT}
                     style={{
                       fontFamily: "var(--font-sans)",
-                      opacity: dimmed ? 0 : 1,
+                      opacity: dimmed ? 0.3 : 1,
                       transition: "opacity 0.15s",
                       pointerEvents: "none",
                     }}
@@ -562,7 +567,7 @@ export default function AdaptationBurden() {
         >
           <div
             ref={tipRef}
-            className="relative bg-white/80 p-3 shadow-xl backdrop-blur-sm"
+            className="relative bg-slate-50/85 p-3 shadow-xl"
             style={{
               zIndex: 1,
               maxWidth: "min(300px, 80vw)",
@@ -618,7 +623,7 @@ export default function AdaptationBurden() {
                 top: tip.caret.top,
                 width: CARET_SIZE,
                 height: CARET_SIZE,
-                background: "rgba(255, 255, 255, 0.95)",
+                background: "rgba(248, 250, 252, 0.85)",
                 transform: "rotate(45deg)",
                 boxShadow: "0 1px 3px rgba(15, 23, 42, 0.12)",
                 zIndex: 2,
