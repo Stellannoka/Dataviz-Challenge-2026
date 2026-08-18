@@ -24,7 +24,6 @@ Cleaned inputs live in `public/data/`. Each visualisation cites and links its so
 
 **Direct disaster economic loss (SDG 11.5.2) was examined and excluded.** The Pacific Data Hub series covers only three of the twelve Pacific Island Countries for 2020 (Fiji, Papua New Guinea, Kiribati), mixes plain USD and USD-millions units within the same series, and carries no figure for Vanuatu, where Cyclone Harold caused the year's largest impacts. A regional total built from that coverage would understate losses to the point of misleading, so the piece quantifies the cost of disasters in people affected and displaced rather than dollars.
 
-
 **The finance comparison is a coverage ratio.** Projected annual need (IMF estimate, 2024 prices) and recent annual disbursements (2021 to 2023 average) come from different reference periods, so the chart presents coverage of need rather than a same-year subtraction, and its caption says so.
 
 **The finance figures carry the source's own caveats.** The IMF working paper synthesizes needs estimates from studies that differ in sectoral coverage, methodology and time horizons, and notes that disbursement data is limited, so the disbursed amounts are estimates. Its needs estimates also exclude long-term challenges such as potential large-scale relocation, which means the coverage ratio shown in Section 3 is, if anything, conservative. The piece uses the disbursement-basis ratio, measuring finance delivered rather than finance pledged; the paper also reports a higher commitment-basis ratio.
@@ -53,9 +52,3 @@ npm run build
 ```
 
 The output is written to `out/`.
-
-
-
-
-   
-
