@@ -85,7 +85,7 @@ h1, h2, h3 {
 }
 
 .section-subtitle {
-  font-size: 0.86rem;
+  font-size: 0.9rem;
   font-weight: 300;
   color:  rgb(64, 64, 64);
   margin-bottom: 0;
@@ -109,8 +109,8 @@ h1, h2, h3 {
   text-align: left;
   line-height: 1.75rem;
   letter-spacing: 0.012em;
-  padding-bottom: 1.75rem;     /* inter-paragraph gap, matches line-height so paragraphs stay distinct */
-  color: rgb(45, 45, 45);
+  padding-bottom: 1.1rem;     /* inter-paragraph gap */
+  color: var(--ink-soft, #1e293b);
   font-family: var(--font-sans);
 }
 
@@ -171,7 +171,7 @@ h1, h2, h3 {
     font-weight: 350;    /* bumped up from desktop's 350 — small text needs a touch more weight to stay legible at this size */
     line-height: 1.6rem;
     letter-spacing: 0.01em;
-    padding-bottom: 1.5rem;    /* ~24px, at/above the 1.6rem mobile line-height so paragraphs stay distinct on small screens */
+    padding-bottom: 1rem;    /* inter-paragraph gap on small screens */
   }
 
   .hero-title {

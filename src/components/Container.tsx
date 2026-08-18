@@ -1,7 +1,17 @@
 import { ReactNode } from "react";
 
-// The ONE text-column definition, used for every textual element on the page.
-// 640px max, centered, px-4 so text never touches the screen edge.
+/* ======================================================================
+   Container / ChartBand: the two layout primitives every section is
+   built from. Container is the ONE text-column definition (640px max,
+   centered, px-4 so text never touches the screen edge) — every
+   narrative paragraph, heading and chart caption in the piece measures
+   against this same width, which is what keeps the whole article reading
+   as one consistent column. ChartBand is Container's wider counterpart:
+   charts need more horizontal room than prose to stay legible, so it
+   gives them up to 920px while relying on each chart to carry its own
+   16px gutter internally (matching Container's px-4) rather than doubling
+   the padding here.
+   ====================================================================== */
 export const CONTAINER_WIDTH = 640;
 
 export function Container({
@@ -21,12 +31,6 @@ export function Container({
   );
 }
 
-// Full-width band for charts that break out of the text column.
-// Centers its child and gives it room; the chart measures its own width.
-// NOTE: no horizontal padding here — every chart inside a ChartBand carries
-// its own 16px internal gutter (matching Container's px-4), so padding at
-// this level would double the gutter on phones and push chart titles and
-// captions 16px right of the narrative text column.
 export function ChartBand({
   children,
   className = "",

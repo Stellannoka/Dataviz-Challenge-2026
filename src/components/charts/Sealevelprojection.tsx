@@ -583,7 +583,7 @@ export default function SeaLevelProjection() {
       {/* caption */}
       <figcaption className="chart-caption text-left" style={{ maxWidth: 640, margin: "18px auto 0", paddingLeft: 16, paddingRight: 16 }}>
         <p style={{ margin: "8px 0 8px" }}>
-          Note: Shared Socioeconomic Pathways (SSPs) represent different future greenhouse gas emissions levels: SSP1-2.6 (low), SSP2-4.5 (intermediate) and SSP5-8.5 (high). Shaded areas show the 17th–83rd percentile projection range.
+          Note: Shared Socioeconomic Pathways (SSPs) represent different future greenhouse gas emissions levels: SSP1-2.6 (lower), SSP2-4.5 (intermediate) and SSP5-8.5 (higher). Shaded areas show the 17th–83rd percentile projection range.
         </p>
         <p style={{ margin: "0 0 16px" }}>
           Source:{" "}

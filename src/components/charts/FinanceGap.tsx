@@ -513,7 +513,7 @@ export default function FinanceGap() {
             fontFamily: "var(--font-serif)",
           }}
         >
-      Current finance flows cover only 26% of projected annual adaptation needs
+     Most Pacific Island nations receive less than half the financing needed for climate adaptation
         </p>
         <p className="section-subtitle" style={{ marginBottom: 8 }}>
           Average annual adaptation finance disbursed in 2021–2023 as a share of projected annual adaptation need (2024 prices).

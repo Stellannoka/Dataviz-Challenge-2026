@@ -1,6 +1,13 @@
 import { Container } from "./Container";
 import GlossaryTerm from "./Glossaryterm";
 
+/* ======================================================================
+   Hero: the piece's title block, directly beneath ClimateGapOpener's
+   scroll-jacked cold open. The negative top margin (see the inline
+   comment below) makes it slide up over the cold open's fading final
+   beat rather than arriving after a blank frame, so the transition from
+   scrollytelling intro to static title reads as one continuous motion.
+   ====================================================================== */
 export default function Hero() {
   return (
     <header
@@ -61,7 +68,7 @@ export default function Hero() {
           </p>
           <p>
        
-Pacific Island nations are among the countries facing the greatest climate risks, yet have limited adaptive capacity. Although <GlossaryTerm term="readiness">readiness</GlossaryTerm> has improved across the region,has improved across much of the region, they still rank among the world's most vulnerable countries. Even Tuvalu, the region's most ready country, is the 15th most vulnerable in the world.
+Pacific Island nations are among the countries facing the greatest climate risks, yet have limited adaptive capacity. Although <GlossaryTerm term="readiness">readiness</GlossaryTerm> has improved across much of the region, they still rank among the world's most vulnerable countries. Even Tuvalu, the region's most ready country, is the 15th most vulnerable in the world.
           </p>
         </div>
       </Container>

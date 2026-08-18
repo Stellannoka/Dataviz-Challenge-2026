@@ -5,6 +5,12 @@ import "@fontsource/libre-baskerville/400-italic.css";
 import "@fontsource-variable/source-sans-3";
 import "./globals.css";
 
+/* ======================================================================
+   RootLayout: the app's HTML shell. Self-hosts both typefaces via
+   @fontsource (no external font request at build or runtime — important
+   for the static-export/GitHub Pages deploy) and declares the
+   Open Graph/Twitter card metadata used when the piece is shared.
+   ====================================================================== */
 const description =
   "The persistent gap between climate vulnerability and readiness across the Pacific Island Countries, and its human cost. Pacific Dataviz Challenge 2026.";
 

@@ -2,7 +2,16 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-const definitions: Record<string, string> = {
+/* ======================================================================
+   GlossaryTerm: an inline, click/hover-to-reveal definition, used to gloss
+   technical terms (vulnerability, readiness, adaptation, ...) the first
+   time each appears in the article's body text. `definitions` is
+   deliberately left untyped as a Record so `keyof typeof definitions`
+   narrows to the literal key union below — every `term="..."` call site
+   is then checked against real keys at compile time, instead of silently
+   rendering `undefined` for a typo.
+   ====================================================================== */
+const definitions = {
   vulnerability:
     "In the ND-GAIN framework, vulnerability reflects a country's exposure and sensitivity to climate hazards, as well as its capacity to adapt to their effects.",
   readiness:
