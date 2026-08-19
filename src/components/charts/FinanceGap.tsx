@@ -513,7 +513,7 @@ export default function FinanceGap() {
             fontFamily: "var(--font-serif)",
           }}
         >
-     Most Pacific Island nations receive less than half the financing needed for climate adaptation
+     Most Pacific Island nations receive less than half the financing needed for climate adaptation.
         </p>
         <p className="section-subtitle" style={{ marginBottom: 8 }}>
           Average annual adaptation finance disbursed in 2021–2023 as a share of projected annual adaptation need (2024 prices).
@@ -926,12 +926,12 @@ export default function FinanceGap() {
         }}
       >
         <p style={{ margin: 0, marginTop: breakpoint === "phone" ? "6px" : "10px" }}>
-          Sources:{" "}
+          Source: Figures are based on{" "}
           <a
             href="https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026083-source-pdf.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 text-[#707070] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+            className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[#707070] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
             Climate Finance and Adaptation Needs in Pacific Island Countries, IMF Working Paper (Gonguet et al.,
             2026)

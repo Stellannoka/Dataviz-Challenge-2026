@@ -145,7 +145,7 @@ export default function GlossaryTerm({ term, children }: GlossaryTermProps) {
              sits below the full line box (descender space included) */
           textDecorationLine: 'underline',
           textDecorationStyle: 'dashed',
-          textDecorationColor: 'currentColor',
+          textDecorationColor: 'var(--primary, #6d8499)',
           textDecorationThickness: '1px',
           textUnderlineOffset: '2px',
           cursor: 'help',

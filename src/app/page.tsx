@@ -83,10 +83,10 @@ export default function Home() {
     <p>
       These changes are a major concern for the region, given that more than{" "}
       <a
-        href="https://public.wmo.int/news/media-centre/ocean-heat-and-sea-level-rise-threaten-communities-south-west-pacific"
+        href="https://www.uncclearn.org/wp-content/uploads/library/1356_State-of-the-Climate-in-SWP-2024_en.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
       >
         half of the Pacific Islands’ population lives within 500 metres of the coast
       </a>
@@ -147,7 +147,7 @@ export default function Home() {
               The challenge for Pacific Island nations is not only the scale of the climate risks they face, but also the limited resources available to prepare for and reduce their impacts.
             </p>
             <p>
-              The cost of that gap is already being felt in the impacts of disasters on people, communities and even economies. Yet the improvement in readiness in some countries shows that progress is possible.
+              The cost of that gap is already being felt in the impacts of disasters on people and communities. Yet the improvement in readiness in some countries shows that progress is possible.
             </p>
             <p>
               The task now is to match that progress with the needed finance and investment at the scale their vulnerability demands, so that stronger conditions for adaptation can translate into greater protection from hazards they cannot prevent.
@@ -177,7 +177,7 @@ export default function Home() {
         href="https://www.linkedin.com/in/stellamaris-nnoka-71aa4a239/"
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-2 text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
         style={{ fontWeight: 500 }}
       >
         Stella Chinyere Nnoka
@@ -187,7 +187,7 @@ export default function Home() {
         href="https://pacificdatavizchallenge.org/"
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-2 text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
         style={{ fontWeight: 500 }}
       >
         Pacific DataViz Challenge 2026
@@ -229,7 +229,7 @@ export default function Home() {
         href="https://react.dev/"
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-2 text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
         style={{ fontWeight: 500 }}
       >
         React
@@ -239,7 +239,7 @@ export default function Home() {
         href="https://d3js.org/"
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-2 text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
         style={{ fontWeight: 500 }}
       >
         D3.js
@@ -249,7 +249,7 @@ export default function Home() {
         href="https://tailwindcss.com/"
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-2 text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
         style={{ fontWeight: 500 }}
       >
         Tailwind CSS
@@ -275,7 +275,7 @@ export default function Home() {
         href="https://github.com/stellannoka/Dataviz-Challenge-2026"
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-2 text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
         style={{ fontWeight: 500 }}
       >
         GitHub

@@ -826,7 +826,6 @@ export default function ClimateGapOpener() {
                 position: "absolute",
                 bottom: isSmall ? 28 : 40,
                 left: "50%",
-                transform: "translateX(-50%)",
                 display: "inline-flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -838,6 +837,7 @@ export default function ClimateGapOpener() {
                 textTransform: "uppercase",
                 opacity: 0.7,
                 pointerEvents: "none",
+                animation: "coldopen-scroll-bounce 1.6s ease-in-out infinite",
               }}
             >
               Scroll
@@ -876,6 +876,10 @@ export default function ClimateGapOpener() {
         @keyframes coldopen-fade {
           from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes coldopen-scroll-bounce {
+          0%, 100% { transform: translate(-50%, 0); }
+          50%      { transform: translate(-50%, 6px); }
         }
       `}</style>
     </div>

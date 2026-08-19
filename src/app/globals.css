@@ -24,9 +24,9 @@
      "louder" than the other. Warm vs. teal also avoids relying on any
      red-green distinction, which keeps it safe for red-green color
      blindness, the most common form. */
-  --accent:   #c76153;         /* coral pink — disaster impact accent / value text */
-  --accent-bubble:    #c76153;  /* fill for circles / bars */
-  --accent-dark: #A9665B;    /* deeper terracotta for focused / emphasis states */
+  --accent:   #d0645a;         /* matches the "Higher" pathway red in the sea level chart */
+  --accent-bubble:    #d0645a;  /* fill for circles / bars */
+  --accent-dark: #A65048;    /* deeper shade of --accent, for focused / emphasis states */
 
   /* RED — reserved for the SHORTFALL / GAP inside finance */
   --secondary:  #e07a7a;      /* coral-red for shortfall */

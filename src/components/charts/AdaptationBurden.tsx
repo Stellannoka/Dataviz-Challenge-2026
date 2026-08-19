@@ -48,7 +48,7 @@ const DOT_DIM = "#d7dbe3";
    instead of the chart's usual single blue, so they read apart from the
    rest without breaking the "position, not category" rule for everyone else. */
 const ATOLL_ISOS = new Set(["KIR", "MHL", "TUV"]);
-const DOT_ATOLL = "var(--secondary, #e07a7a)";
+const DOT_ATOLL = "var(--accent, #d0645a)";
 
 /* Axis styling, mirrored from the finance chart so the two read as one
    family: tick labels at 0.88rem / 300 / --text-secondary, axis titles
@@ -513,9 +513,9 @@ export default function AdaptationBurden() {
                     cy={cy}
                     r={rDot}
                     fill={dimmed ? DOT_DIM : ATOLL_ISOS.has(r.iso) ? DOT_ATOLL : DOT}
-                    fillOpacity={0.12}
+                    fillOpacity={0.2}
                     stroke={dimmed ? DOT_DIM : ATOLL_ISOS.has(r.iso) ? DOT_ATOLL : DOT}
-                    strokeWidth={isHovered ? 3 : 2}
+                    strokeWidth={isHovered ? 2.3 : 1.4}
                     style={{ cursor: "pointer", transition: "fill 0.15s, stroke 0.15s, stroke-width 0.15s" }}
                   />
                   <text
@@ -649,12 +649,12 @@ export default function AdaptationBurden() {
           only one underlying study was available.
         </p>
         <p style={{ margin: "8px 0 16px" }}>
-          Sources:{" "}
+          Sources: Figures are based on{" "}
           <a
             href="https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026083-source-pdf.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 text-[#707070] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+            className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[#707070] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
             Climate Finance and Adaptation Needs in Pacific Island Countries, IMF Working Paper (Gonguet et al.,
             2026)
@@ -664,7 +664,7 @@ export default function AdaptationBurden() {
             href="https://www.imf.org/en/Publications/WEO/weo-database/2019/October"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 text-[#707070] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+            className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[#707070] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
             IMF World Economic Outlook (October 2019)
           </a>

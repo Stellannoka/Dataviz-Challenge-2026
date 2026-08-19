@@ -205,7 +205,7 @@ export default function SeaLevelProjection() {
         onClick={() => setMenuOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={menuOpen}
-        className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
         style={{
           font: "inherit",
           fontSize: "inherit",
@@ -315,20 +315,33 @@ export default function SeaLevelProjection() {
     Projected change in sea level relative to the 1995–2014 average.
   </p>
 
-        {/* pathway selector — plain editorial text, not a button group */}
+        {/* pathway selector — segmented control: reads unmistakably as
+            "pick one of these", the three options are visibly mutually
+            exclusive as a single grouped control, and it's the most
+            compact option (matters on phone). */}
         <div style={{ textAlign: "center", marginTop: 36, marginBottom: 6 }}>
           <div
             style={{
               fontSize: "0.86rem",
               fontWeight: 350,
               color: "var(--text-color)",
-              marginBottom: "1rem",
+              marginBottom: "0.6rem",
               fontFamily: "var(--font-sans)",
             }}
           >
             Emissions scenario
           </div>
-          <div style={{ display: "inline-flex", gap: 28, fontFamily: "var(--font-sans)" }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 2,
+              borderRadius: 5,
+              background: "rgba(249, 249, 249, 0.5)",
+              padding: 2,
+              fontFamily: "var(--font-sans)",
+            }}
+          >
             {data.order.map((s) => {
               const on = s === scenario;
               const hovered = s === hoveredScenario;
@@ -341,17 +354,20 @@ export default function SeaLevelProjection() {
                   onMouseLeave={() => setHoveredScenario(null)}
                   onFocus={() => setHoveredScenario(s)}
                   onBlur={() => setHoveredScenario(null)}
+                  aria-pressed={on}
                   aria-label={`${SCENARIO_LABELS[s] ?? s} emissions, ${SSP_LABELS[s] ?? s}`}
                   style={{
                     position: "relative",
-                    background: "transparent",
                     border: "none",
-                    padding: "0 0 3px",
+                    borderRadius: 5,
+                    background: on ? data.colors[s] : "transparent",
+                    color: on ? "#ffffff" : hovered ? "#1a1a1a" : "#707070",
+                    padding: "5px 16px",
+                    fontSize: on ? "0.78rem" : hovered ? "0.8rem" : "0.78rem",
+                    fontWeight: on ? 700 : 300,
                     cursor: "pointer",
-                    fontSize: on ? "0.9rem" : "0.78rem",
-                    fontWeight: on || hovered ? 700 : 300,
-                    color: on ? data.colors[s] : hovered ? "#40454f" : "#9096a1",
                     whiteSpace: "nowrap",
+                    transition: "background-color 150ms ease, color 150ms ease, font-size 150ms ease",
                   }}
                 >
                   {hovered && (
@@ -379,20 +395,6 @@ export default function SeaLevelProjection() {
                     </span>
                   )}
                   {SCENARIO_LABELS[s] ?? s} emissions
-                  {on && (
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        height: 2,
-                        borderRadius: 1,
-                        background: data.colors[s],
-                      }}
-                    />
-                  )}
                 </button>
               );
             })}
@@ -401,7 +403,7 @@ export default function SeaLevelProjection() {
       </div>
 
       {/* chart */}
-      <div style={{ maxWidth: 640, margin: "0 auto", padding: "0 16px" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px" }}>
       <div ref={wrapRef} style={{ position: "relative", fontFamily: "var(--font-sans)" }}>
         <svg
           ref={svgRef}
@@ -591,7 +593,7 @@ export default function SeaLevelProjection() {
             href="https://sealevel.nasa.gov/ipcc-ar6-sea-level-projection-tool"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+            className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
             IPCC AR6 Working Group I, via the NASA Sea Level Projection Tool
           </a>

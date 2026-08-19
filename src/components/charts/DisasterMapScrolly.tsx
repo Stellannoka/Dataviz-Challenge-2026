@@ -96,8 +96,8 @@ interface GeoData {
    bubble below, which deliberately breaks from the warm family so it reads
    as a distinct measure nested inside the (warm) affected bubble. */
 const PALETTE = {
-  raw: { accent: "var(--accent, #c76153)", bubble: "var(--accent-bubble, #c76153)" },
-  per: { accent: "var(--accent-dark, #A9665B)", bubble: "var(--accent-bubble, #c76153)" },
+  raw: { accent: "var(--accent, #d0645a)", bubble: "var(--accent-bubble, #d0645a)" },
+  per: { accent: "var(--accent-dark, #A65048)", bubble: "var(--accent-bubble, #d0645a)" },
   /* Livelihoods hue — kept for the body-copy highlight colour. */
   livelihoods: "var(--primary-vivid, #2E6FA3)",
   ink: "var(--ink, #0f172a)",
@@ -118,6 +118,10 @@ const PALETTE = {
   /* Border on every bubble (raw phase), regardless of highlight state. */
   bubbleBorder: "var(--bubble-border, #666666)",
 } as const;
+
+/* Micronesia's bubble, raw ("people directly affected") phase only —
+   an ash grey instead of the usual warm bubble colour. */
+const ASH = "#8c8b86";
 
 /* ----------------------------------------------- explicit bubble anchors
    The 12 Pacific Island Countries only — matches COORDS_PER100K exactly, so
@@ -178,7 +182,7 @@ const STEPS: Step[] = [
     kind: "intro",
     focus: [],
     title: "Intro",
-    body: "Floods, tropical cyclones and storm surges are among the climate-related hazards threatening Pacific Island nations. In 2020, 548,686 people across the region were directly affected by these extreme weather events. This includes people who were injured or fell ill, whose homes were damaged or destroyed, or whose livelihoods were disrupted or destroyed.",
+    body: "Floods, tropical cyclones and storm surges are among the climate-related hazards threatening Pacific Island nations. In 2020, 548,686 people across the region were directly affected by these extreme weather events. \n\n This includes people who were injured or fell ill, whose homes were damaged or destroyed, or whose livelihoods were disrupted or destroyed.",
   },
   {
     phase: "raw",
@@ -206,7 +210,7 @@ const STEPS: Step[] = [
     kind: "setup",
     focus: ["VUT", "FJI"],
     title: "",
-    body: "The scale of the impact changes when the number of people affected is measured against the population of each country",
+    body: "The scale of the impact changes when the number of people affected is measured against the population of each country.",
   },
 
   /* ---------------- PHASE 2 — PER 100,000 (2020) ---------------- */
@@ -400,7 +404,7 @@ interface PacificScrollyMapProps {
 }
 
 export default function PacificScrollyMap({
-  title = "More than half a million people across Pacific Island Countries were directly affected by disaters in 2020",
+  title = "More than half a million people across Pacific Island Countries were directly affected by disasters in 2020",
 }: PacificScrollyMapProps = {}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -1035,7 +1039,7 @@ export default function PacificScrollyMap({
                       display: "inline-block",
                     }}
                   />
-                  Cyclone
+                  Tropical cyclone
                 </span>
                 <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
                   <span
@@ -1177,12 +1181,16 @@ export default function PacificScrollyMap({
                     const affectedHighlight = fmtInt(value);
                     const affectedContent = `${affectedHighlight} people directly affected`;
 
+                    /* Raw phase only: Micronesia's bubble is ash grey instead
+                       of the usual warm bubble colour. */
+                    const rawFill = !inPer && iso === "FSM" ? ASH : bubbleFill;
+
                     const affectedCircleEl = (
                       <>
                         <circle
                           key="affected"
                           r={displayR}
-                          fill={hasValue ? bubbleFill : confirmedZero ? PALETTE.mutedSoft : "none"}
+                          fill={hasValue ? rawFill : confirmedZero ? PALETTE.mutedSoft : "none"}
                           fillOpacity={
                             hasValue ? (isFoc ? 0.65 : anyFocus ? 0.35 : 0.55) : confirmedZero ? 0.45 : 0
                           }
@@ -1197,16 +1205,16 @@ export default function PacificScrollyMap({
                           }}
                           onMouseEnter={(e) =>
                             affectedInteractive &&
-                            handleBubbleInteraction(e, iso, "affected", affectedContent, affectedHighlight, bubbleFill)
+                            handleBubbleInteraction(e, iso, "affected", affectedContent, affectedHighlight, rawFill)
                           }
                           onMouseLeave={() => handleBubbleLeave(iso, "affected")}
                           onTouchStart={(e) =>
                             affectedInteractive &&
-                            handleBubbleInteraction(e, iso, "affected", affectedContent, affectedHighlight, bubbleFill)
+                            handleBubbleInteraction(e, iso, "affected", affectedContent, affectedHighlight, rawFill)
                           }
                           onClick={(e) =>
                             affectedInteractive &&
-                            handleBubbleInteraction(e, iso, "affected", affectedContent, affectedHighlight, bubbleFill)
+                            handleBubbleInteraction(e, iso, "affected", affectedContent, affectedHighlight, rawFill)
                           }
                         />
                         {/* Confirmed 0 gets a "0" glyph: that country DID
@@ -1284,7 +1292,7 @@ export default function PacificScrollyMap({
                             </tspan>
                           ) : (
                             <>
-                              <tspan fontWeight={700} fill={bubbleFill}>
+                              <tspan fontWeight={700} fill={rawFill}>
                                 {fmtInt(value)}
                               </tspan>
                               <tspan fill={PALETTE.mutedSoft} fontWeight={400}>
@@ -1480,7 +1488,11 @@ export default function PacificScrollyMap({
                       {boxHeader}
                     </p>
                   )}
-                  <p style={{ fontWeight: 350 }}>{renderBody(boxBody, bodyHighlights)}</p>
+                  {boxBody.split("\n\n").map((para, i) => (
+                    <p key={i} style={{ fontWeight: 350, marginTop: i > 0 ? 8 : 0 }}>
+                      {renderBody(para, bodyHighlights)}
+                    </p>
+                  ))}
                 </div>
               </div>
             )}
@@ -1505,34 +1517,34 @@ export default function PacificScrollyMap({
           Note: 2020 was selected because it is the most recent year with near-complete regional coverage, with data available for 11 of the 12 Pacific Island Countries.
         </p>
         <p className="chart-caption text-left" style={{ paddingBottom: 0, marginTop: isSmall ? 6 : 10 }}>
-          Source: Number of directly affected persons attributed to disasters from the{" "}
+          Sources:{" "}
           <a
             href="https://stats.pacificdata.org/vis?lc=en&df[ds]=ds%3ASPC2&df[id]=DF_SDG_11&df[ag]=SPC&df[vs]=3.0&dq=A.VC_DSR_AFFCT.........&pd=,&to[TIME_PERIOD]=false&lb=bt"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+            className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
             Pacific Data Hub
           </a>
-          , with additional data from{" "}
+          ;{" "}
           <a
             href="https://unstats.un.org/sdgs/dataportal"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+            className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
             United Nations Statistics Division (UNSD)
           </a>
-          , and displacement figures from the{" "}
+          ; displacement data from the{" "}
           <a
             href="https://www.internal-displacement.org/database/displacement-data"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+            className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
           >
             Internal Displacement Monitoring Centre (IDMC)
           </a>
-         
+          .
         </p>
       </div>
 

@@ -44,7 +44,7 @@ export default function Hero() {
         </h1>
 
         <p className="section-subtitle" style={{ textAlign: 'center', marginTop: '0.75rem', fontSize: '0.9rem' }}>
-          What climate-related hazards cost Pacific Island nations, and how the gap between vulnerability and readiness shapes those impacts.
+         What climate disasters cost Pacific Island nations, and how the gap between climate risk and their capacity to adapt shapes those costs.
         </p>
 
         <div className="hero-byline mt-5">
@@ -54,7 +54,7 @@ export default function Hero() {
               href="https://www.linkedin.com/in/stellamaris-nnoka-71aa4a239/"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-2 font-medium transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+              className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] font-medium transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
             >
               Stella Chinyere Nnoka
             </a>
