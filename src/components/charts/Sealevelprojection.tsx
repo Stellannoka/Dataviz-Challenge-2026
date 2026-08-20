@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { asset } from "@/lib/basePath";
 
 /* =====================================================================
@@ -63,6 +63,13 @@ export default function SeaLevelProjection() {
   const [hoveredPlace, setHoveredPlace] = useState<string | null>(null);
   const [hoveredScenario, setHoveredScenario] = useState<string | null>(null);
   const [hoverYear, setHoverYear] = useState<number | null>(null);
+  /* The two context pathways can be brought forward: hover to highlight,
+     tap to lock that highlight so it survives the pointer leaving (the only
+     way to hold one on touch), tap the same line again to clear it. Locks
+     accumulate rather than replace, so both context pathways can be held on
+     at once and compared against the selected one. */
+  const [hoveredOther, setHoveredOther] = useState<string | null>(null);
+  const [lockedOthers, setLockedOthers] = useState<string[]>([]);
   const [w, setW] = useState(640);
 
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -103,6 +110,43 @@ export default function SeaLevelProjection() {
     return () => window.removeEventListener("mousedown", onDown);
   }, [menuOpen]);
 
+  /* ---- place-menu placement ------------------------------------------
+     The menu hangs off an inline word inside a wrapping sentence, so its
+     anchor can sit anywhere across the line — including hard against the
+     right edge on a phone. Left unchecked, a fixed-width panel anchored
+     there overflows the viewport and widens the whole document, which is
+     what drags every other element sideways. So the panel's width is
+     capped to the viewport and its left edge is clamped into view, then
+     expressed as an offset from the anchor (it stays absolutely
+     positioned, so it still scrolls with the sentence it belongs to). */
+  const MENU_MAX_WIDTH = 260;
+  const MENU_VIEWPORT_MARGIN = 12;
+  const [menuOffset, setMenuOffset] = useState(0);
+  const [menuWidth, setMenuWidth] = useState(MENU_MAX_WIDTH);
+
+  const positionMenu = useCallback(() => {
+    const el = selRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const width = Math.min(MENU_MAX_WIDTH, vw - MENU_VIEWPORT_MARGIN * 2);
+    const clampedLeft = Math.min(
+      Math.max(MENU_VIEWPORT_MARGIN, r.left),
+      vw - MENU_VIEWPORT_MARGIN - width
+    );
+    setMenuWidth(width);
+    setMenuOffset(clampedLeft - r.left);
+  }, []);
+
+  /* Re-clamp while the menu is open: rotating a phone or resizing moves the
+     anchor, and a stale offset would put the panel back off-screen. */
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onResize = () => positionMenu();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [menuOpen, positionMenu]);
+
   useEffect(() => clearCloseTimer, []);
 
   const set = useMemo<ScenarioSet | null>(() => {
@@ -120,11 +164,16 @@ export default function SeaLevelProjection() {
   const y1 = years[N - 1];
   const color = data.colors[scenario];
 
-  const H = w < 480 ? 336 : 386;
-  const mL = 50;
-  const mR = 56;
-  const mT = 44;
-  const mB = 56;
+  const isSmall = w < 480;
+  const H = isSmall ? 336 : 386;
+  /* Margins shrink on phone the same way VulnerabilityScatter's do — fixed
+     desktop-sized margins eat a much bigger share of a ~340px-wide phone
+     screen, compressing the actual plot into the middle and leaving the
+     reclaimed edge space looking like dead air next to the chart. */
+  const mL = isSmall ? 34 : 50;
+  const mR = isSmall ? 30 : 56;
+  const mT = isSmall ? 34 : 44;
+  const mB = isSmall ? 46 : 56;
   const yMax = 110;
 
   /* Domain starts a bit before the first tick (2020), so the first x-axis
@@ -139,17 +188,39 @@ export default function SeaLevelProjection() {
   const line = (arr: number[]) =>
     arr.map((v, i) => `${i ? "L" : "M"}${X(years[i]).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
 
-  const band = () => {
-    let d = set[scenario as keyof ScenarioSet].p83
+  /* The 17th-83rd percentile ribbon for any pathway: the p83 edge left to
+     right, then the p17 edge back again. Takes the scenario as an argument
+     so a highlighted context pathway can draw its own band, not just the
+     selected one. */
+  const band = (sc: string) => {
+    let d = set[sc as keyof ScenarioSet].p83
       .map((v, i) => `${i ? "L" : "M"}${X(years[i]).toFixed(1)},${Y(v).toFixed(1)}`)
       .join(" ");
-    const lo = set[scenario as keyof ScenarioSet].p17;
+    const lo = set[sc as keyof ScenarioSet].p17;
     for (let i = N - 1; i >= 0; i--) d += ` L${X(years[i]).toFixed(1)},${Y(lo[i]).toFixed(1)}`;
     return d + " Z";
   };
 
   const sel = set[scenario as keyof ScenarioSet];
   const others = data.order.filter((s) => s !== scenario);
+
+  /* Whether a context pathway is currently brought forward. A lock and a
+     hover are independent: holding one line locked does not stop the other
+     from lighting up under the pointer, so a locked line can be compared
+     against its neighbour instead of the lock swallowing every hover.
+     Both are available whichever pathway is selected, but both are cleared
+     when the selection changes (see the scenario buttons) so each new pick
+     starts from just the selected line. */
+  const isOtherActive = (s: string) =>
+    lockedOthers.includes(s) || s === hoveredOther;
+
+  /* Tap toggles this line's own lock and leaves any other lock alone, so
+     tapping both context pathways holds both on rather than the second tap
+     stealing the highlight from the first. */
+  const toggleOtherLock = (s: string) =>
+    setLockedOthers((cur) =>
+      cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]
+    );
 
   const handleMove = (clientX: number) => {
     const el = svgRef.current;
@@ -190,7 +261,7 @@ export default function SeaLevelProjection() {
     As the climate warms, sea level in{" "}
     <span
       ref={selRef}
-      onMouseEnter={() => { clearCloseTimer(); setMenuOpen(true); }}
+      onMouseEnter={() => { clearCloseTimer(); positionMenu(); setMenuOpen(true); }}
       onMouseLeave={() => {
         clearCloseTimer();
         closeTimerRef.current = window.setTimeout(() => setMenuOpen(false), 200);
@@ -202,7 +273,12 @@ export default function SeaLevelProjection() {
     >
       <button
         type="button"
-        onClick={() => setMenuOpen((o) => !o)}
+        onClick={() => {
+          /* Measure before opening: on touch there is no hover pass to have
+             done it already. */
+          positionMenu();
+          setMenuOpen((o) => !o);
+        }}
         aria-haspopup="listbox"
         aria-expanded={menuOpen}
         className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
@@ -251,13 +327,16 @@ export default function SeaLevelProjection() {
           style={{
             position: "absolute",
             top: "100%",
-            left: 0,
+            /* Clamped into the viewport rather than pinned to the anchor —
+               see positionMenu. */
+            left: menuOffset,
+            width: menuWidth,
+            boxSizing: "border-box",
             marginTop: 4,
             zIndex: 20,
             listStyle: "none",
             padding: "4px 0",
-            minWidth: 260,
-            background: "rgba(255, 255, 255, 0.85)",
+            background: "rgba(255, 255, 255, 0.95)",
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
           }}
@@ -315,6 +394,7 @@ export default function SeaLevelProjection() {
     Projected change in sea level relative to the 1995–2014 average.
   </p>
 
+
         {/* pathway selector — segmented control: reads unmistakably as
             "pick one of these", the three options are visibly mutually
             exclusive as a single grouped control, and it's the most
@@ -334,22 +414,34 @@ export default function SeaLevelProjection() {
           <div
             style={{
               display: "inline-flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
               alignItems: "center",
-              gap: 2,
+              gap: isSmall ? 3 : 1,
+              rowGap: isSmall ? 4 : 1,
+              maxWidth: "100%",
               borderRadius: 5,
               background: "rgba(249, 249, 249, 0.5)",
-              padding: 2,
+              padding: "0 2px",
               fontFamily: "var(--font-sans)",
             }}
           >
             {data.order.map((s) => {
               const on = s === scenario;
               const hovered = s === hoveredScenario;
+              const label = isSmall ? SCENARIO_LABELS[s] ?? s : `${SCENARIO_LABELS[s] ?? s} emissions`;
               return (
                 <button
                   key={s}
                   type="button"
-                  onClick={() => setScenario(s)}
+                  onClick={() => {
+                    setScenario(s);
+                    /* Picking a pathway is a fresh start: drop every held
+                       highlight so the chart returns to just the selected
+                       line against its two grey context pathways. */
+                    setLockedOthers([]);
+                    setHoveredOther(null);
+                  }}
                   onMouseEnter={() => setHoveredScenario(s)}
                   onMouseLeave={() => setHoveredScenario(null)}
                   onFocus={() => setHoveredScenario(s)}
@@ -361,16 +453,19 @@ export default function SeaLevelProjection() {
                     border: "none",
                     borderRadius: 5,
                     background: on ? data.colors[s] : "transparent",
-                    color: on ? "#ffffff" : hovered ? "#1a1a1a" : "#707070",
-                    padding: "5px 16px",
-                    fontSize: on ? "0.78rem" : hovered ? "0.8rem" : "0.78rem",
+                    /* Hovering an unselected option previews its identity by
+                       taking that pathway's own colour — the same colour the
+                       line and its 2100 figure carry when highlighted. */
+                    color: on ? "#ffffff" : hovered ? data.colors[s] : "#707070",
+                    padding: isSmall ? (on ? "4px 8px" : "4px 9px") : on ? "5px 11px" : "5px 13px",
+                    fontSize: isSmall ? "0.72rem" : on ? "0.78rem" : hovered ? "0.8rem" : "0.78rem",
                     fontWeight: on ? 700 : 300,
                     cursor: "pointer",
                     whiteSpace: "nowrap",
-                    transition: "background-color 150ms ease, color 150ms ease, font-size 150ms ease",
+                    transition: "background-color 150ms ease, color 150ms ease, font-size 150ms ease, padding 150ms ease",
                   }}
                 >
-                  {hovered && (
+                  {hovered && !isSmall && (
                     <span
                       aria-hidden="true"
                       style={{
@@ -394,7 +489,7 @@ export default function SeaLevelProjection() {
                       {SSP_LABELS[s] ?? s}
                     </span>
                   )}
-                  {SCENARIO_LABELS[s] ?? s} emissions
+                  {label}
                 </button>
               );
             })}
@@ -407,15 +502,11 @@ export default function SeaLevelProjection() {
       <div ref={wrapRef} style={{ position: "relative", fontFamily: "var(--font-sans)" }}>
         <svg
           ref={svgRef}
-          width="100%"
+          width={w}
           height={H}
-          viewBox={`0 0 ${w} ${H}`}
-          preserveAspectRatio="none"
           role="img"
           aria-label={`Projected sea level rise for ${place} under ${scenario.toLowerCase()} emissions, 2020 to 2100.`}
-          style={{ display: "block", cursor: "crosshair", overflow: "visible" }}
-          onPointerMove={(e) => handleMove(e.clientX)}
-          onPointerLeave={() => setHoverYear(null)}
+          style={{ display: "block", overflow: "visible" }}
         >
           {gridV.map((v) => (
             <g key={v}>
@@ -465,20 +556,67 @@ export default function SeaLevelProjection() {
             Change in sea level (cm)
           </text>
 
-          {/* faint other pathways — context only, just a 2100 dot */}
+          {/* faint other pathways — context only, just a 2100 dot. Neutral
+              grey and appreciably thinner than the selected median (2.6),
+              so the selected pathway reads as the subject and these two as
+              background reference. The two greys differ only enough to tell
+              them apart from each other. */}
           {others.map((s, oi) => {
             const p = set[s as keyof ScenarioSet].p50;
-            const otherColor = oi === 0 ? "#9ca3af" : "#c7c5be";
+            const isOn = isOtherActive(s);
+            /* Highlighting reveals the pathway's own colour — which is also
+               what identifies it, since that colour is what the line would
+               carry if it were selected. Thickness still stays under the
+               selected median's 2.6, so bringing a context pathway forward
+               never makes it outrank the chosen one. */
+            const otherColor = isOn
+              ? data.colors[s]
+              : oi === 0
+              ? "#a3a8b0"
+              : "#c8ccd2";
             return (
               <g key={s}>
-                <path d={line(p)} fill="none" stroke={otherColor} strokeWidth={1.4} />
-                <circle cx={X(y1)} cy={Y(p[N - 1])} r={3} fill={otherColor} />
+                {/* Likely range, shown only while this pathway is brought
+                    forward. Fainter than the selected band's 0.15 so the
+                    two never read as equals when they overlap. */}
+                {isOn && (
+                  <path d={band(s)} fill={data.colors[s]} fillOpacity={0.1} />
+                )}
+                <path
+                  d={line(p)}
+                  fill="none"
+                  stroke={otherColor}
+                  strokeWidth={isOn ? 1.9 : 1}
+                  style={{ transition: "stroke 0.15s ease, stroke-width 0.15s ease" }}
+                />
+                <circle
+                  cx={X(y1)}
+                  cy={Y(p[N - 1])}
+                  r={isOn ? 3.2 : 2.5}
+                  fill={otherColor}
+                  style={{ transition: "fill 0.15s ease, r 0.15s ease" }}
+                />
+                {/* Invisible fat stroke: a 1px line is far too thin to point
+                    at, so this carries the hover/tap instead. It sits above
+                    the visible line but below the selected pathway, which is
+                    drawn after it. */}
+                <path
+                  d={line(p)}
+                  fill="none"
+                  stroke="transparent"
+                  strokeWidth={14}
+                  strokeLinecap="round"
+                  style={{ cursor: "pointer" }}
+                  onMouseEnter={() => setHoveredOther(s)}
+                  onMouseLeave={() => setHoveredOther(null)}
+                  onClick={() => toggleOtherLock(s)}
+                />
               </g>
             );
           })}
 
           {/* selected band + median */}
-          <path d={band()} fill={color} fillOpacity={0.15} />
+          <path d={band(scenario)} fill={color} fillOpacity={0.15} />
           <path d={line(sel.p50)} fill="none" stroke={color} strokeWidth={2.6} />
 
           {/* milestone dots + dashed guides down to the axis */}
@@ -502,6 +640,23 @@ export default function SeaLevelProjection() {
               <circle cx={X(hoverYear)} cy={Y(sel.p50[years.indexOf(hoverYear)])} r={3.5} fill={color} />
             </g>
           )}
+
+          {/* Year-scrub hit area for the SELECTED median, drawn last so it
+              sits above everything — including the milestone dots, which
+              would otherwise swallow the pointer where they cross the line
+              and break the scrub. Scoping the scrub here (rather than to the
+              whole svg, where it used to live) is what keeps the year
+              tooltip from following the cursor over empty chart space. */}
+          <path
+            d={line(sel.p50)}
+            fill="none"
+            stroke="transparent"
+            strokeWidth={20}
+            strokeLinecap="round"
+            style={{ cursor: "crosshair" }}
+            onPointerMove={(e) => handleMove(e.clientX)}
+            onPointerLeave={() => setHoverYear(null)}
+          />
         </svg>
 
         {/* dynamic milestone callouts — hidden for whichever year is being
@@ -512,8 +667,12 @@ export default function SeaLevelProjection() {
           if (i < 0 || hoverYear === yr) return null;
           const px = X(yr);
           const py = Y(sel.p50[i]);
+          /* The 2100 endpoint sits closer to its dot than the earlier
+             milestones; 19px is the smallest gap that still clears the
+             3.5px-radius dot without the text box overlapping it. */
+          const offset = yr === 2100 ? 19 : 22;
           return (
-            <div key={yr} style={{ position: "absolute", left: px, top: py - 22, transform: "translateX(-50%)", pointerEvents: "none", textAlign: "center" }}>
+            <div key={yr} style={{ position: "absolute", left: px, top: py - offset, transform: "translateX(-50%)", pointerEvents: "none", textAlign: "center" }}>
               <div style={{ color, fontWeight: 700, fontSize: "0.78rem", whiteSpace: "nowrap", lineHeight: 1.1, fontVariantNumeric: "tabular-nums" }}>
                 {fmt(sel.p50[i])}
               </div>
@@ -521,14 +680,17 @@ export default function SeaLevelProjection() {
           );
         })}
 
-        {/* 2100 figure for the two non-selected pathways, muted by default */}
+        {/* 2100 figure for the two non-selected pathways, muted by default.
+            It takes the pathway's own colour when highlighted, so the figure
+            and the line it belongs to change together. */}
         {others.map((s) => {
           const p = set[s as keyof ScenarioSet].p50;
           const px = X(y1);
           const py = Y(p[N - 1]);
+          const isOn = isOtherActive(s);
           return (
-            <div key={s} style={{ position: "absolute", left: px, top: py - 22, transform: "translateX(-50%)", pointerEvents: "none", textAlign: "center" }}>
-              <div style={{ color: "#9096a1", fontWeight: 350, fontSize: "0.66rem", whiteSpace: "nowrap", lineHeight: 1.1, fontVariantNumeric: "tabular-nums" }}>
+            <div key={s} style={{ position: "absolute", left: px, top: py - 16, transform: "translateX(-50%)", pointerEvents: "none", textAlign: "center" }}>
+              <div style={{ color: isOn ? data.colors[s] : "#9096a1", fontWeight: isOn ? 700 : 350, fontSize: "0.66rem", whiteSpace: "nowrap", lineHeight: 1.1, fontVariantNumeric: "tabular-nums", transition: "color 0.15s ease" }}>
                 {fmt(p[N - 1])}
               </div>
             </div>
@@ -574,7 +736,7 @@ export default function SeaLevelProjection() {
                 {fmt(sel.p50[hi])}
               </div>
               <div style={{ color: "#9096a1", fontSize: "0.66rem", fontVariantNumeric: "tabular-nums" }}>
-                likely range: {Math.round(sel.p17[hi])} - {Math.round(sel.p83[hi])} cm
+                likely range: {Math.round(sel.p17[hi])}–{Math.round(sel.p83[hi])} cm
               </div>
             </div>
           );

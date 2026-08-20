@@ -35,7 +35,7 @@ export default function Home() {
       >
         <Prose>
           <p className="section-subtitle">
-         Pacific Island nations remain among the world's most vulnerable to climate change, while their capacity to translate investment into adaptation varies.
+         Pacific Island nations remain among the world’s most vulnerable to climate change, while their readiness to translate investment into adaptation varies.
           </p>
         </Prose>
         
@@ -49,7 +49,7 @@ export default function Home() {
               The greater the <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm> of a country, the greater the need for <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> and the urgency to act. For Pacific Island nations, the combination of elevated climate risk and limited capacity to cope and adapt poses significant challenges, even where readiness has improved.
             </p>
             <p>
-       With such limited adaptive capacity, the impacts of <GlossaryTerm term="hazards">climate-related hazards</GlossaryTerm> can extend well beyond the immediate event, disrupting livelihoods, displacing people from their homes and leaving communities to recover long after.
+      With such limited adaptive capacity, the impacts of <GlossaryTerm term="hazards">climate-related hazards</GlossaryTerm> can extend well beyond the immediate event, disrupting livelihoods, displacing people from their homes and leaving communities to recover long after.
             </p>
           </div>
         </Prose>
@@ -57,7 +57,7 @@ export default function Home() {
 
       {/* SECTION 2 — the map - WIDE */}
       <Section
-        heading="The Human Impacts of Climate-Related Disasters"
+        heading="Disasters Are Already Causing Widespread Harm Across the Pacific Islands"
         id="section-map"
         wide={true}
       >
@@ -68,7 +68,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-              The scale of these impacts reflects how exposed and sensitive the region is to climate disasters. The risks are expected to worsen, particularly for atoll and other low-lying nations, as continued global warming drives sea-level rise.
+              The scale of these impacts reflects how exposed and sensitive the region is to climate <GlossaryTerm term="disasters">disasters</GlossaryTerm>, and these risks are expected to worsen, particularly for atoll and other low-lying nations, as continued global warming drives sea-level rise.
             </p>
           </div>
         </Prose>
@@ -78,7 +78,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
              <p>
-   With sea level projected to rise by about 85 cm by 2100 under a high-emissions scenario, coastal flooding, storm surges and other climate-related hazards could intensify.
+   With sea level projected to rise by about 85 cm by 2100 under a high-emissions scenario, coastal flooding and storm surges could become more frequent and severe, while seawater intrusion could raise groundwater salinity, putting drinking water and food production under greater pressure.
             </p>
     <p>
       These changes are a major concern for the region, given that more than{" "}
@@ -93,7 +93,7 @@ export default function Home() {
       , placing communities, infrastructure and livelihoods at risk from rising seas.
             </p>
       <p>
-        For low-lying and coastal communities, this presents serious threats to the ability of land to support human life and livelihoods, which may lead to increased climate-related migration.
+        For these communities, the loss of habitable land could increasingly force people to move.
         </p>
             
           </div>
@@ -101,17 +101,17 @@ export default function Home() {
       </Section>
 
       {/* BRIDGE */}
-      <Section heading="Climate Hazards cannot be chosen. Their impacts can be reduced.">
+      <Section heading="Climate hazards cannot be chosen. Their impacts can be reduced.">
         <Prose>
           <div className={narrative}>
             <p>
-              Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu simply raise its islands above rising seas. Their small land areas and geographic isolation also limit their ability to absorb shock when <GlossaryTerm term="disasters">disasters</GlossaryTerm> strike.
+              Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu simply raise its islands above rising seas. Their small land areas and geographic isolation also limit their ability to absorb shock when disasters strike.
             </p>
             <p>
               What they can change is how well they prepare for what comes next, and that requires infrastructure that can withstand shocks, early warning systems that give people time to act, and stronger institutions capable of responding effectively.
             </p>
             <p>
-              But these nations have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in: through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to those on the front line of climate change.
+              But these nations have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where rapid <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in: through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to those on the front line of climate change.
             </p>
           </div>
         </Prose>
@@ -144,13 +144,13 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-              The challenge for Pacific Island nations is not only the scale of the climate risks they face, but also the limited resources available to prepare for and reduce their impacts.
+             The challenge for Pacific Island nations is not only the scale of the climate risks they face, but the gap between the resources needed to adapt as those risks intensify and the finance allocated to meet that need.
             </p>
             <p>
-              The cost of that gap is already being felt in the impacts of disasters on people and communities. Yet the improvement in readiness in some countries shows that progress is possible.
+              That gap already carries a human cost, felt in the impacts of disasters on people and communities. Yet improvements in readiness in some countries show that progress is possible.
             </p>
             <p>
-              The task now is to match that progress with the needed finance and investment at the scale their vulnerability demands, so that stronger conditions for adaptation can translate into greater protection from hazards they cannot prevent.
+             The task now is to match that progress with finance and investment at the scale their vulnerability demands, so that stronger capacity to adapt can translate into greater protection from hazards they cannot prevent.
             </p>
           </div>
         </Prose>

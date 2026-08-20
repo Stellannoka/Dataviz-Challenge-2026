@@ -64,11 +64,11 @@ export default function Hero() {
 
         <div className="section-narrative" style={{ marginTop: '3rem' }}>
           <p>
-           Climate change is increasing the frequency and severity of extreme weather events globally. However, countries do not experience the same level of risk, nor do they have the same capacity to cope with and adapt to its impacts.
+       Climate change is intensifying extreme weather events and driving a rise in sea level across the globe. However, countries do not experience the same level of risk, nor do they have the same capacity to cope with and adapt to those impacts.
           </p>
           <p>
        
-Pacific Island nations are among the countries facing the greatest climate risks, yet have limited adaptive capacity. Although <GlossaryTerm term="readiness">readiness</GlossaryTerm> has improved across much of the region, they still rank among the world's most vulnerable countries. Even Tuvalu, the region's most ready country, is the 15th most vulnerable in the world.
+Pacific Island nations are among the countries facing the greatest climate risks, yet have limited adaptive capacity. Although <GlossaryTerm term="readiness">readiness</GlossaryTerm> has improved across much of the region, they still rank among the world’s most vulnerable countries. Even Tuvalu, the region’s most ready country, is the 15th most vulnerable in the world.
           </p>
         </div>
       </Container>

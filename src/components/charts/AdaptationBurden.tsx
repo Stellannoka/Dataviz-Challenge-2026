@@ -50,6 +50,14 @@ const DOT_DIM = "#d7dbe3";
 const ATOLL_ISOS = new Set(["KIR", "MHL", "TUV"]);
 const DOT_ATOLL = "var(--accent, #d0645a)";
 
+/* Hover border colours: a darker variant of each dot's own colour, so the
+   highlighted ring reads as "this dot, emphasised" rather than a new hue.
+   --primary-dark already gives the blue family its darker shade; --accent
+   has no distinct dark variant defined site-wide, so DOT_ATOLL_HOVER is a
+   hand-darkened shade of DOT_ATOLL instead of a CSS var. */
+const DOT_HOVER = "var(--primary-dark, #5c779f)";
+const DOT_ATOLL_HOVER = "#a85b5b";
+
 /* Axis styling, mirrored from the finance chart so the two read as one
    family: tick labels at 0.88rem / 300 / --text-secondary, axis titles
    at 0.72rem / 300 / #707070, gridlines #e9e9f1 at 0.5 opacity, tick
@@ -457,10 +465,9 @@ export default function AdaptationBurden() {
                  room and no other dot sits where the label would land; else
                  fall back to the tuned side offset. Width/height are derived
                  from the label font so the collision test tracks the size.
-                 Phone gets a smaller font than ClimateGapOpener's country
-                 labels since full country names (not ISO codes) need to fit
-                 the narrower stage without colliding. */
-              const labelFont = isPhone ? 9 : 15;
+                 Phone font size matches FinanceGap's phone LABEL_FONT_SIZE
+                 so country-name text reads at the same size across charts. */
+              const labelFont = isPhone ? 13.5 : 15;
               const charW = labelFont * 0.58;
               const lw = labelText.length * charW;
               const lh = labelFont + 2;
@@ -514,8 +521,18 @@ export default function AdaptationBurden() {
                     r={rDot}
                     fill={dimmed ? DOT_DIM : ATOLL_ISOS.has(r.iso) ? DOT_ATOLL : DOT}
                     fillOpacity={0.2}
-                    stroke={dimmed ? DOT_DIM : ATOLL_ISOS.has(r.iso) ? DOT_ATOLL : DOT}
-                    strokeWidth={isHovered ? 2.3 : 1.4}
+                    stroke={
+                      dimmed
+                        ? DOT_DIM
+                        : ATOLL_ISOS.has(r.iso)
+                        ? isHovered
+                          ? DOT_ATOLL_HOVER
+                          : DOT_ATOLL
+                        : isHovered
+                        ? DOT_HOVER
+                        : DOT
+                    }
+                    strokeWidth={isHovered ? 3 : 1.4}
                     style={{ cursor: "pointer", transition: "fill 0.15s, stroke 0.15s, stroke-width 0.15s" }}
                   />
                   <text
@@ -567,7 +584,7 @@ export default function AdaptationBurden() {
         >
           <div
             ref={tipRef}
-            className="relative bg-slate-50/85 p-3 shadow-xl"
+            className="relative bg-white/85 p-3 shadow-xl"
             style={{
               zIndex: 1,
               maxWidth: "min(300px, 80vw)",

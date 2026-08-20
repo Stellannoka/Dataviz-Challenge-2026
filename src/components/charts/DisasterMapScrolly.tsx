@@ -182,14 +182,14 @@ const STEPS: Step[] = [
     kind: "intro",
     focus: [],
     title: "Intro",
-    body: "Floods, tropical cyclones and storm surges are among the climate-related hazards threatening Pacific Island nations. In 2020, 548,686 people across the region were directly affected by these extreme weather events. \n\n This includes people who were injured or fell ill, whose homes were damaged or destroyed, or whose livelihoods were disrupted or destroyed.",
+    body: "Floods, tropical cyclones and storm surges are among the climate-related hazards threatening Pacific Island nations. Together, they directly affected 548,686 people in 2020. \n\n This includes people who were injured or fell ill, whose homes were damaged or destroyed, or whose livelihoods were disrupted or destroyed.",
   },
   {
     phase: "raw",
     kind: "highlight",
     focus: ["VUT"],
     title: "Vanuatu",
-    body: "Vanuatu recorded 246,802 people directly affected, the highest total among the countries shown. About 160,000 of these were people whose livelihoods were disrupted or destroyed.",
+    body: "Vanuatu recorded 246,802 people directly affected, the highest total among the countries shown. For about 160,000 of them, a livelihood was disrupted or destroyed.",
   },
   {
     phase: "raw",
@@ -203,7 +203,7 @@ const STEPS: Step[] = [
     kind: "highlight",
     focus: ["MHL"],
     title: "Marshall Islands",
-    body: "The Marshall Islands recorded far fewer people directly affected than Fiji or Vanuatu. Judged by total numbers alone, it appears to have experienced a much smaller impact. Yet of those it did reach — 56,718 people — the impact was substantial for a country of its size.",
+    body: "The Marshall Islands recorded 56,718 people directly affected, far fewer than Fiji or Vanuatu. Judged by total numbers alone, it appears to have experienced a much smaller impact. Set against a population of about 42,000, that total tells a very different story.",
   },
   {
     phase: "raw",
@@ -219,7 +219,7 @@ const STEPS: Step[] = [
     kind: "flip",
     focus: [],
     title: "",
-    body: "The map now adjusts for population size, showing the number of people affected for every 100,000 people. Countries of very different sizes can now be compared on equal terms.",
+    body: "The map now adjusts for population size, showing the number of people affected for every 100,000 residents. Countries of very different sizes can now be compared on equal terms.",
   },
   {
     phase: "per",
@@ -240,7 +240,7 @@ const STEPS: Step[] = [
     kind: "reveal",
     focus: [],
     title: "",
-    body: "Beyond those directly affected, people across the region are also among those most at risk of displacement from disasters.",
+    body: "Being directly affected is not the only cost. For many, a disaster also means leaving home.",
   },
 
   /* ---------------- PHASE 3 — DISPLACEMENT PER 100,000 (2020) ---------------- */
@@ -258,7 +258,7 @@ const STEPS: Step[] = [
     metric: "displacement",
     focus: ["VUT"],
     title: "",
-    body: "Weather-related disasters triggered 123,346 displacements across the region, with Vanuatu recording more than 26,000 per 100,000 people, by far the highest rate in the region, driven largely by tropical cyclones.",
+    body: "Weather-related disasters triggered 123,346 displacements across the region in 2020. Vanuatu recorded more than 26,000 per 100,000 residents, by far the highest rate, driven largely by tropical cyclones.",
   },
 ];
 
@@ -404,7 +404,7 @@ interface PacificScrollyMapProps {
 }
 
 export default function PacificScrollyMap({
-  title = "More than half a million people across Pacific Island Countries were directly affected by disasters in 2020",
+  title = "In 2020 alone, disasters directly affected more than half a million people across the Pacific Islands.",
 }: PacificScrollyMapProps = {}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -1515,6 +1515,9 @@ export default function PacificScrollyMap({
       >
         <p className="chart-caption text-left" style={{ paddingBottom: 0 }}>
           Note: 2020 was selected because it is the most recent year with near-complete regional coverage, with data available for 11 of the 12 Pacific Island Countries.
+        </p>
+        <p className="chart-caption text-left" style={{ paddingBottom: 0, marginTop: isSmall ? 6 : 10 }}>
+          People directly affected is the sum of the four Sendai Framework components: people injured or ill, dwellings damaged, dwellings destroyed, and livelihoods disrupted. Someone whose home was damaged and whose livelihood was disrupted is counted in both, so the totals count impacts rather than individuals and a country&rsquo;s rate can exceed its population.
         </p>
         <p className="chart-caption text-left" style={{ paddingBottom: 0, marginTop: isSmall ? 6 : 10 }}>
           Sources:{" "}

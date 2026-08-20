@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
 import { asset } from "@/lib/basePath";
 
@@ -35,17 +35,13 @@ const QUADRANT_COLORS = {
   LR: "#7bbf9e", // Low vulnerability, High readiness - Green
 };
 
-/* Neutral highlight for beat 1: identifies the Pacific group without
-   pre-assigning any quadrant before the splits are introduced. */
-const PACIFIC_HIGHLIGHT = "#e68e8d"; // Changed to match the red used for "Several"
-
 /* Same framing as the Section 1 scatter, so the told version and the
    interactive version below are spatially consistent. */
 const X_DOMAIN: [number, number] = [0.1, 0.82];
 const Y_DOMAIN: [number, number] = [0.25, 0.7];
 
 /* ------------------------------------------------------------------ story
-   Six beats. Each owns one screen of scroll. The chart animates between them;
+   Five beats. Each owns one screen of scroll. The chart animates between them;
    the message crossfades. The final beat recedes and hands off to the title. */
 interface Beat {
   kicker?: string;
@@ -63,7 +59,7 @@ const BEATS: Beat[] = [
   },
   {
     kicker: "Yet not the most ready",
-    message: "Several sit far from the readiness needed to turn investment into adaptation action.",
+    message: "Several sit far from the readiness needed to meet that risk.",
   },
   {
     kicker: "Two decades pass",
@@ -71,7 +67,7 @@ const BEATS: Beat[] = [
       "Readiness shifts, but vulnerability holds. Across the region, countries remained above the global vulnerability median in every year.",
   },
   {
-    kicker: "The Vulnerability Holds",
+    kicker: "The vulnerability holds",
     message: "And that persistence has a cost.",
   },
 ];
@@ -106,6 +102,34 @@ export default function ClimateGapOpener() {
 
   const [seg, setSeg] = useState(0);
   const [prog, setProg] = useState(0);
+
+  /* Which dot the reader is pointing at, for the at-rest tooltip. Carries a
+     snapshot of the dot rather than just its iso, so the tooltip never has
+     to re-find it in `positioned`. */
+  const [hover, setHover] = useState<{
+    iso: string;
+    cx: number;
+    cy: number;
+    country: string;
+    vulnerability: number;
+    readiness: number;
+  } | null>(null);
+
+  /* ---- always start at the top, even on a refresh mid-article. Browsers
+     restore the previous scroll offset on reload by default, which would
+     otherwise drop a returning reader back wherever they were instead of
+     at this cold open. `scrollRestoration = "manual"` stops the browser
+     from doing that (for this reload and any back/forward within the
+     session), and the explicit scrollTo backs it up. useLayoutEffect so
+     this runs before paint, ahead of the onScroll effect below that reads
+     the resulting scroll position. */
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
 
   /* ---- data */
   useEffect(() => {
@@ -151,6 +175,11 @@ export default function ClimateGapOpener() {
       if (idx >= total) idx = total - 1;
       setSeg(idx);
       setProg(scaled - idx);
+      /* Tooltips belong to the at-rest state only. Dropping the hover here
+         (rather than in an effect keyed on `seg`) keeps it out of render
+         and means a stale tooltip can't reappear if the reader scrolls
+         back up to beat 0. */
+      if (idx !== 0) setHover(null);
     });
   }, [total]);
 
@@ -229,8 +258,49 @@ export default function ClimateGapOpener() {
      with a small step-down on phones so it isn't oversized there. */
   const dotR = isSmall ? 4 : 6;
 
+  /* prefers-reduced-motion, and the intro's float→settle flag, both need to
+     exist before `appear` is derived below, so they're declared here rather
+     than further down with the rest of the settle-kick machinery. */
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  /* ---- intro: on first load, every dot starts scattered at a random
+     point on the stage (not yet in its vulnerability/readiness position)
+     and immediately begins flying to its true position — a one-time
+     autoplay beat that plays automatically rather than waiting for the
+     reader to scroll. The double rAF just lets the browser paint the
+     scattered starting frame before flipping the flag, so the CSS
+     transition has something to animate from instead of skipping straight
+     to the settled frame. Beat 0's message only appears once the flight
+     completes. Skipped entirely under reduced motion, which starts
+     already settled. */
+  const [introSettled, setIntroSettled] = useState(false);
+  useEffect(() => {
+    if (reducedMotion) {
+      setIntroSettled(true);
+      return;
+    }
+    if (!ts || w === 0 || h === 0) return;
+    const id = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setIntroSettled(true))
+    );
+    return () => cancelAnimationFrame(id);
+  }, [ts, w, h, reducedMotion]);
+
   /* ---- animation drivers derived from (seg, prog) */
-  const appear = seg > 0 ? 1 : smooth(prog);
+  /* Position only (not opacity, which stays fixed once dots are visible):
+     0 = still scattered in the intro's chaos layout, 1 = at the true
+     vulnerability/readiness position. Flips once, automatically, the
+     moment the intro settles above — the reader sees the float→settle
+     happen on load rather than having to scroll to trigger it. */
+  const appear = introSettled ? 1 : 0;
   const pacific = seg >= 1 ? 1 : 0;
   const lineOn = seg >= LINE_BEAT ? 1 : 0;
   const readyOn = seg >= READY_BEAT ? 1 : 0;
@@ -250,27 +320,14 @@ export default function ClimateGapOpener() {
      in one style object triggers a React reconciliation warning. */
   const scrubbing = seg === TIME_BEAT;
 
-  /* Beat 0's cluster -> scatter explosion is likewise driven frame-by-frame
-     by `appear` (derived from scroll progress), so it needs the same
-     transition-free treatment as the time-beat scrub. */
-  const revealing = seg === 0;
-
   /* ---- scatter-and-settle -------------------------------------------------
      On the frame a phase begins, each dot is kicked to a small seeded offset
      and then released; the CSS transform transition carries it back to its
      true position, reading as a quick reshuffle. Fires on first appearance
      (whole field) and when each reference line arrives (Pacific dots only),
      never during the scrub beat, and never when the user prefers reduced
-     motion. */
-  const [reducedMotion, setReducedMotion] = useState(false);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
+     motion. (reducedMotion itself is declared earlier, alongside
+     introSettled, since `appear` needs it before this point.) */
 
   /* settlePhase: which beat's settle is currently playing (or null).
      kick=true for the single frame the dots are displaced, then flipped
@@ -291,9 +348,9 @@ export default function ClimateGapOpener() {
     return () => cancelAnimationFrame(id);
   }, [seg, reducedMotion, scrubbing]);
 
-  /* World dots now animate in via the cluster -> scatter explosion (below)
-     rather than a kick; only the Pacific dots still get the settle-kick
-     flourish when a reference line drops in. */
+  /* World dots now animate in via the chaos -> true-position intro settle
+     (below) rather than a kick; only the Pacific dots still get the
+     settle-kick flourish when a reference line drops in. */
   const picKick = kick && seg <= READY_BEAT;
 
   /* Deterministic per-index offset so the kick is stable across renders. */
@@ -321,16 +378,16 @@ export default function ClimateGapOpener() {
   const frac = idxF - i0;
   const currentYear = ts ? ts.years[Math.round(idxF)] : null;
 
-  // Get country names for Pacific Islands
+  /* iso -> display name, for every country (not just the Pacific ones):
+     the Pacific dots use it for their in-plot labels, and the at-rest
+     tooltip needs it for whichever dot the reader points at. */
   const countryNames = useMemo(() => {
-    if (!ts) return new Map();
-    const names = new Map();
+    const names = new Map<string, string>();
+    if (!ts) return names;
     const years = ts.years.map(String);
     years.forEach((y) => {
       (ts.byYear[y] ?? []).forEach((c) => {
-        if (c.pic) {
-          names.set(c.iso, c.country);
-        }
+        names.set(c.iso, c.country);
       });
     });
     return names;
@@ -387,37 +444,39 @@ export default function ClimateGapOpener() {
       });
   }, [ts, trajectories, i0, i1, frac, x, y, margin, innerW, innerH]);
 
-  /* ---- resting cluster: where every dot sits before the first scroll.
-     Packed into a block a few dots wide (taller than it is wide, so it
-     reads as a vertical cluster) at stage centre, instead of each dot
-     starting at its true scatter position. Beat 0's scroll then explodes
-     the cluster outward into the real vulnerability/readiness layout. */
-  const clusterPositions = useMemo(() => {
+  /* ---- resting chaos: where every dot starts before the intro settles.
+     Scattered pseudo-randomly across the full stage (not a tidy cluster),
+     so the opening frame reads as "floating in space" rather than a neat
+     stack. Deterministic per index (same sine-hash trick as kickOffset)
+     so the scatter is stable across re-renders instead of reshuffling. */
+  const chaosPositions = useMemo(() => {
     const isos = trajectories.map((t) => t.iso);
-    const n = isos.length;
     const m = new Map<string, { x: number; y: number }>();
-    if (!w || !h || n === 0) return m;
-    const spacing = dotR * 2.3;
-    const cols = Math.max(4, Math.round(Math.sqrt(n) * 0.65));
-    const rows = Math.ceil(n / cols);
-    const cx = w / 2;
-    const cy = h / 2;
+    if (!w || !h) return m;
+    const pad = isSmall ? 20 : 40;
     isos.forEach((iso, i) => {
-      const row = Math.floor(i / cols);
-      const col = i % cols;
+      const a = Math.sin(i * 12.9898) * 43758.5453;
+      const b = Math.sin(i * 78.233) * 12543.1234;
+      const rx = a - Math.floor(a);
+      const ry = b - Math.floor(b);
       m.set(iso, {
-        x: cx + (col - (cols - 1) / 2) * spacing,
-        y: cy + (row - (rows - 1) / 2) * spacing,
+        x: pad + rx * Math.max(w - pad * 2, 1),
+        y: pad + ry * Math.max(h - pad * 2, 1),
       });
     });
     return m;
-  }, [trajectories, w, h, dotR]);
+  }, [trajectories, w, h, isSmall]);
 
   const refY = margin.top + y(vulnRef);
   const readyX = margin.left + x(readyRef);
-  const worldDim = pacific ? 0.34 : 0.5;
 
   const ready = ts && w > 0 && h > 0;
+
+  /* Tooltips are available only while the piece is at rest: the intro has
+     finished settling and the reader hasn't started into the scroll beats.
+     Once beat 1 begins, the dots are being animated and recoloured to carry
+     the argument, and a hover panel would compete with that. */
+  const interactive = introSettled && seg === 0;
 
   const kickerColor = C.muted;
 
@@ -465,7 +524,7 @@ export default function ClimateGapOpener() {
           opacity: 1 - fadeOut,
           transition: "opacity 1s ease",
         }}
-        aria-label="Opening story: where the Pacific Islands sit on climate vulnerability and readiness, and how little it changes over two decades"
+        aria-label="Opening story: where the Pacific Islands sit on climate vulnerability and readiness, and how that position holds over two decades"
       >
         <div ref={stageRef} style={{ position: "absolute", inset: 0 }}>
           {ready && (
@@ -478,6 +537,16 @@ export default function ClimateGapOpener() {
               style={{
                 position: "absolute",
                 inset: 0,
+                /* At rest the whole field is raised above the message text
+                   and the scroll cue, so dots sitting behind them are still
+                   reachable. The layer itself is click-through — only the
+                   per-dot hit circles below re-enable pointer events — so
+                   raising it costs the text nothing: it stays selectable.
+                   Dropped again once the beats begin, where the coloured
+                   Pacific dots and their labels must not paint over the
+                   message. */
+                pointerEvents: "none",
+                zIndex: interactive ? 30 : undefined,
               }}
             >
               {/* horizontal "more vulnerable" reference line — draws in
@@ -575,37 +644,68 @@ export default function ClimateGapOpener() {
 
              {/* world dots (grey base for everyone) — actual scatter size,
     kept low-opacity so the colored Pacific dots read against them.
-    Rest in a packed vertical cluster until scrolling starts, then fly
-    out to their true vulnerability/readiness position as beat 0 plays
-    (tracked 1:1 with scroll, like the time-beat scrub, so the motion
-    doesn't lag behind the scrollbar). Pacific dots are part of this
-    field too: they explode in as grey with everyone else, and the
+    Visible immediately, scattered across the stage (chaosPositions), and
+    fly to their true vulnerability/readiness position as soon as the page
+    loads (see introSettled) — a one-time autoplay reveal, not something
+    the reader has to scroll to trigger. Pacific dots are part of this
+    field too: they settle in as grey with everyone else, and the
     colored + labelled versions layer on top and wave in at beat 1. */}
-<g style={{ opacity: appear, transition: "opacity 0.2s linear" }}>
+<g style={{ opacity: 1 }}>
   {positioned.map((d, i) => {
-    const cluster = clusterPositions.get(d.iso) ?? { x: d.cx, y: d.cy };
-    const curX = lerp(cluster.x, d.cx, appear);
-    const curY = lerp(cluster.y, d.cy, appear);
+    const chaos = chaosPositions.get(d.iso) ?? { x: d.cx, y: d.cy };
+    const curX = lerp(chaos.x, d.cx, appear);
+    const curY = lerp(chaos.y, d.cy, appear);
+    const isHovered = hover?.iso === d.iso;
     return (
-    <rect
+    <g
       key={d.iso}
-      x={-dotR}
-      y={-dotR}
-      width={dotR * 2}
-      height={dotR * 2}
-      fill={C.faint}
-      opacity={0.2} /* All dots (incl. Pacific) explode in as grey */
       style={{
-        transform: `translate(${curX}px, ${curY}px) rotate(45deg)`,
-        transitionProperty: scrubbing || revealing ? "opacity" : "transform, opacity",
-        transitionDuration: scrubbing || revealing ? "0.5s" : "0.7s, 0.5s",
-        transitionTimingFunction:
-          scrubbing || revealing
-            ? "ease"
-            : "cubic-bezier(0.34,1.2,0.64,1), ease",
-        transitionDelay: scrubbing || revealing ? "0ms" : `${Math.min(i * 3, 220)}ms`,
+        transform: `translate(${curX}px, ${curY}px)`,
+        transitionProperty: scrubbing ? "none" : "transform",
+        transitionDuration: scrubbing ? "0s" : "1s",
+        transitionTimingFunction: scrubbing
+          ? "ease"
+          : "cubic-bezier(0.34,1.2,0.64,1)",
+        transitionDelay: scrubbing ? "0ms" : `${Math.min(i * 3, 260)}ms`,
       }}
-    />
+    >
+      <rect
+        x={-dotR}
+        y={-dotR}
+        width={dotR * 2}
+        height={dotR * 2}
+        fill={C.faint}
+        transform="rotate(45)"
+        /* All dots (incl. Pacific) settle in as grey. The hovered one
+           lifts out of the field so the reader can see which dot the
+           tooltip is describing. */
+        opacity={isHovered ? 0.6 : 0.2}
+        style={{ transition: "opacity 0.15s ease" }}
+      />
+      {/* Enlarged transparent hit area — the dots themselves are only
+          4-6px across, too small to point at comfortably. Only present
+          at rest, so it never intercepts anything during the beats. */}
+      {interactive && (
+        <circle
+          r={dotR + 7}
+          fill="transparent"
+          /* Re-enables pointer events inside the click-through svg layer,
+             so this circle is the only thing on it that can be hovered. */
+          style={{ cursor: "pointer", pointerEvents: "auto" }}
+          onMouseEnter={() =>
+            setHover({
+              iso: d.iso,
+              cx: d.cx,
+              cy: d.cy,
+              country: countryNames.get(d.iso) ?? d.iso,
+              vulnerability: d.vulnerability,
+              readiness: d.readiness,
+            })
+          }
+          onMouseLeave={() => setHover(null)}
+        />
+      )}
+    </g>
     );
   })}
 </g>
@@ -761,8 +861,11 @@ export default function ClimateGapOpener() {
 
           {/* message — lower third, crossfades per beat. Sits low enough to
               clear the dot cluster above it, but with enough bottom offset
-              to leave a gap above the scroll cue rather than touching it. */}
-          {ready && (
+              to leave a gap above the scroll cue rather than touching it.
+              Beat 0's message waits for the intro settle so it lands after
+              the dots have taken their vulnerability/readiness positions,
+              not before. */}
+          {ready && (seg > 0 || introSettled) && (
             <div
               style={{
                 position: "absolute",
@@ -819,8 +922,9 @@ export default function ClimateGapOpener() {
             </div>
           )}
 
-          {/* scroll indicator — subtle visual cue, not clickable */}
-          {ready && seg === 0 && prog < 0.4 && (
+          {/* scroll indicator — subtle visual cue, not clickable. Waits for
+              the intro settle so it doesn't invite scrolling mid-float. */}
+          {ready && seg === 0 && introSettled && prog < 0.4 && (
             <div
               style={{
                 position: "absolute",
@@ -860,6 +964,84 @@ export default function ClimateGapOpener() {
               </svg>
             </div>
           )}
+
+          {/* at-rest tooltip — last in the stage so it paints over the dots,
+              the message and the scroll cue. The coloured top border is the
+              dot's vulnerability/readiness quadrant, the same four colours
+              the beats and the Section 1 scatter use, so the reader meets
+              the encoding here before it is named. */}
+          {ready && interactive && hover && (() => {
+            const q = getQuadrant(
+              hover.vulnerability,
+              hover.readiness,
+              vulnRef,
+              readyRef
+            );
+            const qColor = QUADRANT_COLORS[q as keyof typeof QUADRANT_COLORS];
+            const TIP_W = 128;
+            const halfW = TIP_W / 2;
+            /* Clamp the centre so the box stays on stage at either edge. */
+            const left = Math.min(
+              Math.max(hover.cx, halfW + 8),
+              Math.max(w - halfW - 8, halfW + 8)
+            );
+            /* Flip below the dot when there isn't room above it. */
+            const above = hover.cy > 92;
+            const row: React.CSSProperties = {
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 8,
+              fontSize: "0.62rem",
+              lineHeight: 1.5,
+              color: C.muted,
+              fontVariantNumeric: "tabular-nums",
+            };
+            return (
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left,
+                  top: above ? hover.cy - dotR - 9 : hover.cy + dotR + 9,
+                  transform: above
+                    ? "translate(-50%, -100%)"
+                    : "translate(-50%, 0)",
+                  width: TIP_W,
+                  padding: "6px 8px 7px",
+                  background: "rgba(255, 255, 255, 0.96)",
+                  borderTop: `3px solid ${qColor}`,
+                  boxShadow: "0 2px 10px rgba(15, 23, 42, 0.16)",
+                  fontFamily: "var(--font-sans)",
+                  pointerEvents: "none",
+                  zIndex: 40,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.68rem",
+                    fontWeight: 600,
+                    color: C.ink,
+                    lineHeight: 1.25,
+                    marginBottom: 4,
+                  }}
+                >
+                  {hover.country}
+                </div>
+                <div style={row}>
+                  <span>Vulnerability</span>
+                  <span style={{ fontWeight: 600, color: C.ink }}>
+                    {hover.vulnerability.toFixed(2)}
+                  </span>
+                </div>
+                <div style={row}>
+                  <span>Readiness</span>
+                  <span style={{ fontWeight: 600, color: C.ink }}>
+                    {hover.readiness.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
 
@@ -868,8 +1050,9 @@ export default function ClimateGapOpener() {
         An opening sequence: every country in the world plotted by climate
         vulnerability and readiness. The Pacific Island Countries all sit in
         the high-vulnerability half, and several remain among the least ready
-        to adapt. Across 2004 to 2023 the world shifts around them while their
-        position barely changes.
+        to adapt. Across 2004 to 2023 their readiness shifts, but every
+        country in the region stays above the global vulnerability median in
+        every year.
       </p>
 
       <style>{`
