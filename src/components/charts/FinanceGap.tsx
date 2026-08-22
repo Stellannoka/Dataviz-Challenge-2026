@@ -516,7 +516,7 @@ export default function FinanceGap() {
      Most Pacific Island nations receive less than half the financing needed for climate adaptation.
         </p>
         <p className="section-subtitle" style={{ marginBottom: 8 }}>
-          Average annual adaptation finance disbursed in 2021–2023 as a share of projected annual adaptation need (2024 prices).
+          Average annual adaptation finance disbursed in 2021–2023 relative to annual adaptation need (2024 prices).
         </p>
         <p
           style={{

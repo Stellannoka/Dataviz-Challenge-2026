@@ -203,7 +203,7 @@ const STEPS: Step[] = [
     kind: "highlight",
     focus: ["MHL"],
     title: "Marshall Islands",
-    body: "The Marshall Islands recorded 56,718 people directly affected, far fewer than Fiji or Vanuatu. Judged by total numbers alone, it appears to have experienced a much smaller impact. Set against a population of about 42,000, that total tells a very different story.",
+    body: "The Marshall Islands recorded far fewer people directly affected than Fiji or Vanuatu. Judged by total numbers alone, it appears to have experienced a much smaller impact. Yet of those the disaster did reach — 56,718 people — the impact was substantial for a country of its size.",
   },
   {
     phase: "raw",
@@ -240,7 +240,7 @@ const STEPS: Step[] = [
     kind: "reveal",
     focus: [],
     title: "",
-    body: "Being directly affected is not the only cost. For many, a disaster also means leaving home.",
+    body: "In the same year, disasters triggered 123,346 displacements across the region.",
   },
 
   /* ---------------- PHASE 3 — DISPLACEMENT PER 100,000 (2020) ---------------- */
@@ -250,7 +250,7 @@ const STEPS: Step[] = [
     metric: "displacement",
     focus: [],
     title: "",
-    body: "The same population-adjusted view now shows displacements triggered by these disasters in 2020.",
+    body: "Adjusted for population size, the burden of these displacements was highly uneven across the region...",
   },
   {
     phase: "per",
@@ -258,7 +258,7 @@ const STEPS: Step[] = [
     metric: "displacement",
     focus: ["VUT"],
     title: "",
-    body: "Weather-related disasters triggered 123,346 displacements across the region in 2020. Vanuatu recorded more than 26,000 per 100,000 residents, by far the highest rate, driven largely by tropical cyclones.",
+    body: "...with Vanuatu recording more than 26,000 displacements per 100,000 people, by far the highest rate in the region, driven largely by tropical cyclones.",
   },
 ];
 
@@ -404,7 +404,7 @@ interface PacificScrollyMapProps {
 }
 
 export default function PacificScrollyMap({
-  title = "In 2020 alone, disasters directly affected more than half a million people across the Pacific Islands.",
+  title = "In 2020* alone, disasters directly affected more than half a million people across the Pacific Islands.",
 }: PacificScrollyMapProps = {}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -827,7 +827,7 @@ export default function PacificScrollyMap({
   const scaleNote = showDisplacement
     ? "Displacements triggered by weather-related disasters per 100,000 people, 2020"
     : inPer
-    ? "Filled circles are scaled to people directly affected per 100,000 residents. Outer rings are fixed for comparison."
+    ? "Filled circles are scaled to people directly affected per 100,000 people. Outer rings are fixed for comparison."
     : "Circles are scaled to the number of people directly affected.";
 
   /* Title mirrors DisplacementChart's own headline once the map's metric
@@ -1514,10 +1514,7 @@ export default function PacificScrollyMap({
         }}
       >
         <p className="chart-caption text-left" style={{ paddingBottom: 0 }}>
-          Note: 2020 was selected because it is the most recent year with near-complete regional coverage, with data available for 11 of the 12 Pacific Island Countries.
-        </p>
-        <p className="chart-caption text-left" style={{ paddingBottom: 0, marginTop: isSmall ? 6 : 10 }}>
-          People directly affected is the sum of the four Sendai Framework components: people injured or ill, dwellings damaged, dwellings destroyed, and livelihoods disrupted. Someone whose home was damaged and whose livelihood was disrupted is counted in both, so the totals count impacts rather than individuals and a country&rsquo;s rate can exceed its population.
+          *2020 was selected because it is the most recent year with near-complete regional coverage, with data available for 11 of the 12 Pacific Island nations studies in this analysis.
         </p>
         <p className="chart-caption text-left" style={{ paddingBottom: 0, marginTop: isSmall ? 6 : 10 }}>
           Sources:{" "}

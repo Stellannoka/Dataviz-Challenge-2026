@@ -68,7 +68,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-              The scale of these impacts reflects how exposed and sensitive the region is to climate <GlossaryTerm term="disasters">disasters</GlossaryTerm>, and these risks are expected to worsen, particularly for atoll and other low-lying nations, as continued global warming drives sea-level rise.
+              The scale of these impacts illustrates how exposed and sensitive the region is to climate <GlossaryTerm term="disasters">disasters</GlossaryTerm>, and these risks are expected to worsen, particularly for atoll and other low-lying nations, as continued global warming drives sea-level rise.
             </p>
           </div>
         </Prose>
@@ -108,7 +108,7 @@ export default function Home() {
               Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu simply raise its islands above rising seas. Their small land areas and geographic isolation also limit their ability to absorb shock when disasters strike.
             </p>
             <p>
-              What they can change is how well they prepare for what comes next, and that requires infrastructure that can withstand shocks, early warning systems that give people time to act, and stronger institutions capable of responding effectively.
+              What they can change is how well they prepare for what comes next, and that requires resilient infrastructure that can withstand shocks, early warning systems that give people time to act, and stronger institutions capable of responding effectively.
             </p>
             <p>
               But these nations have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where rapid <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in: through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to those on the front line of climate change.
