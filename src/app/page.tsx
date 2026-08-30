@@ -1,0 +1,289 @@
+import ClimateGapOpener from "@/components/ClimateGapOpener";
+import Hero from "@/components/Hero";
+import Section from "@/components/Section";
+import { Prose } from "@/components/Prose";
+import { ChartBand } from "@/components/Container";
+import VulnerabilityScatter from "@/components/charts/VulnerabilityScatter";
+import DisasterMapScrolly from "@/components/charts/DisasterMapScrolly";
+import Sealevelprojection from "@/components/charts/Sealevelprojection";
+import FinanceGap from "@/components/charts/FinanceGap";
+import AdaptationBurden from "@/components/charts/AdaptationBurden";
+import GlossaryTerm from "@/components/Glossaryterm";
+
+
+const narrative = "section-narrative";
+
+/* ======================================================================
+   Home: the article's page-level assembly. Four sections in reading
+   order — (1) vulnerability vs. readiness, (2) the human impacts of
+   disasters and sea-level rise, a narrative bridge, then (3) the
+   adaptation-finance gap — each built from the same Section/Prose/
+   ChartBand primitives so narrative text and charts share one text
+   column width throughout. ClimateGapOpener and Hero run before any
+   Section: the former is the scroll-jacked cold open, the latter the
+   static title block that slides up over its fading final beat.
+   ====================================================================== */
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-white text-slate-900">
+      <ClimateGapOpener />
+      <Hero />
+
+      {/* SECTION 1 — the gap */}
+      <Section
+        heading="Vulnerability Continues to Outpace Readiness"
+      >
+        <Prose>
+          <p className="section-subtitle">
+        Pacific Island nations remain among the world’s most vulnerable to climate change, but their readiness to turn investment into effective adaptation varies widely.
+          </p>
+        </Prose>
+        
+        <ChartBand>
+          <VulnerabilityScatter />
+        </ChartBand>
+        
+        <Prose>
+          <div className={narrative}>
+            <p>
+              The greater the <GlossaryTerm term="vulnerability">vulnerability</GlossaryTerm> of a country, the greater the need for <GlossaryTerm term="adaptation">adaptation</GlossaryTerm> and the urgency to act. For Pacific Island nations, the combination of elevated climate risk and comparatively low adaptive capacity poses significant challenges, even where readiness has improved.
+            </p>
+            <p>
+      As a result, the impacts of <GlossaryTerm term="hazards">climate-related hazards</GlossaryTerm> can extend well beyond the immediate event, disrupting livelihoods, displacing people from their homes and leaving communities to recover long after.
+            </p>
+          </div>
+        </Prose>
+      </Section>
+
+      {/* SECTION 2 — the map - WIDE */}
+      <Section
+        heading="Disasters Are Already Causing Widespread Harm Across the Pacific Island Nations."
+        id="section-map"
+        wide={true}
+      >
+        <DisasterMapScrolly />
+        
+        <div style={{ marginTop: "3rem" }} />
+
+        <Prose>
+          <div className={narrative}>
+            <p>
+              The scale of these impacts illustrates how exposed and sensitive the region is to climate <GlossaryTerm term="disasters">disasters</GlossaryTerm>, and these risks are expected to worsen, particularly for atoll and other low-lying nations, as human-caused global warming continues to drive sea-level rise.
+            </p>
+          </div>
+        </Prose>
+
+        <Sealevelprojection />
+
+        <Prose>
+          <div className={narrative}>
+             <p>
+  Even under the most optimistic emissions scenario, sea levels are projected to rise by up to 51 cm by 2100, increasing to about 85 cm under a higher-emissions scenario. Either way, coastal flooding and storm surges are projected to become more frequent and severe, while seawater intrusion could increase groundwater salinity, putting drinking water and food production under greater pressure.
+            </p>
+    <p>
+      These changes are a major concern for the region, given that more than{" "}
+      <a
+        href="https://www.uncclearn.org/wp-content/uploads/library/1356_State-of-the-Climate-in-SWP-2024_en.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+      >
+        half of the Pacific Islands’ population lives within 500 metres of the coast
+      </a>
+      , placing communities, infrastructure and livelihoods at risk from rising seas.
+            </p>
+      <p>
+        For these communities, the loss of habitable land could increasingly pressure people to move, putting not only homes and livelihoods at risk, but ancestral land and the ways of life bound to them.
+        </p>
+            
+          </div>
+        </Prose>
+      </Section>
+
+      {/* BRIDGE */}
+      <Section heading="Climate hazards cannot be chosen. Their impacts can be reduced.">
+        <Prose>
+          <div className={narrative}>
+            <p>
+              Pacific Island nations cannot choose the hazards they face. Vanuatu cannot move beyond the cyclone belt, nor can Tuvalu simply raise its islands above rising seas. Their small land areas and geographic isolation also limit their ability to absorb shock when disasters strike.
+            </p>
+            <p>
+              What they can change is how well they prepare for what comes next, and that requires resilient infrastructure that can withstand shocks, continuous monitoring and early warning systems that give people time to act, and stronger institutions capable of responding effectively.
+            </p>
+            <p>
+              But these nations have limited room to make these investments on their own. Their economies are small, revenue bases are narrow, and the sums involved are large. This is where rapid <GlossaryTerm term="climate action">climate action</GlossaryTerm> comes in: through <GlossaryTerm term="climate finance">climate finance</GlossaryTerm> that flows from <GlossaryTerm term="industrialised countries">industrialised countries</GlossaryTerm> to those on the front line of climate change.
+            </p>
+          </div>
+        </Prose>
+      </Section>
+
+      {/* SECTION 3 — the finance gap */}
+      <Section heading="Pacific Island Nations Aren’t Getting the Climate Finance They Need">
+        <Prose>
+          <div className={narrative}>
+            <p>
+              Between 2021 and 2023, Pacific Island nations received an average of about US$0.9 billion a year in <GlossaryTerm term="adaptation finance">adaptation finance</GlossaryTerm>, against projected annual needs of about US$3.3 billion. At this level, current finance flow would cover only around 26% of projected needs, leaving most of the required investment unmet. The size of the gap also varies considerably across countries.
+            </p>
+          </div>
+        </Prose>
+
+        <ChartBand>
+          <FinanceGap />
+        </ChartBand>
+
+        <Prose>
+          <div className={narrative}>
+            <p>
+              The gap is large in dollar terms, but even larger relative to the size of these economies. For <span style={{ color: "var(--secondary, #e07a7a)", fontWeight: 400 }}>atoll nations</span> like Kiribati, one of the region’s smallest economies, meeting its adaptation needs would require investment equivalent to about a third of everything the country produces in a year — a scale difficult to meet from domestic resources alone.
+            </p>
+          </div>
+        </Prose>
+
+        <AdaptationBurden />
+
+        <Prose>
+          <div className={narrative}>
+            <p>
+             The challenge for Pacific Island nations is not only the scale of the climate risks they face, but the gap between the resources needed to adapt as those risks intensify and the finance allocated to meet that need.
+            </p>
+            <p>
+              That gap already carries a human and economic cost, felt in the impacts of disasters on people and communities. Yet improvements in readiness in some nations show that progress is possible.
+            </p>
+            <p>
+             The task now is to match that progress with long-term finance and investment at the scale their vulnerability demands, so that stronger capacity to adapt can translate into greater protection for the homes, livelihoods, histories and ways of life at risk.
+            </p>
+          </div>
+        </Prose>
+      </Section>
+
+    {/* METHODOLOGY */}
+<div className="max-w-[640px] mx-auto px-4" style={{ marginBottom: "4rem" }}>
+  <div className="border-t border-slate-200 mb-8" />
+
+  {/* About */}
+  <h4 style={{
+    fontSize: "0.85rem",
+    fontWeight: 600,
+    fontFamily: "var(--font-sans)",
+    color: "var(--text-color)",
+    marginBottom: "0.5rem"
+  }}>
+    About
+  </h4>
+  <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
+    <p style={{ marginBottom: "1.5rem" }}>
+      Created by{" "}
+      <a
+        href="https://www.linkedin.com/in/stellamaris-nnoka-71aa4a239/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        style={{ fontWeight: 500 }}
+      >
+        Stella Chinyere Nnoka
+      </a>{" "}
+      for the{" "}
+      <a
+        href="https://pacificdatavizchallenge.org/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        style={{ fontWeight: 500 }}
+      >
+        Pacific DataViz Challenge 2026
+      </a>
+      .
+    </p>
+  </div>
+
+  {/* Source */}
+  <h4 style={{
+    fontSize: "0.85rem",
+    fontWeight: 600,
+    color: "rgb(44, 62, 80)",
+    marginBottom: "0.25rem",
+    fontFamily: "var(--font-sans)"
+  }}>
+    Data Sources
+  </h4>
+  <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
+    <p style={{ marginBottom: "1.5rem" }}>
+      The datasets used throughout the project are cited and linked in the caption of each visualisation.
+    </p>
+  </div>
+
+  {/* Tool */}
+  <h4 style={{
+    fontSize: "0.85rem",
+    fontWeight: 600,
+    fontFamily: "var(--font-sans)",
+    color: "var(--text-color)",
+    marginBottom: "0.5rem"
+  }}>
+    Tools
+  </h4>
+  <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
+    <p style={{ marginBottom: "1.5rem" }}>
+      Built with{" "}
+      <a
+        href="https://react.dev/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        style={{ fontWeight: 500 }}
+      >
+        React
+      </a>
+      ,{" "}
+      <a
+        href="https://d3js.org/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        style={{ fontWeight: 500 }}
+      >
+        D3.js
+      </a>
+      , and styled with{" "}
+      <a
+        href="https://tailwindcss.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        style={{ fontWeight: 500 }}
+      >
+        Tailwind CSS
+      </a>
+      .
+    </p>
+  </div>
+
+  {/* Methodology */}
+  <h4 style={{ 
+    fontSize: "0.85rem", 
+    fontWeight: 600, 
+    color: "rgb(44, 62, 80)",
+    marginBottom: "0.25rem",
+    fontFamily: "var(--font-sans)"
+  }}>
+    Methodology
+  </h4>
+  <div className="section-subtitle" style={{ fontSize: "0.85rem" }}>
+    <p style={{ marginBottom: 0 }}>
+      Source code, data files and full methodology notes are available on{" "}
+      <a
+        href="https://github.com/stellannoka/Dataviz-Challenge-2026"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 decoration-[var(--primary,#6d8499)] text-[rgb(112,112,112)] transition-colors duration-150 hover:bg-[#6d8499] hover:text-[#ffffff] hover:no-underline active:bg-[#6d8499] active:text-[#ffffff] active:no-underline"
+        style={{ fontWeight: 500 }}
+      >
+        GitHub
+      </a>
+      .
+    </p>
+  </div>
+</div>
+    </main>
+  );
+}

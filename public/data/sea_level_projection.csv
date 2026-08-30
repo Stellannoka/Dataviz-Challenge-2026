@@ -1,0 +1,352 @@
+place,emissions_pathway,year,slr_p17_cm,slr_p50_cm,slr_p83_cm
+Regional (all Pacific),Lower,2020,2.5,5.6,8.9
+Regional (all Pacific),Lower,2030,6.1,10.2,14.9
+Regional (all Pacific),Lower,2040,9.9,15.0,21.4
+Regional (all Pacific),Lower,2050,14.9,21.2,29.4
+Regional (all Pacific),Lower,2060,18.8,26.3,36.7
+Regional (all Pacific),Lower,2070,23.8,32.8,45.8
+Regional (all Pacific),Lower,2080,27.8,38.8,54.9
+Regional (all Pacific),Lower,2090,31.7,44.6,63.7
+Regional (all Pacific),Lower,2100,32.8,51.3,75.3
+Regional (all Pacific),Middle,2020,2.5,5.5,8.7
+Regional (all Pacific),Middle,2030,6.3,10.2,14.8
+Regional (all Pacific),Middle,2040,10.6,15.6,21.8
+Regional (all Pacific),Middle,2050,16.5,22.7,30.9
+Regional (all Pacific),Middle,2060,21.4,28.9,39.7
+Regional (all Pacific),Middle,2070,27.2,36.8,51.0
+Regional (all Pacific),Middle,2080,33.3,45.3,62.8
+Regional (all Pacific),Middle,2090,39.1,53.5,75.3
+Regional (all Pacific),Middle,2100,44.3,62.6,89.2
+Regional (all Pacific),Higher,2020,3.3,5.8,8.6
+Regional (all Pacific),Higher,2030,7.8,11.2,15.4
+Regional (all Pacific),Higher,2040,12.3,17.2,23.7
+Regional (all Pacific),Higher,2050,18.6,25.3,34.3
+Regional (all Pacific),Higher,2060,25.6,33.8,45.8
+Regional (all Pacific),Higher,2070,33.3,44.2,60.2
+Regional (all Pacific),Higher,2080,41.7,55.6,76.3
+Regional (all Pacific),Higher,2090,52.5,69.3,95.2
+Regional (all Pacific),Higher,2100,61.8,84.8,118.2
+Tuvalu,Lower,2020,1.5,5.6,10.0
+Tuvalu,Lower,2030,4.9,10.2,16.0
+Tuvalu,Lower,2040,9.7,15.6,22.8
+Tuvalu,Lower,2050,14.5,21.7,30.8
+Tuvalu,Lower,2060,18.1,26.6,37.8
+Tuvalu,Lower,2070,23.3,33.4,47.1
+Tuvalu,Lower,2080,28.0,39.9,56.7
+Tuvalu,Lower,2090,32.1,46.0,65.6
+Tuvalu,Lower,2100,30.6,53.0,80.3
+Tuvalu,Middle,2020,1.7,5.8,9.9
+Tuvalu,Middle,2030,5.5,10.4,15.8
+Tuvalu,Middle,2040,10.2,16.2,23.1
+Tuvalu,Middle,2050,16.0,23.3,32.5
+Tuvalu,Middle,2060,20.6,29.4,41.2
+Tuvalu,Middle,2070,26.9,37.5,52.4
+Tuvalu,Middle,2080,33.5,46.0,64.0
+Tuvalu,Middle,2090,39.2,54.2,76.4
+Tuvalu,Middle,2100,46.8,65.2,92.1
+Tuvalu,Higher,2020,3.5,6.4,9.5
+Tuvalu,Higher,2030,7.4,11.5,16.2
+Tuvalu,Higher,2040,11.3,16.9,23.9
+Tuvalu,Higher,2050,17.4,25.4,35.5
+Tuvalu,Higher,2060,24.5,34.1,47.1
+Tuvalu,Higher,2070,32.0,44.2,61.1
+Tuvalu,Higher,2080,39.5,55.2,77.1
+Tuvalu,Higher,2090,49.4,69.0,96.7
+Tuvalu,Higher,2100,57.6,83.8,119.3
+Fiji,Lower,2020,2.4,5.5,8.8
+Fiji,Lower,2030,6.4,10.3,14.8
+Fiji,Lower,2040,9.3,14.5,20.9
+Fiji,Lower,2050,13.9,20.2,28.5
+Fiji,Lower,2060,17.9,25.3,35.5
+Fiji,Lower,2070,22.8,31.4,43.9
+Fiji,Lower,2080,26.3,36.8,52.2
+Fiji,Lower,2090,29.8,42.1,60.6
+Fiji,Lower,2100,31.6,48.0,70.1
+Fiji,Middle,2020,1.7,5.2,9.0
+Fiji,Middle,2030,5.9,10.1,14.8
+Fiji,Middle,2040,10.1,15.2,21.4
+Fiji,Middle,2050,16.0,22.0,30.1
+Fiji,Middle,2060,20.6,28.0,38.5
+Fiji,Middle,2070,25.9,35.5,49.5
+Fiji,Middle,2080,31.6,43.8,61.1
+Fiji,Middle,2090,37.2,51.6,73.1
+Fiji,Middle,2100,40.8,60.0,86.8
+Fiji,Higher,2020,2.7,5.3,8.2
+Fiji,Higher,2030,7.7,10.8,14.7
+Fiji,Higher,2040,12.0,16.9,23.3
+Fiji,Higher,2050,18.1,25.0,33.9
+Fiji,Higher,2060,25.0,33.2,44.8
+Fiji,Higher,2070,32.4,43.4,59.2
+Fiji,Higher,2080,40.9,54.8,75.0
+Fiji,Higher,2090,52.3,68.6,93.7
+Fiji,Higher,2100,62.5,84.2,116.1
+Kiribati,Lower,2020,3.3,5.6,8.1
+Kiribati,Lower,2030,6.8,9.9,13.7
+Kiribati,Lower,2040,10.4,14.6,20.3
+Kiribati,Lower,2050,15.4,20.9,28.7
+Kiribati,Lower,2060,19.1,25.9,36.0
+Kiribati,Lower,2070,24.2,32.8,45.7
+Kiribati,Lower,2080,28.0,39.1,55.4
+Kiribati,Lower,2090,31.8,44.9,64.4
+Kiribati,Lower,2100,32.3,50.9,75.4
+Kiribati,Middle,2020,3.4,5.2,7.4
+Kiribati,Middle,2030,7.0,9.9,13.6
+Kiribati,Middle,2040,11.1,15.2,20.9
+Kiribati,Middle,2050,16.8,22.5,30.6
+Kiribati,Middle,2060,21.7,29.0,39.7
+Kiribati,Middle,2070,27.5,36.7,50.8
+Kiribati,Middle,2080,33.6,45.2,62.8
+Kiribati,Middle,2090,39.6,53.6,75.5
+Kiribati,Middle,2100,45.5,62.7,89.0
+Kiribati,Higher,2020,4.2,6.0,8.2
+Kiribati,Higher,2030,8.0,11.0,14.9
+Kiribati,Higher,2040,12.4,16.8,22.9
+Kiribati,Higher,2050,18.9,25.0,33.6
+Kiribati,Higher,2060,25.6,33.4,45.3
+Kiribati,Higher,2070,33.5,43.8,59.8
+Kiribati,Higher,2080,41.9,55.4,76.1
+Kiribati,Higher,2090,52.9,69.2,95.2
+Kiribati,Higher,2100,58.3,82.6,117.2
+Vanuatu,Lower,2020,2.1,5.1,8.4
+Vanuatu,Lower,2030,5.5,9.6,14.3
+Vanuatu,Lower,2040,8.1,13.6,20.2
+Vanuatu,Lower,2050,12.8,19.2,27.5
+Vanuatu,Lower,2060,16.3,23.8,34.0
+Vanuatu,Lower,2070,20.8,29.7,42.2
+Vanuatu,Lower,2080,23.9,34.7,50.4
+Vanuatu,Lower,2090,27.1,39.8,58.5
+Vanuatu,Lower,2100,29.2,46.0,68.5
+Vanuatu,Middle,2020,1.0,4.9,8.9
+Vanuatu,Middle,2030,4.8,9.4,14.5
+Vanuatu,Middle,2040,8.8,14.3,20.9
+Vanuatu,Middle,2050,14.6,20.8,29.2
+Vanuatu,Middle,2060,18.9,26.6,37.2
+Vanuatu,Middle,2070,23.8,33.7,47.9
+Vanuatu,Middle,2080,29.5,41.8,59.4
+Vanuatu,Middle,2090,34.8,49.4,71.1
+Vanuatu,Middle,2100,36.7,56.1,83.1
+Vanuatu,Higher,2020,2.0,5.0,8.4
+Vanuatu,Higher,2030,6.8,10.2,14.4
+Vanuatu,Higher,2040,11.0,16.2,22.7
+Vanuatu,Higher,2050,16.7,23.7,32.8
+Vanuatu,Higher,2060,23.3,31.6,43.3
+Vanuatu,Higher,2070,30.6,41.8,57.8
+Vanuatu,Higher,2080,38.9,52.8,73.3
+Vanuatu,Higher,2090,49.9,66.4,91.8
+Vanuatu,Higher,2100,60.4,82.4,114.5
+Tonga,Lower,2020,2.9,5.6,8.6
+Tonga,Lower,2030,7.0,10.8,15.1
+Tonga,Lower,2040,10.1,15.2,21.6
+Tonga,Lower,2050,14.6,21.2,29.4
+Tonga,Lower,2060,19.0,26.4,36.6
+Tonga,Lower,2070,23.8,33.0,45.7
+Tonga,Lower,2080,27.1,38.2,54.0
+Tonga,Lower,2090,31.0,44.0,62.7
+Tonga,Lower,2100,33.4,50.2,72.3
+Tonga,Middle,2020,2.5,5.5,8.7
+Tonga,Middle,2030,6.8,10.4,14.7
+Tonga,Middle,2040,11.3,15.8,21.5
+Tonga,Middle,2050,16.9,22.8,30.8
+Tonga,Middle,2060,21.7,29.1,39.6
+Tonga,Middle,2070,27.6,37.2,51.1
+Tonga,Middle,2080,33.3,45.8,63.2
+Tonga,Middle,2090,39.3,53.8,75.2
+Tonga,Middle,2100,44.0,62.6,89.1
+Tonga,Higher,2020,3.3,5.7,8.4
+Tonga,Higher,2030,7.7,11.6,16.0
+Tonga,Higher,2040,12.8,18.0,24.6
+Tonga,Higher,2050,19.5,26.2,35.2
+Tonga,Higher,2060,26.6,35.0,46.8
+Tonga,Higher,2070,34.3,45.8,61.9
+Tonga,Higher,2080,43.3,57.8,78.5
+Tonga,Higher,2090,54.6,71.8,97.3
+Tonga,Higher,2100,65.2,86.7,118.6
+Marshall Islands,Lower,2020,3.3,6.0,9.1
+Marshall Islands,Lower,2030,7.2,10.9,15.3
+Marshall Islands,Lower,2040,11.8,16.4,22.5
+Marshall Islands,Lower,2050,17.3,23.2,31.3
+Marshall Islands,Lower,2060,22.2,28.9,39.1
+Marshall Islands,Lower,2070,27.5,35.9,48.7
+Marshall Islands,Lower,2080,31.6,42.3,58.6
+Marshall Islands,Lower,2090,36.3,48.8,68.1
+Marshall Islands,Lower,2100,39.2,55.9,79.0
+Marshall Islands,Middle,2020,3.6,6.0,8.6
+Marshall Islands,Middle,2030,7.5,11.0,15.3
+Marshall Islands,Middle,2040,12.4,16.8,22.6
+Marshall Islands,Middle,2050,18.9,24.4,32.4
+Marshall Islands,Middle,2060,24.5,31.3,41.7
+Marshall Islands,Middle,2070,31.2,39.7,53.6
+Marshall Islands,Middle,2080,37.8,48.8,66.0
+Marshall Islands,Middle,2090,44.2,57.7,79.4
+Marshall Islands,Middle,2100,49.0,67.0,93.6
+Marshall Islands,Higher,2020,3.9,6.4,9.1
+Marshall Islands,Higher,2030,8.9,12.3,16.5
+Marshall Islands,Higher,2040,14.4,19.1,25.4
+Marshall Islands,Higher,2050,21.6,27.5,36.0
+Marshall Islands,Higher,2060,29.0,36.4,48.1
+Marshall Islands,Higher,2070,37.5,47.4,63.1
+Marshall Islands,Higher,2080,46.7,59.6,80.2
+Marshall Islands,Higher,2090,57.9,73.8,99.8
+Marshall Islands,Higher,2100,68.8,90.4,123.6
+Palau,Lower,2020,1.5,5.1,8.9
+Palau,Lower,2030,4.2,9.2,14.9
+Palau,Lower,2040,8.1,13.8,20.8
+Palau,Lower,2050,13.5,19.8,28.0
+Palau,Lower,2060,17.0,25.0,35.8
+Palau,Lower,2070,21.9,31.4,44.5
+Palau,Lower,2080,26.2,37.0,52.9
+Palau,Lower,2090,30.0,42.6,61.5
+Palau,Lower,2100,30.8,50.4,75.2
+Palau,Middle,2020,2.4,5.4,8.6
+Palau,Middle,2030,6.0,9.5,13.7
+Palau,Middle,2040,9.7,14.5,20.5
+Palau,Middle,2050,14.9,21.2,29.7
+Palau,Middle,2060,19.6,27.2,38.0
+Palau,Middle,2070,25.6,35.4,49.4
+Palau,Middle,2080,31.4,43.4,60.9
+Palau,Middle,2090,36.8,51.5,73.3
+Palau,Middle,2100,41.4,60.3,86.8
+Palau,Higher,2020,2.8,4.8,7.1
+Palau,Higher,2030,6.9,10.3,14.5
+Palau,Higher,2040,11.2,16.5,23.3
+Palau,Higher,2050,17.8,24.1,32.7
+Palau,Higher,2060,24.4,32.3,43.9
+Palau,Higher,2070,31.5,42.2,58.2
+Palau,Higher,2080,39.6,53.4,74.0
+Palau,Higher,2090,50.0,66.3,91.7
+Palau,Higher,2100,60.6,83.0,115.7
+Micronesia,Lower,2020,3.4,5.9,8.7
+Micronesia,Lower,2030,7.1,10.6,14.9
+Micronesia,Lower,2040,11.6,16.2,22.1
+Micronesia,Lower,2050,17.1,22.8,30.8
+Micronesia,Lower,2060,21.6,28.6,38.8
+Micronesia,Lower,2070,27.1,35.4,48.1
+Micronesia,Lower,2080,31.3,41.8,57.9
+Micronesia,Lower,2090,35.8,48.2,67.4
+Micronesia,Lower,2100,38.7,56.1,79.6
+Micronesia,Middle,2020,3.6,5.9,8.5
+Micronesia,Middle,2030,7.7,10.9,14.8
+Micronesia,Middle,2040,12.3,16.5,22.2
+Micronesia,Middle,2050,18.6,24.0,31.8
+Micronesia,Middle,2060,23.9,30.8,41.2
+Micronesia,Middle,2070,30.5,39.3,53.2
+Micronesia,Middle,2080,37.2,48.2,65.4
+Micronesia,Middle,2090,43.5,57.0,78.5
+Micronesia,Middle,2100,48.0,66.2,92.9
+Micronesia,Higher,2020,3.5,6.0,8.8
+Micronesia,Higher,2030,8.7,12.0,16.1
+Micronesia,Higher,2040,14.2,18.6,24.7
+Micronesia,Higher,2050,21.0,26.9,35.4
+Micronesia,Higher,2060,28.6,35.8,47.2
+Micronesia,Higher,2070,36.9,46.5,61.9
+Micronesia,Higher,2080,46.0,58.7,78.9
+Micronesia,Higher,2090,56.8,72.5,98.0
+Micronesia,Higher,2100,68.4,89.3,121.8
+Solomon Islands,Lower,2020,0.6,4.5,8.6
+Solomon Islands,Lower,2030,2.9,8.0,13.8
+Solomon Islands,Lower,2040,6.8,12.3,19.1
+Solomon Islands,Lower,2050,11.0,17.6,26.1
+Solomon Islands,Lower,2060,13.5,21.8,32.8
+Solomon Islands,Lower,2070,17.4,27.4,41.0
+Solomon Islands,Lower,2080,20.9,32.7,49.2
+Solomon Islands,Lower,2090,24.0,37.8,57.3
+Solomon Islands,Lower,2100,21.8,44.4,71.7
+Solomon Islands,Middle,2020,0.5,4.4,8.5
+Solomon Islands,Middle,2030,2.9,8.2,14.1
+Solomon Islands,Middle,2040,6.5,13.0,20.5
+Solomon Islands,Middle,2050,12.1,19.1,28.0
+Solomon Islands,Middle,2060,16.1,24.4,35.7
+Solomon Islands,Middle,2070,20.9,31.6,46.4
+Solomon Islands,Middle,2080,26.4,39.0,56.9
+Solomon Islands,Middle,2090,30.9,46.2,68.6
+Solomon Islands,Middle,2100,35.5,54.7,81.7
+Solomon Islands,Higher,2020,1.6,4.6,7.9
+Solomon Islands,Higher,2030,5.3,9.2,13.7
+Solomon Islands,Higher,2040,9.0,13.9,20.3
+Solomon Islands,Higher,2050,13.7,21.2,30.9
+Solomon Islands,Higher,2060,19.4,28.8,41.6
+Solomon Islands,Higher,2070,26.3,38.0,54.6
+Solomon Islands,Higher,2080,32.9,48.2,69.8
+Solomon Islands,Higher,2090,42.4,61.1,88.2
+Solomon Islands,Higher,2100,48.0,76.4,113.1
+Nauru,Lower,2020,3.2,5.4,7.9
+Nauru,Lower,2030,6.5,9.6,13.5
+Nauru,Lower,2040,10.2,14.4,20.0
+Nauru,Lower,2050,15.1,20.6,28.4
+Nauru,Lower,2060,18.8,25.6,35.7
+Nauru,Lower,2070,23.7,32.4,45.3
+Nauru,Lower,2080,27.6,38.7,54.9
+Nauru,Lower,2090,31.3,44.4,63.8
+Nauru,Lower,2100,32.3,50.6,74.7
+Nauru,Middle,2020,3.2,5.1,7.3
+Nauru,Middle,2030,6.8,9.7,13.4
+Nauru,Middle,2040,10.8,15.0,20.7
+Nauru,Middle,2050,16.4,22.2,30.2
+Nauru,Middle,2060,21.3,28.6,39.2
+Nauru,Middle,2070,27.2,36.3,50.4
+Nauru,Middle,2080,33.2,44.8,62.3
+Nauru,Middle,2090,39.0,53.2,74.9
+Nauru,Middle,2100,45.0,62.2,88.2
+Nauru,Higher,2020,4.0,5.8,8.0
+Nauru,Higher,2030,7.8,10.8,14.7
+Nauru,Higher,2040,12.2,16.6,22.6
+Nauru,Higher,2050,18.5,24.6,33.1
+Nauru,Higher,2060,25.2,33.0,44.8
+Nauru,Higher,2070,33.0,43.4,59.3
+Nauru,Higher,2080,41.4,54.8,75.3
+Nauru,Higher,2090,52.2,68.4,94.2
+Nauru,Higher,2100,58.8,82.3,116.4
+Samoa,Lower,2020,3.3,7.6,12.2
+Samoa,Lower,2030,8.4,13.6,19.4
+Samoa,Lower,2040,14.0,19.8,26.7
+Samoa,Lower,2050,20.0,26.9,35.8
+Samoa,Lower,2060,24.3,32.8,44.1
+Samoa,Lower,2070,31.0,40.4,53.5
+Samoa,Lower,2080,36.8,47.6,63.4
+Samoa,Lower,2090,41.7,54.3,73.1
+Samoa,Lower,2100,43.4,60.7,83.8
+Samoa,Middle,2020,3.7,7.8,12.1
+Samoa,Middle,2030,9.0,13.8,19.1
+Samoa,Middle,2040,14.5,20.2,26.9
+Samoa,Middle,2050,21.7,28.4,36.9
+Samoa,Middle,2060,27.5,35.6,46.7
+Samoa,Middle,2070,34.1,44.3,58.5
+Samoa,Middle,2080,41.1,53.8,71.6
+Samoa,Middle,2090,48.5,63.3,85.1
+Samoa,Middle,2100,56.1,74.4,100.7
+Samoa,Higher,2020,4.5,8.0,11.6
+Samoa,Higher,2030,10.6,14.6,19.1
+Samoa,Higher,2040,16.0,21.6,28.6
+Samoa,Higher,2050,23.2,31.2,41.1
+Samoa,Higher,2060,31.3,40.6,53.2
+Samoa,Higher,2070,40.4,52.0,68.4
+Samoa,Higher,2080,50.1,64.4,85.1
+Samoa,Higher,2090,62.3,79.4,105.4
+Samoa,Higher,2100,74.2,96.1,128.6
+Papua New Guinea,Lower,2020,2.7,5.1,7.9
+Papua New Guinea,Lower,2030,5.8,9.2,13.3
+Papua New Guinea,Lower,2040,9.2,13.8,19.6
+Papua New Guinea,Lower,2050,14.1,19.8,27.5
+Papua New Guinea,Lower,2060,17.5,24.5,34.5
+Papua New Guinea,Lower,2070,22.1,30.9,43.5
+Papua New Guinea,Lower,2080,26.0,36.8,52.8
+Papua New Guinea,Lower,2090,29.4,42.4,61.5
+Papua New Guinea,Lower,2100,30.4,48.9,72.9
+Papua New Guinea,Middle,2020,2.8,5.0,7.4
+Papua New Guinea,Middle,2030,6.2,9.3,13.2
+Papua New Guinea,Middle,2040,10.0,14.4,20.2
+Papua New Guinea,Middle,2050,15.5,21.2,29.0
+Papua New Guinea,Middle,2060,20.0,27.2,37.7
+Papua New Guinea,Middle,2070,25.7,34.9,48.7
+Papua New Guinea,Middle,2080,31.3,42.8,60.0
+Papua New Guinea,Middle,2090,36.8,50.8,72.0
+Papua New Guinea,Middle,2100,42.2,60.0,86.1
+Papua New Guinea,Higher,2020,3.2,5.2,7.6
+Papua New Guinea,Higher,2030,7.3,10.3,14.2
+Papua New Guinea,Higher,2040,11.5,15.9,21.8
+Papua New Guinea,Higher,2050,17.2,23.4,31.9
+Papua New Guinea,Higher,2060,23.8,31.4,43.0
+Papua New Guinea,Higher,2070,31.4,41.4,56.7
+Papua New Guinea,Higher,2080,39.4,52.4,72.3
+Papua New Guinea,Higher,2090,49.6,65.4,90.4
+Papua New Guinea,Higher,2100,59.0,80.8,113.4

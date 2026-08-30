@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+/* Fonts are self-hosted via @fontsource packages imported in layout.tsx,
+   so no external font request is made at build time or runtime. */
+@theme inline {
+  --font-sans: 'Source Sans 3 Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Libre Baskerville', ui-serif, Georgia, serif;
+}
+
+:root {
+  /* TEAL family — reserved for FINANCE (Section 3) */
+  --primary:  #7C94AB;        /* deep teal — project primary */
+  --primary-dark: #22434A;   /* darker shade, derived from --primary */
+  /* Same hue family as --primary but more saturated and darker — --primary's
+     muted slate tone reads too close to grey when used as small text/marks
+     against body copy (e.g. the map's livelihoods-lost bubble + highlight),
+     where it needs to hold its own next to --accent's warm terracotta. */
+  --primary-vivid: #2E6FA3;
+
+  /* WARM family — DISASTER IMPACT (Section 2: map + displacement chart).
+     Deliberately a different hue AND lightness from --primary so the two
+     sections stay visually distinct (including in grayscale/low-vision
+     contexts), while staying muted enough that neither section reads
+     "louder" than the other. Warm vs. teal also avoids relying on any
+     red-green distinction, which keeps it safe for red-green color
+     blindness, the most common form. */
+  --accent:   #d0645a;         /* matches the "Higher" pathway red in the sea level chart */
+  --accent-bubble:    #d0645a;  /* fill for circles / bars */
+  --accent-dark: #A65048;    /* deeper shade of --accent, for focused / emphasis states */
+
+  /* RED — reserved for the SHORTFALL / GAP inside finance */
+  --secondary:  #e07a7a;      /* coral-red for shortfall */
+
+  --text-color: rgb(33, 37, 41);
+  --text-secondary: rgb(64, 64, 64);
+
+  /* NEUTRAL / MAP palette — shared across chart components (VulnerabilityScatter,
+     ClimateGapOpener, DisasterMapScrolly) for dot ink, gridlines, land fill and
+     surface backgrounds. Declared centrally so every component's var(--name, fallback)
+     resolves to the same value instead of relying on duplicated fallbacks. */
+  --ink: #0f172a;
+  --ink-soft: #1e293b;
+  --muted-soft: #64748b;
+  --faint: #94a3b8;
+  --line: #cbd5e1;
+  --surface: #ffffff;
+  --surface-translucent: rgba(255, 255, 255, 0.82);
+  --card-shadow: rgba(100, 116, 139, 0.14);
+
+  /* Map land + bubble borders (DisasterMapScrolly) */
+  --land: #f6f6f6;
+  --land-stroke: #cfcfcf;
+  --land-focus: #595959;
+  --land-focus-stroke: #3d3d3d;
+  --land-shadow: #8f9aa8;
+  --bubble-border: #666666;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #ffffff;
+  color: var(--text-color);
+  font-family: var(--font-sans);
+}
+
+a,
+a:visited,
+a:hover,
+a:focus-visible,
+a:active {
+  text-decoration-color: currentColor;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+  font-family: var(--font-serif);
+}
+
+/* ============================================================
+   TYPOGRAPHY — Section titles & subtitles
+   ============================================================ */
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  max-width: 640px;
+  font-family: var(--font-serif);
+  color: var(--text-color);
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color:  rgb(64, 64, 64);
+  margin-bottom: 0;
+  line-height: 1.3rem;
+  font-family: var(--font-sans);
+}
+
+/* ============================================================
+   TYPOGRAPHY — Narrative text
+   ============================================================ */
+
+.section-narrative p {
+  display: block;
+  margin-block-start: 0;       /* zeroed so paragraph gap == padding-bottom exactly */
+  margin-block-end: 0;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  unicode-bidi: isolate;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: left;
+  line-height: 1.75rem;
+  letter-spacing: 0.012em;
+  padding-bottom: 1.1rem;     /* inter-paragraph gap */
+  color: var(--ink-soft, #1e293b);
+  font-family: var(--font-sans);
+}
+
+.section-narrative p:last-child {
+  padding-bottom: 0;
+}
+
+/* ============================================================
+   TYPOGRAPHY — Chart captions
+   ============================================================ */
+
+.chart-caption {
+  font-size: 0.72rem;
+  font-weight: 300;
+  color:  rgb(64, 64, 64);
+  padding-bottom: 2.4rem;
+  line-height: 1.3rem;
+  font-family: var(--font-sans);
+}
+
+/* ============================================================
+   TYPOGRAPHY — Hero
+   ============================================================ */
+
+.hero-title {
+  font-size: 2.8rem;
+  line-height: 1.1;
+  font-weight: 700;
+  font-family: var(--font-serif);
+  color: var(--text-color);
+  text-align: center;
+}
+
+.hero-byline {
+  font-size: 0.86rem;
+  font-weight: 300;
+  color:  rgb(64, 64, 64);
+  font-family: var(--font-sans);
+  text-align: center;
+}
+
+/* ============================================================
+   RESPONSIVE — Mobile adjustments
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.86rem;
+    line-height: 1.3rem;
+  }
+
+  .section-narrative p {
+    font-size: 1rem;
+    font-weight: 350;    /* bumped up from desktop's 350 — small text needs a touch more weight to stay legible at this size */
+    line-height: 1.6rem;
+    letter-spacing: 0.01em;
+    padding-bottom: 1rem;    /* inter-paragraph gap on small screens */
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .chart-caption {
+    font-size: 0.72rem;
+    line-height: 1.3rem;
+    padding-bottom: 1.8rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .section-title {
+    font-size: 0.9rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.82rem;
+  }
+
+  .section-narrative p {
+    font-weight: 380;    /* between desktop's 350 and the ≤480px breakpoint's 400 */
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .chart-caption {
+    font-size: 0.70rem;
+  }
+}
+
+/* Reduced motion: users whose OS accessibility settings request less motion
+   get final states directly instead of transitions. Scroll-scrubbed positions
+   (which only move as fast as the reader scrolls) are unaffected; this collapses
+   autonomous transitions such as the map flight, bubble morphs and fades. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
