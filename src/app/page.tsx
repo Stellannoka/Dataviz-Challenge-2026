@@ -144,7 +144,7 @@ export default function Home() {
         <Prose>
           <div className={narrative}>
             <p>
-             The challenge for Pacific Island nations is not only the scale of the climate risks they face, but the gap between the resources needed to adapt as those risks intensify and the finance allocated to meet that need.
+             The challenge for Pacific Island nations is not only the scale of the climate risks they face, but the gap between the resources needed to adapt as those risks intensify and the finance flowing to meet that need.
             </p>
             <p>
               That gap already carries a human and economic cost, felt in the impacts of disasters on people and communities. Yet improvements in readiness in some nations show that progress is possible.
